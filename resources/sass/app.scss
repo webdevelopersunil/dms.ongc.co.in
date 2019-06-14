@@ -1,0 +1,69 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+main {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.nav-transparent {
+    z-index: 99;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.title-image-container {
+    background-image: url('/images/title.jpg');
+    background-attachment: fixed;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .ongc-logo {
+
+        width: 5rem;
+        margin-top: 5rem;
+    }
+}
+
+.content-container {
+    /* Azur Lane */
+    background: #7F7FD5;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom right, #91EAE4, #86A8E7, #7F7FD5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom right, #91EAE4, #86A8E7, #7F7FD5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    border: 1px solid white;
+
+    .dms-btn-container {
+
+        margin: 3rem 7rem;
+    }
+
+    .dms-btn-primary {
+        background: $indigo;
+        color: white;
+        border: 1px solid white;
+        font-weight: 600;
+        letter-spacing: 2px;
+        &:hover {
+            background: $indigo-dark;
+        }
+    }
+
+    .dms-heading {
+        float: right;
+        font-weight: 800;
+        font-size: 3rem;
+        text-shadow: 2px 2px darkslategray;
+        color: white;
+        margin: 2rem 5rem;
+    }
+}
