@@ -12,7 +12,39 @@ main {
     top:0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
+    background: url('/images/background.png');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+// main::before{
+//     background-color: rgba(0, 0, 0, 0.35);
+//     content: '';
+//     display: block;
+//     height: 100%;
+//     position: absolute;
+//     width: 100%;
+//   }
+
+label {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.bg-lightblue {
+    background: #9cc5e6eb;
+}
+
+.bg-aliceblue {
+    background: aliceblue;
+}
+
+.mt-fit {
+    margin-top: 5rem;
 }
 
 .nav-transparent {
@@ -34,6 +66,18 @@ main {
     }
 }
 
+.dms-btn-primary {
+    background: $indigo;
+    color: white;
+    border: 1px solid white;
+    font-weight: 600;
+    letter-spacing: 2px;
+    &:hover {
+        background: $indigo-dark;
+        color: white;
+    }
+}
+
 .content-container {
     /* Azur Lane */
     background: #7F7FD5;  /* fallback for old browsers */
@@ -45,17 +89,6 @@ main {
     .dms-btn-container {
 
         margin: 3rem 7rem;
-    }
-
-    .dms-btn-primary {
-        background: $indigo;
-        color: white;
-        border: 1px solid white;
-        font-weight: 600;
-        letter-spacing: 2px;
-        &:hover {
-            background: $indigo-dark;
-        }
     }
 
     .dms-heading {

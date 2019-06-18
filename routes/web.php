@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/home');
 });
 
 // Auth::routes();
@@ -30,3 +30,11 @@ Route::get('/login','Auth\LoginController@showLoginForm')->name('login');
 Route::get('/login/{token}','Auth\LoginController@loginForm');
 Route::post('/login','Auth\LoginController@login');
 Route::post('/logout','Auth\LoginController@logout')->name('logout');
+
+//Document
+Route::get('/document/create', 'DocumentController@empty');
+Route::post('/document/create', 'DocumentController@store');
+Route::get('/document/create/{category}/{subcategory}', 'DocumentController@create' );
+
+Route::view('/document/search', 'document.search');
+Route::post('/document/search', 'DocumentController@search');

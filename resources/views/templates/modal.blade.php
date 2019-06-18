@@ -1,32 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
-
-    <div class="flex flex-col" style="height: 100vh;">
-
-        <div class="h-50 title-image-container">
-            <div class="container">
-                <img src="/images/ongc.png" class="ongc-logo" alt="ongc.logo">
-            </div>
-        </div>
-
-        <div class="h-50 content-container d-flex">
-            <div class="d-block dms-btn-container" style="flex:1">
-                <button class="btn dms-btn-primary btn-block" data-toggle="modal" data-target="#createModal"> CREATE </button>
-                <button class="btn dms-btn-primary btn-block"> DISHA </button>
-                <a class="btn dms-btn-primary btn-block" href="/document/search"> SEARCH </a>
-                <button class="btn dms-btn-primary btn-block"> REPORTS </button>
-                <button class="btn dms-btn-primary btn-block"> EXIT </button>
-            </div>
-            <div style="flex:3">
-                <h1 class="dms-heading" >DMS <sup>+</sup> </h1>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -62,5 +34,3 @@
             </div>
         </div>
     </div>
-
-@endsection

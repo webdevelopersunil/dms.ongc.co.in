@@ -49269,22 +49269,52 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 var app = new Vue({
   el: '#app',
   data: {
-    category: {
+    selectedCategory: {
       options: []
     },
+    selectedSubcategory: {
+      name: '',
+      value: ''
+    },
     categories: [{
-      "name": "files",
-      "subcategories": ["files1", "files2"]
+      "value": "govt_letters",
+      "name": "Govt. Letters",
+      "subcategories": [{
+        "name": "Govt. Letters",
+        "value": "letter1"
+      }]
     }, {
-      "name": "general",
-      "subcategories": ["general1", "general2"]
+      "value": "cmd_office_correspondence",
+      "name": "CMD's Office Correspondence",
+      "subcategories": [{
+        "name": "CMD|01 Secret Letters",
+        "value": "secret_letter"
+      }, {
+        "name": "CMD|02 Special Reply of Misc",
+        "value": "special_reply"
+      }, {
+        "name": "CMD|03 Ministry's Correspondence",
+        "value": "ministry_correspondence"
+      }]
     }, {
-      "name": "govt_letters",
-      "subcategories": ["govt_letters1", "govt_letters2"]
+      "value": "general",
+      "name": "General | DDN Letters",
+      "subcategories": [{
+        "name": "General | DDN Letters",
+        "value": "general1"
+      }]
+    }, {
+      "value": "files",
+      "name": "Files",
+      "subcategories": [{
+        "name": "Files",
+        "value": "files1"
+      }]
     }]
   },
   methods: {
-    onSelectionChange: function onSelectionChange() {//oops nothing here, coz i dont have to! ;)
+    onCategorySelection: function onCategorySelection() {
+      window.location.href = "/document/create/".concat(this.selectedCategory.value, "/").concat(this.selectedSubcategory.value);
     }
   } // VUE JS
 
