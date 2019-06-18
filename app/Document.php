@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Document extends Model
 {
     protected $fillable = [
+        'category',
+        'subcategory',
         'diary_no', 
         'date_in', 
         'file_date', 
@@ -19,6 +21,7 @@ class Document extends Model
         'date_out',
         'marked_by',
         'remarks',
-        'file_url'
+        'file_url',
+        'is_reference'
     ];
 }

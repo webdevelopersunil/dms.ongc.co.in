@@ -36,5 +36,13 @@ Route::get('/document/create', 'DocumentController@empty');
 Route::post('/document/create', 'DocumentController@store');
 Route::get('/document/create/{category}/{subcategory}', 'DocumentController@create' );
 
+Route::get('/document/view/{id}', 'DocumentController@show' );
+Route::post('/document/view/{id}', 'DocumentController@update' );
+
 Route::view('/document/search', 'document.search');
 Route::post('/document/search', 'DocumentController@search');
+
+//Reference
+Route::get('/reference/create', 'ReferenceController@index' );
+Route::get('/reference/create/{document}', 'ReferenceController@create' );
+Route::post('/reference/create', 'ReferenceController@store' );

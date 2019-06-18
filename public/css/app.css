@@ -10680,6 +10680,10 @@ label {
   font-size: 1rem;
 }
 
+.highlighted {
+  background: #ffff7e73;
+}
+
 .bg-lightblue {
   background: #9cc5e6eb;
 }

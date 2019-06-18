@@ -7,7 +7,10 @@
         @include('templates.alert')
 
         <div class="p-2 mb-4 bg-lightblue">
-            <form action="/document/create" method="post" enctype="multipart/form-data">
+
+            <h3 class="m-3"> Add Reference </h3>
+
+            <form action="/reference/create" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card p-2" >
                     <div class="row">
@@ -15,13 +18,13 @@
                             <label><b>Category</b></label>
                         </div>
                         <div class="col-4">
-                            <input readonly class="form-control" name="category" value="{{$category}}">
+                            <input readonly class="form-control" name="category" value="{{$document->category}}">
                         </div>
                         <div class="col-2">
                             <label><b>Sub Category</b></label>
                         </div>
                         <div class="col-4">
-                            <input readonly class="form-control" name="subcategory" value="{{$subcategory}}">
+                            <input readonly class="form-control" name="subcategory" value="{{$document->subcategory}}">
                         </div>
                     </div>
                 </div>
@@ -33,7 +36,7 @@
                             <label for="diary_no">Diary No</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="text" id="diary_no" name="diary_no" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
+                            <input type="text" id="diary_no" name="diary_no" value="{{ $document->diary_no }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('diary_no') {{ $errors->first('diary_no') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
@@ -72,7 +75,7 @@
                         </div>
                         <div class="col-12 form-group">
                             <label for="subject">Subject</label>
-                            <textarea name="subject" id="subject" rows="3" class="form-control @error('subject') is-invalid @enderror"></textarea>
+                            <textarea name="subject" id="subject" value="{{ $document->subject }}" rows="3" class="form-control @error('subject') is-invalid @enderror">{{ $document->diary_no }}</textarea>
                             <div class="invalid-feedback"> @error('subject') {{ $errors->first('subject') }} @enderror </div>
                         </div>
                     </div>
@@ -121,7 +124,7 @@
         
                 <div class="px-4 py-3">
                     <a href="/document/search" class="btn dms-btn-primary mx-1 px-4">Search</a>
-                    <button type="submit" formaction="/document/create" class="btn dms-btn-primary mx-1 px-4">Save</button>
+                    <button type="submit" formaction="/reference/create" class="btn dms-btn-primary mx-1 px-4">Save</button>
                     <a href="/"  class="btn dms-btn-primary mx-1 px-4">Cancel</a>
                     <a href="/"  class="btn dms-btn-primary mx-1 px-4">Exit</a>
                 </div>

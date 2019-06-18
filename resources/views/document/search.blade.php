@@ -125,7 +125,7 @@
 
                 <div class="card-body">
 
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered">
 
                         <thead>
                             <tr>
@@ -141,9 +141,9 @@
 
                         <tbody>
                             @foreach ($documents as $document )
-                                <tr>
-                                    <td> <a href="#">View </a> </td>
-                                    <td> <a href="#">Edit </a> </td>
+                                <tr class="{{ $document->date_out ? '' : 'highlighted' }}" >
+                                    <td> <a href="/document/view/{{ $document->id }}"> View </a> </td>
+                                    <td> <a href="/document/view/{{ $document->id }}"> Edit </a> </td>
                                     <td> <a href="#">Print </a> </td>
                                     <td> {{ $document->diary_no }}</td>
                                     <td> {{ $document->file_no }}</td>

@@ -1,8 +1,8 @@
 @extends('layouts.app', [ "hidden" => true ])
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center mt-4">
+<div class="container" style="height:100vh">
+    <div class="row justify-content-center align-items-center h-100">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>

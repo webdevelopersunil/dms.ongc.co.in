@@ -15,6 +15,10 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->bigIncrements('id');
+
+            $table->string('category');
+            $table->string('subcategory');
+
             $table->bigInteger('diary_no');
             $table->timestamp('date_in');
             $table->timestamp('file_date');
@@ -29,6 +33,9 @@ class CreateDocumentsTable extends Migration
             $table->string('marked_by')->nullable();
             $table->text('remarks')->nullable();
             $table->string('file_url')->nullable();
+
+            $table->boolean('is_reference')->default(false);
+
             $table->timestamps();
         });
     }

@@ -46,7 +46,18 @@ class DocumentController extends Controller
 
     public function show($id)
     {
-        //
+        $document = Document::find($id);
+
+        $main = Document::where( 'diary_no', $document->diary_no )
+                        ->where('is_reference', false )
+                        ->get();
+
+        $references = Document::where( 'diary_no', $document->diary_no )
+                              ->where('is_reference', true)
+                              ->where('id', '!=', $id )
+                              ->get();
+
+        return view('document.show', compact( 'document', 'references' ) );
     }
 
 
@@ -57,7 +68,28 @@ class DocumentController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'category' => 'required',
+            'subcategory' => 'required',
+            'diary_no' => 'required',
+            'date_in' => 'required',
+            'file_no' => 'required',
+            'file_date' => 'required',
+            'received_from' => 'required',
+            'subject' => 'required',
+        ]);
+
+        $document = Document::find($id);
+        $document->marked_to = $request->marked_to;
+        $document->copy_to = $request->copy_to;
+        $document->date_out = $request->date_out;
+        $document->marked_by = $request->marked_by;
+        $document->remarks = $request->remarks;
+
+        $document->save();
+
+        return redirect()->back()->with('success', 'Document updated succesfully' );
+
     }
 
 
@@ -114,7 +146,9 @@ class DocumentController extends Controller
         $documents = DB::table('documents')
                 ->whereColumn(
                     $conditions
-                )->get();
+                )
+                ->orderBy('date_out', 'asc' )
+                ->get();
 
         // $documents = Document::where('diary_no', $request->diary_no)->get();
 
