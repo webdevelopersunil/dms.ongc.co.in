@@ -75,7 +75,7 @@
                         </div>
                         <div class="col-12 form-group">
                             <label for="subject">Subject</label>
-                            <textarea name="subject" id="subject" value="{{ $document->subject }}" rows="3" class="form-control @error('subject') is-invalid @enderror">{{ $document->diary_no }}</textarea>
+                            <textarea name="subject" id="subject" value="{{ $document->subject }}" rows="3" class="form-control @error('subject') is-invalid @enderror">{{ $document->subject }}</textarea>
                             <div class="invalid-feedback"> @error('subject') {{ $errors->first('subject') }} @enderror </div>
                         </div>
                     </div>

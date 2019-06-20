@@ -4,7 +4,8 @@
             <div class="card-header" :id="'header-' + document.id">
             <h2 class="mb-0">
                 <button class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#collapse-' + document.id">
-                    Reference
+                    <span v-if="document.is_reference == 0">Main Document</span>
+                    <span v-else>Reference Document</span>
                 </button>
             </h2>
             </div>
@@ -61,6 +62,9 @@
 
 <script>
 export default {
-    props: [ 'documents' ]
+    props: [ 'documents' ],
+    mounted: function() {
+        console.log(this.documents);
+    }
 }
 </script>

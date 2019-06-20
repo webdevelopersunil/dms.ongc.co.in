@@ -29,3 +29,12 @@ Route::post('/token', function(Request $request){
 Route::get('/mac', function(Request $request){
     return \App\Mac::all()->pluck('hashed_mac');
 });
+
+Route::get('categories', function(Request $request){
+
+    $categories = [
+
+    ];
+
+    return $categories;
+});

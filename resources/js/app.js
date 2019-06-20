@@ -20,9 +20,7 @@ const app = new Vue({
             {
                 "value": "govt_letters",
                 "name": "Govt. Letters",
-                "subcategories": [ 
-                    { "name": "Govt. Letters", "value": "letter1" },
-                 ]
+                "subcategories": null
             },
             {
                 "value": "cmd_office_correspondence",
@@ -36,21 +34,18 @@ const app = new Vue({
             {
                 "value": "general",
                 "name": "General | DDN Letters",
-                "subcategories": [ 
-                    { "name": "General | DDN Letters", "value": "general1" },
-                 ]
+                "subcategories": null
             },
             {
                 "value": "files",
                 "name": "Files",
-                "subcategories": [
-                    { "name": "Files", "value": "files1" },
-                ]
+                "subcategories": null
             },
         ]
     },
     methods: {
         onCategorySelection() {
+           
             window.location.href = `/document/create/${this.selectedCategory.value}/${this.selectedSubcategory.value}`;
         }
     }

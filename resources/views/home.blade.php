@@ -45,7 +45,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row form-group">
+                    <div class="row form-group" v-if="selectedCategory.subcategories">
                         <label for="category" class="col-sm-3"> Select SubCategory</label>
                         <div class="col-sm-9">
                             <select v-model="selectedSubcategory" class="form-control form-control-sm">

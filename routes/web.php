@@ -34,6 +34,7 @@ Route::post('/logout','Auth\LoginController@logout')->name('logout');
 //Document
 Route::get('/document/create', 'DocumentController@empty');
 Route::post('/document/create', 'DocumentController@store');
+Route::get('/document/create/{category}', 'DocumentController@create' );
 Route::get('/document/create/{category}/{subcategory}', 'DocumentController@create' );
 
 Route::get('/document/view/{id}', 'DocumentController@show' );

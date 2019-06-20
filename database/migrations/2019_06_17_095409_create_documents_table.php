@@ -17,7 +17,7 @@ class CreateDocumentsTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('category');
-            $table->string('subcategory');
+            $table->string('subcategory')->nullable();
 
             $table->bigInteger('diary_no');
             $table->timestamp('date_in');

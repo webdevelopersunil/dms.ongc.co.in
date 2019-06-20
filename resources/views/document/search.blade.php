@@ -145,7 +145,14 @@
                                     <td> <a href="/document/view/{{ $document->id }}"> View </a> </td>
                                     <td> <a href="/document/view/{{ $document->id }}"> Edit </a> </td>
                                     <td> <a href="#">Print </a> </td>
-                                    <td> {{ $document->diary_no }}</td>
+                                    <td> 
+                                        <span> {{ $document->diary_no }} </span>
+                                        @if( $document->is_reference )
+                                            <span class="badge badge-primary"> Ref. </span>
+                                        @else 
+                                            <span class="badge badge-success"> Main </span>
+                                        @endif
+                                    </td>
                                     <td> {{ $document->file_no }}</td>
                                     <td> {{ $document->date_in }}</td>
                                     <td> {{ $document->date_out }}</td>

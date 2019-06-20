@@ -19,7 +19,7 @@ class DocumentController extends Controller
         return 'no category provided!';
     }
 
-    public function create( $category, $subcategory )
+    public function create( $category, $subcategory = null )
     {
         return view('document.create', compact('category', 'subcategory') );
     }
@@ -48,13 +48,9 @@ class DocumentController extends Controller
     {
         $document = Document::find($id);
 
-        $main = Document::where( 'diary_no', $document->diary_no )
-                        ->where('is_reference', false )
-                        ->get();
-
         $references = Document::where( 'diary_no', $document->diary_no )
-                              ->where('is_reference', true)
                               ->where('id', '!=', $id )
+                              ->orderBy('is_reference')
                               ->get();
 
         return view('document.show', compact( 'document', 'references' ) );

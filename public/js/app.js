@@ -1824,8 +1824,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['documents']
+  props: ['documents'],
+  mounted: function mounted() {
+    console.log(this.documents);
+  }
 });
 
 /***/ }),
@@ -37152,7 +37156,11 @@ var render = function() {
                     "data-target": "#collapse-" + document.id
                   }
                 },
-                [_vm._v("\n                Reference\n            ")]
+                [
+                  document.is_reference == 0
+                    ? _c("span", [_vm._v("Main Document")])
+                    : _c("span", [_vm._v("Reference Document")])
+                ]
               )
             ])
           ]
@@ -49480,10 +49488,7 @@ var app = new Vue({
     categories: [{
       "value": "govt_letters",
       "name": "Govt. Letters",
-      "subcategories": [{
-        "name": "Govt. Letters",
-        "value": "letter1"
-      }]
+      "subcategories": null
     }, {
       "value": "cmd_office_correspondence",
       "name": "CMD's Office Correspondence",
@@ -49500,17 +49505,11 @@ var app = new Vue({
     }, {
       "value": "general",
       "name": "General | DDN Letters",
-      "subcategories": [{
-        "name": "General | DDN Letters",
-        "value": "general1"
-      }]
+      "subcategories": null
     }, {
       "value": "files",
       "name": "Files",
-      "subcategories": [{
-        "name": "Files",
-        "value": "files1"
-      }]
+      "subcategories": null
     }]
   },
   methods: {
@@ -49668,8 +49667,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/sree/Desktop/dms/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/sree/Desktop/dms/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/sree/Desktop/code/laravel/dms-plus/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/sree/Desktop/code/laravel/dms-plus/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

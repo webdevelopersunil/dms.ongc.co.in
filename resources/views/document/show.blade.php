@@ -26,9 +26,10 @@
                     </div>
                 </div>
                 {{-- END OF HEADING --}}
-
-                <app-accordion documents="{{ $references }} "></app-accordion>
-
+                
+                <div class="mt-2">
+                    <app-accordion :documents="{{ $references }} "></app-accordion>
+                </div>
 
                 {{-- REFERENCE LIST --}}
                 {{-- <div class="mt-2">
