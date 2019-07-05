@@ -103,7 +103,7 @@
                             <label for="diary_no">Diary No</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="text" id="diary_no" name="diary_no" value="{{ $document->diary_no }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
+                            <input readonly type="text" id="diary_no" name="diary_no" value="{{ $document->diary_no }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('diary_no') {{ $errors->first('diary_no') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">

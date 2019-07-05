@@ -19,6 +19,8 @@ class CreateDocumentsTable extends Migration
             $table->string('category');
             $table->string('subcategory')->nullable();
 
+            $table->string('source')->default('portal'); // portal / archive / disha
+
             $table->bigInteger('diary_no');
             $table->timestamp('date_in');
             $table->timestamp('file_date');

@@ -39,7 +39,7 @@ class ReferenceController extends Controller
     {
         $validatedData = $request->validate([
             'category' => 'required',
-            'subcategory' => 'required',
+            // 'subcategory' => 'required',
             'diary_no' => 'required',
             'date_in' => 'required',
             'file_no' => 'required',
@@ -50,9 +50,9 @@ class ReferenceController extends Controller
 
         $reference = collect($validatedData)->put('is_reference', true)->toArray();
 
-        Document::create($reference);
+        $document = Document::create($reference);
 
-        return redirect()->back()->with('success', 'Reference has been created succesfully' );
+        return redirect("/document/view/$document->id")->with('success', 'Reference has been created succesfully' );
     }
 
     /**

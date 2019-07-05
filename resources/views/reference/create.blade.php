@@ -2,6 +2,12 @@
 
 @section('content')
 
+@if($errors->isNotEmpty())
+    @foreach ($errors->all() as $error)
+    <div>{{ $error }}</div>
+    @endforeach
+@endif
+
     <div class="container mt-fit px-0 shadow" >
 
         @include('templates.alert')
@@ -18,13 +24,24 @@
                             <label><b>Category</b></label>
                         </div>
                         <div class="col-4">
-                            <input readonly class="form-control" name="category" value="{{$document->category}}">
+                            {{-- <input readonly class="form-control" name="category" value="{{$document->category}}"> --}}
+                            <select name="category" id="category" class="form-control">
+                                <option value="govt_letters" {{ $document->category == 'govt_letters' ? 'selected' : '' }} >Govt. Letters</option>
+                                <option value="cmd_office_correspondence" {{ $document->category == 'cmd_office_correspondence' ? 'selected' : '' }} >CMD's Office Correspondence</option>
+                                <option value="general" {{ $document->category == 'general' ? 'selected' : '' }} >General | DDN Letters</option>
+                                <option value="files" {{ $document->category == 'files' ? 'selected' : '' }} >Files</option>
+                            </select>
                         </div>
                         <div class="col-2">
                             <label><b>Sub Category</b></label>
                         </div>
                         <div class="col-4">
-                            <input readonly class="form-control" name="subcategory" value="{{$document->subcategory}}">
+                            <select name="subcategory" id="subcategory" class="form-control">
+                                <option value=""> Nil </option>
+                                <option value="secret_letter" {{ $document->subcategory == 'secret_letter' ? 'selected' : '' }} >CMD|01 Secret Letters</option>
+                                <option value="special_reply" {{ $document->subcategory == 'special_reply' ? 'selected' : '' }} >CMD|02 Special Reply of Misc</option>
+                                <option value="ministry_correspondence" {{ $document->subcategory == 'ministry_correspondence' ? 'selected' : '' }} >CMD|03 Ministry's Correspondence</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -36,7 +53,7 @@
                             <label for="diary_no">Diary No</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="text" id="diary_no" name="diary_no" value="{{ $document->diary_no }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
+                            <input readonly type="text" id="diary_no" name="diary_no" value="{{ $document->diary_no }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('diary_no') {{ $errors->first('diary_no') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">

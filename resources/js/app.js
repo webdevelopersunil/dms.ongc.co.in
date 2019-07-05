@@ -41,12 +41,18 @@ const app = new Vue({
                 "name": "Files",
                 "subcategories": null
             },
-        ]
+        ],
+        documentsInCategory: [],
     },
     methods: {
         onCategorySelection() {
-           
             window.location.href = `/document/create/${this.selectedCategory.value}/${this.selectedSubcategory.value}`;
+        },
+
+        onCategoryViewed(category) {
+            console.log(category);
+
+            this.documentsInCategory = ['a','b','c'];
         }
     }
 

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Mac;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {

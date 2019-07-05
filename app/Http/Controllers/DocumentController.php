@@ -21,7 +21,9 @@ class DocumentController extends Controller
 
     public function create( $category, $subcategory = null )
     {
-        return view('document.create', compact('category', 'subcategory') );
+        $diary = DB::table('auto_increment')->where('category', $category)->first()->counter + 1;
+
+        return view('document.create', compact('category', 'subcategory', 'diary') );
     }
 
     public function store(Request $request)
@@ -29,7 +31,6 @@ class DocumentController extends Controller
 
         $validatedData = $request->validate([
             'category' => 'required',
-            'subcategory' => 'required',
             'diary_no' => 'required',
             'date_in' => 'required',
             'file_no' => 'required',
@@ -40,6 +41,8 @@ class DocumentController extends Controller
 
         $document = Document::create($request->all());
 
+        DB::table('auto_increment')->where('category', $request->category )->increment('counter');
+
         return redirect()->back()->with('success', 'Document has been created successfully' );
     }  
 
@@ -49,6 +52,7 @@ class DocumentController extends Controller
         $document = Document::find($id);
 
         $references = Document::where( 'diary_no', $document->diary_no )
+                              ->where('category', $document->category )
                               ->where('id', '!=', $id )
                               ->orderBy('is_reference')
                               ->get();
@@ -66,7 +70,7 @@ class DocumentController extends Controller
     {
         $validatedData = $request->validate([
             'category' => 'required',
-            'subcategory' => 'required',
+            // 'subcategory' => 'required',
             'diary_no' => 'required',
             'date_in' => 'required',
             'file_no' => 'required',

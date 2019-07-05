@@ -15,7 +15,7 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
-// Auth::routes();
+Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -47,3 +47,18 @@ Route::post('/document/search', 'DocumentController@search');
 Route::get('/reference/create', 'ReferenceController@index' );
 Route::get('/reference/create/{document}', 'ReferenceController@create' );
 Route::post('/reference/create', 'ReferenceController@store' );
+
+//Disha
+Route::get('/disha', 'DishaController@index' );
+Route::get('/disha/{document}', 'DishaController@show' );
+Route::post('/disha/{document}', 'DishaController@update' );
+
+//Reports
+Route::get('/reports', 'ReportsController@index' );
+Route::get('/reports/total', 'ReportsController@total' );
+Route::post('/reports/total', 'ReportsController@countTotal' );
+// Route::post('/reports/category', 'ReportsController@showTotal' );
+Route::post('/reports/category/{category}', 'ReportsController@showTotal' );
+
+//Users
+Route::get('/users/online', 'UserController@online' );

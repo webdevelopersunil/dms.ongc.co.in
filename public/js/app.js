@@ -37136,7 +37136,7 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "accordion", attrs: { id: "accordionReference" } },
-    _vm._l(_vm.documents, function(document) {
+    _vm._l(_vm.documents, function(document, index) {
       return _c("div", { key: document.id, staticClass: "card mb-2" }, [
         _c(
           "div",
@@ -37158,8 +37158,10 @@ var render = function() {
                 },
                 [
                   document.is_reference == 0
-                    ? _c("span", [_vm._v("Main Document")])
-                    : _c("span", [_vm._v("Reference Document")])
+                    ? _c("span", [_vm._v("Main Document ")])
+                    : _c("span", [
+                        _vm._v("Reference Document #" + _vm._s(index + 1) + " ")
+                      ])
                 ]
               )
             ])
@@ -49510,11 +49512,16 @@ var app = new Vue({
       "value": "files",
       "name": "Files",
       "subcategories": null
-    }]
+    }],
+    documentsInCategory: []
   },
   methods: {
     onCategorySelection: function onCategorySelection() {
       window.location.href = "/document/create/".concat(this.selectedCategory.value, "/").concat(this.selectedSubcategory.value);
+    },
+    onCategoryViewed: function onCategoryViewed(category) {
+      console.log(category);
+      this.documentsInCategory = ['a', 'b', 'c'];
     }
   } // VUE JS
 

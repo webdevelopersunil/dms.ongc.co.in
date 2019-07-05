@@ -13,9 +13,9 @@
         <div class="h-50 content-container d-flex">
             <div class="d-block dms-btn-container" style="flex:1">
                 <button class="btn dms-btn-primary btn-block" data-toggle="modal" data-target="#createModal"> CREATE </button>
-                <button class="btn dms-btn-primary btn-block"> DISHA </button>
+                <a class="btn dms-btn-primary btn-block" href="/disha"> DISHA </a>
                 <a class="btn dms-btn-primary btn-block" href="/document/search"> SEARCH </a>
-                <button class="btn dms-btn-primary btn-block"> REPORTS </button>
+                <a class="btn dms-btn-primary btn-block" href="/reports"> REPORTS </a>
                 <button class="btn dms-btn-primary btn-block"> EXIT </button>
             </div>
             <div style="flex:3">

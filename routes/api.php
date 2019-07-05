@@ -1,5 +1,6 @@
 <?php
 
+use App\Document;
 use Illuminate\Http\Request;
 
 /*
@@ -37,4 +38,24 @@ Route::get('categories', function(Request $request){
     ];
 
     return $categories;
+});
+
+Route::get('/disha/insert', function (Request $request) {
+
+    $diary_no = DB::table('auto_increment')->where('category', 'disha_file' )->first()->counter + 1;
+
+    Document::create([
+        'category' => 'disha_file',
+        'diary_no' => $diary_no,
+        'date_in' => '2019-06-01',
+        'file_date' => '2019-01-01',
+        'file_no' => 'DEL/CIS/DISHA/API',
+        'received_from' => 'Head IT',
+        'subject' => 'Disha API'
+    ]);
+
+    DB::table('auto_increment')->where('category', 'disha_file' )->increment('counter');
+
+    return ['status' => 'success'];
+
 });
