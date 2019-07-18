@@ -58,4 +58,11 @@ class ReportsController extends Controller
         ]);
     }
 
+    public function audit() {
+        $audits = \OwenIt\Auditing\Models\Audit::with('user')
+            ->orderBy('created_at', 'desc')->get();
+
+        return $audits;
+    }
+
 }

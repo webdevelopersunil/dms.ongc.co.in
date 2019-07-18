@@ -40,6 +40,7 @@ class ReferenceController extends Controller
         $validatedData = $request->validate([
             'category' => 'required',
             // 'subcategory' => 'required',
+            'document_id' => 'required',
             'diary_no' => 'required',
             'date_in' => 'required',
             'file_no' => 'required',
@@ -47,8 +48,8 @@ class ReferenceController extends Controller
             'received_from' => 'required',
             'subject' => 'required'
         ]);
-
-        $reference = collect($validatedData)->put('is_reference', true)->toArray();
+        
+        $reference = collect($validatedData)->put('reference_of', $request->document_id )->toArray();
 
         $document = Document::create($reference);
 

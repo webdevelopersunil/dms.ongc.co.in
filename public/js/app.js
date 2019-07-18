@@ -37157,7 +37157,7 @@ var render = function() {
                   }
                 },
                 [
-                  document.is_reference == 0
+                  document.reference_of == -1
                     ? _c("span", [_vm._v("Main Document ")])
                     : _c("span", [
                         _vm._v("Reference Document #" + _vm._s(index + 1) + " ")

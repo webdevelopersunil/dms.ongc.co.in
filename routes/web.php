@@ -60,5 +60,7 @@ Route::post('/reports/total', 'ReportsController@countTotal' );
 // Route::post('/reports/category', 'ReportsController@showTotal' );
 Route::post('/reports/category/{category}', 'ReportsController@showTotal' );
 
+Route::get('/reports/audit', 'ReportsController@audit');
+
 //Users
 Route::get('/users/online', 'UserController@online' );

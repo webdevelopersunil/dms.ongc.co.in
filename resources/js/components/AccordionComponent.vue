@@ -4,7 +4,7 @@
             <div class="card-header" :id="'header-' + document.id">
             <h2 class="mb-0">
                 <button class="btn btn-link" type="button" data-toggle="collapse" :data-target="'#collapse-' + document.id">
-                    <span v-if="document.is_reference == 0">Main Document </span>
+                    <span v-if="document.reference_of == -1">Main Document </span>
                     <span v-else>Reference Document #{{ index + 1 }} </span>
                 </button>
             </h2>

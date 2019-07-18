@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Document extends Model
+class Document extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
+    
     protected $fillable = [
         'category',
         'subcategory',
@@ -22,6 +25,6 @@ class Document extends Model
         'marked_by',
         'remarks',
         'file_url',
-        'is_reference'
+        'reference_of'
     ];
 }

@@ -15,7 +15,7 @@
                 <a class="btn dms-btn-primary btn-block" href="/users/online"> VIEW LOGGED IN USERS </a>
                 <a class="btn dms-btn-primary btn-block" href="#"> VIEW PENDING DOCUMENTS </a>
                 <a class="btn dms-btn-primary btn-block" href="/reports/total"> VIEW TOTAL DOCUMENTS </a>
-                <a class="btn dms-btn-primary btn-block" href="#"> VIEW AUDIT LOGS </a>
+                <a class="btn dms-btn-primary btn-block" href="/reports/audit"> VIEW AUDIT LOGS </a>
                 <a class="btn dms-btn-primary btn-block" href="/"> EXIT </a>
             </div>
             <div style="flex:3">

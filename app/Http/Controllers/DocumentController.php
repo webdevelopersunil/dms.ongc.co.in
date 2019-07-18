@@ -52,9 +52,8 @@ class DocumentController extends Controller
         $document = Document::find($id);
 
         $references = Document::where( 'diary_no', $document->diary_no )
-                              ->where('category', $document->category )
-                              ->where('id', '!=', $id )
-                              ->orderBy('is_reference')
+                              ->where('reference_of', $document->id )
+                              ->orderBy('reference_of')
                               ->get();
 
         return view('document.show', compact( 'document', 'references' ) );
@@ -85,6 +84,8 @@ class DocumentController extends Controller
         $document->date_out = $request->date_out;
         $document->marked_by = $request->marked_by;
         $document->remarks = $request->remarks;
+
+        $document->file_no = $request->file_no;
 
         $document->save();
 

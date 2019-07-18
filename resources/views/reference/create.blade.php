@@ -18,6 +18,7 @@
 
             <form action="/reference/create" method="post" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="document_id" value="{{ $document->id }}">
                 <div class="card p-2" >
                     <div class="row">
                         <div class="col-2">

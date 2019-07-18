@@ -36,7 +36,7 @@ class CreateDocumentsTable extends Migration
             $table->text('remarks')->nullable();
             $table->string('file_url')->nullable();
 
-            $table->boolean('is_reference')->default(false);
+            $table->bigInteger('reference_of')->default(-1);
 
             $table->timestamps();
         });

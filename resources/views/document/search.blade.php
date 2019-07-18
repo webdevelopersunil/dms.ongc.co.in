@@ -147,10 +147,10 @@
                                     <td> <a href="#">Print </a> </td>
                                     <td> 
                                         <span> {{ $document->diary_no }} </span>
-                                        @if( $document->is_reference )
-                                            <span class="badge badge-primary"> Ref. </span>
-                                        @else 
+                                        @if( $document->reference_of == -1 )
                                             <span class="badge badge-success"> Main </span>
+                                        @else 
+                                            <span class="badge badge-info"> Ref. </span>
                                         @endif
                                     </td>
                                     <td> {{ $document->file_no }}</td>
