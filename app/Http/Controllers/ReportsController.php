@@ -59,10 +59,34 @@ class ReportsController extends Controller
     }
 
     public function audit() {
-        $audits = \OwenIt\Auditing\Models\Audit::with('user')
-            ->orderBy('created_at', 'desc')->get();
 
-        return $audits;
+        $params = '';
+        $audits = \OwenIt\Auditing\Models\Audit::with('user')
+            ->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('reports.audit.index', compact('audits', 'params'));
+    }
+
+    public function auditFilterbyDate($start, $end) {
+
+        $params = "Showing results from $start to $end";
+
+        $audits = \OwenIt\Auditing\Models\Audit::with('user')
+            ->where('created_at', '>=', $start )
+            ->where('created_at', '<=', $end )
+            ->get();
+
+        return view('reports.audit.index', compact('audits', 'params'));
+    }
+
+    public function auditFilterbyDiary($diary) {
+
+        $params = "Showing results for diary no. $diary";
+
+        $audits = \OwenIt\Auditing\Models\Audit::with('user')
+                    ->where('auditable_id', $diary)->get();
+
+        return view('reports.audit.index', compact('audits', 'params'));
     }
 
 }

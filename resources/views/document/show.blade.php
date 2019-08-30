@@ -110,7 +110,7 @@
                             <label for="date_in" >Date In</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="date" id="date_in" name="date_in" value="{{ $document->date_in }}" class="form-control form-control-sm @error('date_in') is-invalid @enderror">
+                            <input type="date" id="date_in" name="date_in" value="{{ date('Y-m-d', strtotime($document->date_in )) }}" class="form-control form-control-sm @error('date_in') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('date_in') {{ $errors->first('date_in') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
@@ -124,7 +124,7 @@
                             <label for="file_date">Letter/File Date</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="date" id="file_date" name="file_date" value="{{ $document->file_date }}" class="form-control form-control-sm @error('file_date') is-invalid @enderror">
+                            <input type="date" id="file_date" name="file_date" value="{{ date('Y-m-d', strtotime($document->file_date )) }}" class="form-control form-control-sm @error('file_date') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('file_date') {{ $errors->first('file_date') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
@@ -144,6 +144,14 @@
                             <label for="subject">Subject</label>
                             <textarea name="subject" id="subject" rows="3" value="{{ $document->subject }}" class="form-control @error('subject') is-invalid @enderror">{{ $document->subject }}</textarea>
                             <div class="invalid-feedback"> @error('subject') {{ $errors->first('subject') }} @enderror </div>
+                        </div>
+                        <div class="col-6 form-group">
+                            <label for="dealing_officer">Dealing Officer</label>
+                            <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
+                                @foreach ( \App\User::all() as $user)
+                                    <option value="{{ $user->id }}" @if( $user->id == $document->dealing_officer ) selected="selected" @endif > {{ $user->name }} </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -167,7 +175,7 @@
                             <label for="" >Date Out</label>
                         </div>
                         <div class="col-4 form-group ">
-                            <input type="date" id="date_out" name="date_out" value="{{ $document->date_out }}" class="form-control form-control-sm">
+                            <input type="date" id="date_out" name="date_out" value="{{ date('Y-m-d', strtotime($document->date_out )) }}" class="form-control form-control-sm">
                         </div>
                         <div class="col-2 form-group text-right">
                             <label for="file_date">Marked By</label>

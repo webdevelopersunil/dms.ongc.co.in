@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,5 +30,9 @@ class HomeController extends Controller
         $user->save();
 
         return view('home');
+    }
+
+    public function test() {
+        return Document::with('dealingOfficer')->get();
     }
 }

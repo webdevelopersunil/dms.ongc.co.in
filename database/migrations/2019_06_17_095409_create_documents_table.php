@@ -21,13 +21,15 @@ class CreateDocumentsTable extends Migration
 
             $table->string('source')->default('portal'); // portal / archive / disha
 
-            $table->bigInteger('diary_no');
-            $table->timestamp('date_in');
-            $table->timestamp('file_date');
-            $table->string('file_no');
-            $table->string('received_from');
+            $table->bigInteger('diary_no')->nullable();
+            $table->timestamp('date_in')->nullable();
+            $table->timestamp('file_date')->nullable();
+            $table->string('file_no')->nullable();
+            $table->string('received_from')->nullable();
             $table->string('sender_diary_no')->nullable();
-            $table->text('subject');
+            $table->text('subject')->nullable();
+            
+            $table->bigInteger('dealing_officer')->nullable();
 
             $table->string('marked_to')->nullable();
             $table->string('copy_to')->nullable();

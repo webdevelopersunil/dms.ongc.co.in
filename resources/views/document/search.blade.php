@@ -153,7 +153,10 @@
                                             <span class="badge badge-info"> Ref. </span>
                                         @endif
                                     </td>
-                                    <td> {{ $document->file_no }}</td>
+                                    <td> <p class="my-0"> {{ $document->file_no }} </p>
+                                        <span class="badge badge-primary"> {{ $document->category }} </span>
+                                        <span class="badge badge-danger"> {{ $document->subcategory }} </span>
+                                    </td>
                                     <td> {{ $document->date_in }}</td>
                                     <td> {{ $document->date_out }}</td>
                                 </tr>

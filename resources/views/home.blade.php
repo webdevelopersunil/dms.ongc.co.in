@@ -20,6 +20,7 @@
             </div>
             <div style="flex:3">
                 <h1 class="dms-heading" >DMS <sup>+</sup> </h1>
+                <div style="position:absolute; bottom: 50px; right: 50px;"> @include('templates.alert') </div>
             </div>
 
         </div>

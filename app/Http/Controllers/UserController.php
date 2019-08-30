@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function online() {
-        return User::where('is_online', true)->get();
+        
+        $users = User::where('is_online', true)->get();
+
+        return view('reports.users', compact('users')) ;
     }
 }

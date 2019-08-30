@@ -81,6 +81,14 @@
                             <textarea name="subject" id="subject" rows="3" class="form-control @error('subject') is-invalid @enderror"></textarea>
                             <div class="invalid-feedback"> @error('subject') {{ $errors->first('subject') }} @enderror </div>
                         </div>
+                        <div class="col-6 form-group">
+                            <label for="dealing_officer">Dealing Officer</label>
+                            <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
+                                @foreach ( \App\User::all() as $user)
+                                    <option value="{{ $user->id }}"> {{ $user->name }} </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
                 {{-- END OF DOCUMENT IN CARD --}}

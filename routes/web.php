@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/test', 'HomeController@test');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 // ENABLE IN PRODUCTION
@@ -61,6 +63,8 @@ Route::post('/reports/total', 'ReportsController@countTotal' );
 Route::post('/reports/category/{category}', 'ReportsController@showTotal' );
 
 Route::get('/reports/audit', 'ReportsController@audit');
+Route::get('/reports/audit/diary/{diary}', 'ReportsController@auditFilterbyDiary');
+Route::get('/reports/audit/date/{start}/{end}', 'ReportsController@auditFilterbyDate');
 
 //Users
 Route::get('/users/online', 'UserController@online' );

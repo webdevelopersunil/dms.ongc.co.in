@@ -25,6 +25,11 @@ class Document extends Model implements Auditable
         'marked_by',
         'remarks',
         'file_url',
-        'reference_of'
+        'reference_of',
+        'dealing_officer'
     ];
+
+    public function dealingOfficer() {
+        return $this->belongsTo('App\User', 'dealing_officer');
+    }
 }

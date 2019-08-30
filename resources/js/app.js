@@ -1,10 +1,10 @@
 require('./bootstrap');
-// require('./homescreen');
+// require('./audit');
 
 window.Vue = require('vue');
 
 Vue.component('app-accordion', require('./components/AccordionComponent.vue').default);
-
+Vue.component('app-online', require('./components/OnlineCircle.vue').default);
 
 const app = new Vue({
     el: '#app',
@@ -53,6 +53,21 @@ const app = new Vue({
             console.log(category);
 
             this.documentsInCategory = ['a','b','c'];
+        },
+
+        onAuditFilterClicked() {
+            var startDate = this.$refs.auditDateStart.value;
+            var endDate = this.$refs.auditDateEnd.value;
+            var diaryNo = this.$refs.auditDiary.value;
+
+            if( startDate && endDate ) {
+                window.location.href = `/reports/audit/date/${startDate}/${endDate}`;
+            }
+            if( diaryNo ) {
+                window.location.href = `/reports/audit/diary/${diaryNo}`;
+            }
+
+            console.log(this.$refs);
         }
     }
 

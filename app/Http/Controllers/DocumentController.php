@@ -21,6 +21,10 @@ class DocumentController extends Controller
 
     public function create( $category, $subcategory = null )
     {
+        if($category == 'undefined') {
+            return redirect('/home')->with('error', 'Select a category to continue');
+        }
+
         $diary = DB::table('auto_increment')->where('category', $category)->first()->counter + 1;
 
         return view('document.create', compact('category', 'subcategory', 'diary') );
@@ -28,18 +32,21 @@ class DocumentController extends Controller
 
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'category' => 'required',
+            'subcategory' => 'nullable',
             'diary_no' => 'required',
             'date_in' => 'required',
             'file_no' => 'required',
             'file_date' => 'required',
             'received_from' => 'required',
             'subject' => 'required',
+            'dealing_officer' => 'nullable',
+            'sender_diary_no' => 'nullable',
         ]);
 
-        $document = Document::create($request->all());
+        // $document = Document::create($request->all());
+        $document = Document::create($validatedData);
 
         DB::table('auto_increment')->where('category', $request->category )->increment('counter');
 
@@ -56,6 +63,22 @@ class DocumentController extends Controller
                               ->orderBy('reference_of')
                               ->get();
 
+        // if selected document is a reference document
+        // should return all other references plus the main document
+        if( $document->reference_of != -1 ) {
+            
+            $references = Document::where([
+                [ 'reference_of', $document->reference_of ],
+                [ 'id', '!=', $document->id ]
+            ])->get();
+
+            $main = Document::find($document->reference_of);
+
+            $references = $references->push($main);
+        }
+
+        
+
         return view('document.show', compact( 'document', 'references' ) );
     }
 
@@ -69,7 +92,7 @@ class DocumentController extends Controller
     {
         $validatedData = $request->validate([
             'category' => 'required',
-            // 'subcategory' => 'required',
+            'subcategory' => 'nullable',
             'diary_no' => 'required',
             'date_in' => 'required',
             'file_no' => 'required',
@@ -84,6 +107,7 @@ class DocumentController extends Controller
         $document->date_out = $request->date_out;
         $document->marked_by = $request->marked_by;
         $document->remarks = $request->remarks;
+        $document->dealing_officer = $request->dealing_officer;
 
         $document->file_no = $request->file_no;
 
