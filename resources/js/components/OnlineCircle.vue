@@ -1,7 +1,7 @@
 <template>
     
     <div class="d-flex">
-        <div> {{ mode }} </div> <div :class="mode" class="mx-2" ></div>
+        <div :class="statusIcon" class="mx-2" ></div><div> {{ page }} </div> 
     </div>
     
 
@@ -9,7 +9,12 @@
 
 <script>
     export default {
-        props: ['mode']
+        props: ['mode', 'page'],
+        computed: {
+            statusIcon: function() {
+                return this.mode ? 'online' : 'offline'; 
+            }
+        }
     }
 </script>
 

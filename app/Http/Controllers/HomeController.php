@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Document;
+use App\Events\UserEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +29,8 @@ class HomeController extends Controller
         $user = Auth::user();
         $user->is_online = true;
         $user->save();
+
+        event(new UserEvent( $user, 'Idle' ));
 
         return view('home');
     }

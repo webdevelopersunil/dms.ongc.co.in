@@ -2,6 +2,7 @@
 
 namespace Illuminate\Foundation\Auth;
 
+use App\Events\UserEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -155,6 +156,13 @@ trait AuthenticatesUsers
      */
     public function logout(Request $request)
     {
+
+        $user = Auth::user();
+        $user->is_online = false;
+        $user->save();
+
+        event( new UserEvent($user, 'Logged Out' ));
+
         $this->guard()->logout();
 
         $request->session()->invalidate();

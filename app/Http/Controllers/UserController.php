@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function online() {
         
-        $users = User::where('is_online', true)->get();
+        $users = User::all();
 
         return view('reports.users', compact('users')) ;
     }

@@ -25,24 +25,25 @@
                             <label><b>Category</b></label>
                         </div>
                         <div class="col-4">
-                            {{-- <input readonly class="form-control" name="category" value="{{$document->category}}"> --}}
-                            <select name="category" id="category" class="form-control">
+                            <input readonly class="form-control" name="category" value="{{$document->category}}">
+                            {{-- <select name="category" id="category" class="form-control">
                                 <option value="govt_letters" {{ $document->category == 'govt_letters' ? 'selected' : '' }} >Govt. Letters</option>
                                 <option value="cmd_office_correspondence" {{ $document->category == 'cmd_office_correspondence' ? 'selected' : '' }} >CMD's Office Correspondence</option>
                                 <option value="general" {{ $document->category == 'general' ? 'selected' : '' }} >General | DDN Letters</option>
                                 <option value="files" {{ $document->category == 'files' ? 'selected' : '' }} >Files</option>
-                            </select>
+                            </select> --}}
                         </div>
                         <div class="col-2">
                             <label><b>Sub Category</b></label>
                         </div>
                         <div class="col-4">
-                            <select name="subcategory" id="subcategory" class="form-control">
+                            <input readonly class="form-control" name="subcategory" value="{{$document->subcategory}}">
+                            {{-- <select name="subcategory" id="subcategory" class="form-control">
                                 <option value=""> Nil </option>
                                 <option value="secret_letter" {{ $document->subcategory == 'secret_letter' ? 'selected' : '' }} >CMD|01 Secret Letters</option>
                                 <option value="special_reply" {{ $document->subcategory == 'special_reply' ? 'selected' : '' }} >CMD|02 Special Reply of Misc</option>
                                 <option value="ministry_correspondence" {{ $document->subcategory == 'ministry_correspondence' ? 'selected' : '' }} >CMD|03 Ministry's Correspondence</option>
-                            </select>
+                            </select> --}}
                         </div>
                     </div>
                 </div>

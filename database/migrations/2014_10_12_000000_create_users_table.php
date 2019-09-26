@@ -21,7 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             
             $table->boolean('is_online')->default(false);
-            $table->string('working_on')->default('idle');
+            $table->string('working_on')->default('Idle');
+            $table->string('category')->nullable();
             
             $table->rememberToken();
             $table->timestamps();

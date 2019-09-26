@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Document;
+use Carbon\Carbon;
+use App\Events\UserEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
@@ -24,6 +28,12 @@ class DocumentController extends Controller
         if($category == 'undefined') {
             return redirect('/home')->with('error', 'Select a category to continue');
         }
+
+        if( User::where('category', $category )->where('working_on', 'Create')->count() > 0 ) {
+            return redirect('/home')->with('error', 'Someone else is creating a document with the same category');
+        }
+
+        event(new UserEvent( Auth::user() , 'Create', $category ));
 
         $diary = DB::table('auto_increment')->where('category', $category)->first()->counter + 1;
 
@@ -48,15 +58,27 @@ class DocumentController extends Controller
         // $document = Document::create($request->all());
         $document = Document::create($validatedData);
 
+        $date = Carbon::now();
+        $folder =  $date->year . "/" . $date->englishMonth . "/" . $document->diary_no;
+
+        if( $request->hasFile('file_url') ){
+            $document_name = Carbon::now()->format('YmdHis') . "_" . $request->file('file_url')->getClientOriginalName();
+            $document_path = $request->file('file_url')->storeAs("public/uploads/$folder", $document_name);
+            $document->file_url = explode( "/", $document_path, 2 )[1];
+            $document->save();
+        }
+
         DB::table('auto_increment')->where('category', $request->category )->increment('counter');
 
-        return redirect()->back()->with('success', 'Document has been created successfully' );
+        return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully' );
     }  
 
 
     public function show($id)
     {
-        $document = Document::find($id);
+        $document = Document::findOrFail($id);
+
+        event(new UserEvent( Auth::user() , 'View' ));
 
         $references = Document::where( 'diary_no', $document->diary_no )
                               ->where('reference_of', $document->id )
@@ -111,6 +133,16 @@ class DocumentController extends Controller
 
         $document->file_no = $request->file_no;
 
+        $date = Carbon::now();
+        $folder =  $date->year . "/" . $date->englishMonth . "/" . $document->diary_no;
+
+        if( $request->hasFile('file_url') ){
+            $document_name = Carbon::now()->format('YmdHis') . "_" . $request->file('file_url')->getClientOriginalName();
+            $document_path = $request->file('file_url')->storeAs("public/uploads/$folder", $document_name);
+            $document->file_url = explode( "/", $document_path, 2 )[1];
+            $document->save();
+        }
+
         $document->save();
 
         return redirect()->back()->with('success', 'Document updated succesfully' );
@@ -124,6 +156,8 @@ class DocumentController extends Controller
     }
 
     public function search(Request $request) {
+
+        event(new UserEvent( Auth::user() , 'Search' ));
 
         $collection = collect($request);
 
@@ -169,7 +203,7 @@ class DocumentController extends Controller
 
 
         $documents = DB::table('documents')
-                ->whereColumn(
+                ->where(
                     $conditions
                 )
                 ->orderBy('date_out', 'asc' )

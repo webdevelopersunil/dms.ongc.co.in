@@ -21,7 +21,7 @@
                     @foreach ($users as $index => $user)
                         <tr>
                             <td> {{ $user->name }} </td>
-                            <td> <app-online mode="{{ $user->working_on }}"></app-online> </td>
+                            <td> <app-online page="{{ $user->working_on }}" :mode="{{ $user->is_online }}" ></app-online> </td>
                         </tr>
                     @endforeach
                 </tbody>

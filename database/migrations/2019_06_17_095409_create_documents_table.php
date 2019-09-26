@@ -25,7 +25,7 @@ class CreateDocumentsTable extends Migration
             $table->timestamp('date_in')->nullable();
             $table->timestamp('file_date')->nullable();
             $table->string('file_no')->nullable();
-            $table->string('received_from')->nullable();
+            $table->string('received_from', 1000)->nullable();
             $table->string('sender_diary_no')->nullable();
             $table->text('subject')->nullable();
             
