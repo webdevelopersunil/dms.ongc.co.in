@@ -16,14 +16,30 @@
                     <label for="category">Category</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="category" name="category" class="form-control form-control-sm">
+                    {{-- <input type="text" id="category" name="category" class="form-control form-control-sm"> --}}
+                    <select name="category" id="category" class="form-control form-control-sm">
+                        <option value=""> All </option>
+                        <option value="govt_letters"> Govt. Letters</option>
+                        <option value="cmd_office_correspondence"> CMD's Office Correspondence</option>
+                        <option value="general"> General | DDN Letters</option>
+                        <option value="files"> Files</option>
+                    </select>
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="subcategory">Sub Category</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="subcategory" name="subcategory" class="form-control form-control-sm">
+                    {{-- <input type="text" id="subcategory" name="subcategory" class="form-control form-control-sm"> --}}
+                    <select name="subcategory" id="subcategory" class="form-control form-control-sm">
+                        <option value="">NA</option>
+                        <option value="secret_letter">CMD|01 Secret Letters</option>
+                        <option value="special_reply"> CMD|02 Special Reply of Misc</option>
+                        <option value="ministry_correspondence"> CMD|03 Ministry's Correspondence</option>
+                        <option value="internal_correspondence"> CMD|05 Internal Correspondence</option>
+                        <option value="acknowledgement"> CMD|09 Acknowledgement</option>
+                        <option value="invitations_for_seminar"> CMD|10 Invitations for Seminar</option>
+                    </select>
                 </div>
 
                 <div class="col-2 text-right px-0">
@@ -114,7 +130,6 @@
             </div>
         
         </form>
-
         @if( !empty($documents) )
             <div class="card">
                 
@@ -124,7 +139,7 @@
                 </div>
 
                 <div class="card-body">
-
+                    
                     <table class="table table-bordered">
 
                         <thead>
@@ -164,12 +179,12 @@
                         </tbody>
 
                     </table>
+                    
 
                 </div>
 
             </div>
         @endif
-
     </div>
 
 </div>

@@ -16,14 +16,17 @@
                 <a class="btn dms-btn-primary btn-block" href="/disha"> DISHA </a>
                 <a class="btn dms-btn-primary btn-block" href="/document/search"> SEARCH </a>
                 <a class="btn dms-btn-primary btn-block" href="/reports"> REPORTS </a>
-                <button class="btn dms-btn-primary btn-block"> EXIT </button>
+                <button class="btn dms-btn-primary btn-block" onclick="document.getElementById('form-logout').submit()"> EXIT </button>
             </div>
             <div style="flex:3">
                 <h1 class="dms-heading" >DMS <sup>+</sup> </h1>
                 <div style="position:absolute; bottom: 50px; right: 50px;"> @include('templates.alert') </div>
             </div>
-
         </div>
+
+        <form id="form-logout" action="/logout" method="post" class="d-none">
+        @csrf
+        </form>
 
     </div>
 

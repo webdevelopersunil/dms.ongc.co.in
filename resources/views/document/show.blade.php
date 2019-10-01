@@ -187,7 +187,11 @@
                             <label for="file_url">Scanned File</h5>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="file" name="file_url" id="file_url" class="form-control form-control-sm">
+                            @if($document->fileurl)
+                                <a href="/storage/{{ $document->file_no }}">View File</a>
+                            @else 
+                                <input type="file" name="file_url" id="file_url" class="form-control form-control-sm">
+                            @endif
                         </div>
                         <div class="col-12 form-group">
                             <label for="remarks">Remarks</label>

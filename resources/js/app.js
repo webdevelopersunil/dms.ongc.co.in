@@ -29,6 +29,9 @@ const app = new Vue({
                     { "name": "CMD|01 Secret Letters", "value": "secret_letter" }, 
                     { "name": "CMD|02 Special Reply of Misc", "value": "special_reply" },
                     { "name": "CMD|03 Ministry's Correspondence", "value": "ministry_correspondence" },
+                    { "name": "CMD|05 Internal Correspondence", "value": "internal_correspondence" },
+                    { "name": "CMD|09 Acknowledgement", "value": "acknowledgement" },
+                    { "name": "CMD|10 Invitations for Seminar", "value": "invitations_for_seminar" },
                 ]
             },
             {

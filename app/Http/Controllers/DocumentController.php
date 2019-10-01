@@ -58,15 +58,31 @@ class DocumentController extends Controller
         // $document = Document::create($request->all());
         $document = Document::create($validatedData);
 
-        $date = Carbon::now();
-        $folder =  $date->year . "/" . $date->englishMonth . "/" . $document->diary_no;
-
-        if( $request->hasFile('file_url') ){
-            $document_name = Carbon::now()->format('YmdHis') . "_" . $request->file('file_url')->getClientOriginalName();
-            $document_path = $request->file('file_url')->storeAs("public/uploads/$folder", $document_name);
-            $document->file_url = explode( "/", $document_path, 2 )[1];
+        if( $document->file_date != null ) {
+            $date = Carbon::createFromFormat('Y-m-d H:i:s', $document->file_date);
+            if( $document->category == 'cmd_office_correspondence' ){
+                // $subcategory = isset($this->subcategories[$document->subcategory]) ? $this->subcategories[$document->subcategory] : 'CMD00';
+                // $url = "uploads/" . $document->category . "/$subcategory/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+                $subfolder = $document->subcategory == '' ? 'misc' : $document->subcategory;
+                $url = "uploads/" . $document->category . "/$subfolder/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+                $document->file_url = $url;
+            } else {
+                if( $document->category != '' ) {
+                    $url = "uploads/" . $document->category . "/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+                    $document->file_url = $url;
+                }
+            }
             $document->save();
         }
+
+        // $date = Carbon::now();
+        // $folder =  $date->year . "/" . $date->englishMonth . "/" . $document->diary_no;
+        // if( $request->hasFile('file_url') ){
+        //     $document_name = Carbon::now()->format('YmdHis') . "_" . $request->file('file_url')->getClientOriginalName();
+        //     $document_path = $request->file('file_url')->storeAs("public/uploads/$folder", $document_name);
+        //     $document->file_url = explode( "/", $document_path, 2 )[1];
+        //     $document->save();
+        // }
 
         DB::table('auto_increment')->where('category', $request->category )->increment('counter');
 
@@ -191,7 +207,9 @@ class DocumentController extends Controller
                     $condition = [ 'date_out' , '<=', $filtered[$key] ];
                     break; 
                 default:
-                    $condition = [ $key , 'like', '%' . $filtered[$key] . '%'  ];
+                    if($filtered[$key] != null ) {
+                        $condition = [ $key , 'like', '%' . $filtered[$key] . '%'  ];
+                    }
                     break;
             }
 
@@ -201,6 +219,9 @@ class DocumentController extends Controller
             
         }
 
+        if( empty($conditions)) {
+            return redirect('/document/search')->with('error', 'Selected fields cant be blank');
+        }
 
         $documents = DB::table('documents')
                 ->where(
@@ -209,6 +230,9 @@ class DocumentController extends Controller
                 ->orderBy('date_out', 'asc' )
                 ->get();
 
+        if($documents->count() > 1000){
+            return redirect('/document/search')->with('error', 'Too many results! Please narrow down your search');
+        }
         // $documents = Document::where('diary_no', $request->diary_no)->get();
 
         return view('document.search')->with([
