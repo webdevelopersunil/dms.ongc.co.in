@@ -35,9 +35,10 @@ class DocumentController extends Controller
 
         event(new UserEvent( Auth::user() , 'Create', $category ));
 
+        $today = Carbon::now()->toDateString();
         $diary = DB::table('auto_increment')->where('category', $category)->first()->counter + 1;
 
-        return view('document.create', compact('category', 'subcategory', 'diary') );
+        return view('document.create', compact('category', 'subcategory', 'diary', 'today') );
     }
 
     public function store(Request $request)
@@ -58,22 +59,24 @@ class DocumentController extends Controller
         // $document = Document::create($request->all());
         $document = Document::create($validatedData);
 
-        if( $document->file_date != null ) {
-            $date = Carbon::createFromFormat('Y-m-d H:i:s', $document->file_date);
-            if( $document->category == 'cmd_office_correspondence' ){
-                // $subcategory = isset($this->subcategories[$document->subcategory]) ? $this->subcategories[$document->subcategory] : 'CMD00';
-                // $url = "uploads/" . $document->category . "/$subcategory/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
-                $subfolder = $document->subcategory == '' ? 'misc' : $document->subcategory;
-                $url = "uploads/" . $document->category . "/$subfolder/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
-                $document->file_url = $url;
-            } else {
-                if( $document->category != '' ) {
-                    $url = "uploads/" . $document->category . "/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
-                    $document->file_url = $url;
-                }
-            }
-            $document->save();
-        }
+        // TO INCORPORATE FILE SCAN DURING CREATE TIME
+        // BY DEFAULT FILE SCAN HAPPENS DURING EDITING
+        // if( $document->file_date != null ) {
+        //     $date = Carbon::createFromFormat('Y-m-d', $document->file_date);
+        //     if( $document->category == 'cmd_office_correspondence' ){
+        //         // $subcategory = isset($this->subcategories[$document->subcategory]) ? $this->subcategories[$document->subcategory] : 'CMD00';
+        //         // $url = "uploads/" . $document->category . "/$subcategory/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+        //         $subfolder = $document->subcategory == '' ? 'misc' : $document->subcategory;
+        //         $url = "uploads/" . $document->category . "/$subfolder/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+        //         $document->file_url = $url;
+        //     } else {
+        //         if( $document->category != '' ) {
+        //             $url = "uploads/" . $document->category . "/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+        //             $document->file_url = $url;
+        //         }
+        //     }
+        //     $document->save();
+        // }
 
         // $date = Carbon::now();
         // $folder =  $date->year . "/" . $date->englishMonth . "/" . $document->diary_no;
@@ -84,7 +87,7 @@ class DocumentController extends Controller
         //     $document->save();
         // }
 
-        DB::table('auto_increment')->where('category', $request->category )->increment('counter');
+        DB::table('auto_increment')->where('category', $request->category )->update([ 'counter' => $document->diary_no ]);
 
         return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully' );
     }  
@@ -133,7 +136,9 @@ class DocumentController extends Controller
             'subcategory' => 'nullable',
             'diary_no' => 'required',
             'date_in' => 'required',
-            'file_no' => 'required',
+            'date_out' => 'required',
+            'letter_no' => 'nullable',
+            'file_no' => 'nullable',
             'file_date' => 'required',
             'received_from' => 'required',
             'subject' => 'required',
@@ -146,20 +151,31 @@ class DocumentController extends Controller
         $document->marked_by = $request->marked_by;
         $document->remarks = $request->remarks;
         $document->dealing_officer = $request->dealing_officer;
+        $document->letter_no = $request->letter_no;
 
         $document->file_no = $request->file_no;
-
+        
         $date = Carbon::now();
-        $folder =  $date->year . "/" . $date->englishMonth . "/" . $document->diary_no;
-
-        if( $request->hasFile('file_url') ){
-            $document_name = Carbon::now()->format('YmdHis') . "_" . $request->file('file_url')->getClientOriginalName();
-            $document_path = $request->file('file_url')->storeAs("public/uploads/$folder", $document_name);
-            $document->file_url = explode( "/", $document_path, 2 )[1];
-            $document->save();
+        if( $document->category == 'cmd_office_correspondence' ){
+            $subfolder = $document->subcategory == '' ? 'misc' : $document->subcategory;
+            $url = "uploads/" . $document->category . "/$subfolder/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+            $document->file_url = $url;
+        } else {
+            if( $document->category != '' ) {
+                $url = "uploads/" . $document->category . "/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+                $document->file_url = $url;
+            }
         }
 
         $document->save();
+
+        // FOR FILE UPLOAD FROM BROWSER
+        // if( $request->hasFile('file_url') ){
+        //     $document_name = Carbon::now()->format('YmdHis') . "_" . $request->file('file_url')->getClientOriginalName();
+        //     $document_path = $request->file('file_url')->storeAs("public/uploads/$folder", $document_name);
+        //     $document->file_url = explode( "/", $document_path, 2 )[1];
+        //     $document->save();
+        // }
 
         return redirect()->back()->with('success', 'Document updated succesfully' );
 
@@ -169,6 +185,13 @@ class DocumentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchForm(Request $request) {
+
+        $selected = $request->input('category') ?? 'govt_letters';
+        return view('document.search', compact('selected') );
+
     }
 
     public function search(Request $request) {
@@ -206,8 +229,11 @@ class DocumentController extends Controller
                 case 'date_out_to':
                     $condition = [ 'date_out' , '<=', $filtered[$key] ];
                     break; 
+                case 'diary_no':
+                    $condition = [ 'diary_no' , '=', $filtered[$key] ];
+                    break; 
                 default:
-                    if($filtered[$key] != null ) {
+                    if( $filtered[$key] != null ) {
                         $condition = [ $key , 'like', '%' . $filtered[$key] . '%'  ];
                     }
                     break;
@@ -227,8 +253,9 @@ class DocumentController extends Controller
                 ->where(
                     $conditions
                 )
-                ->orderBy('date_out', 'asc' )
+                ->orderBy('date_in', 'desc' )
                 ->get();
+
 
         if($documents->count() > 1000){
             return redirect('/document/search')->with('error', 'Too many results! Please narrow down your search');
@@ -236,8 +263,14 @@ class DocumentController extends Controller
         // $documents = Document::where('diary_no', $request->diary_no)->get();
 
         return view('document.search')->with([
-            'documents' => $documents
+            'documents' => $documents,
+            'selected' => ''
         ]);
+    }
+
+    public function print($id) {
+        $document = Document::find($id);
+        return view('document.print', compact('document') );
     }
 
 }

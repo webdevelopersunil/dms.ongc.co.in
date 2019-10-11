@@ -21,6 +21,16 @@
                     <label for="audit-diary">Diary No</label>
                     <input type="text" class="form-control" ref="auditDiary" >
                 </div>
+                <div class="col-6 form-group">
+                    <label for="audit-diary">Category</label>
+                    <select name="category" id="category" class="form-control">
+                        <option value="">All</option>
+                        <option value="govt_letter">Govt. Letters</option>
+                        <option value="cmd_office_correspondence"> CMD's Office Correspondence</option>
+                        <option value="general">General | DDN Letters</option>
+                        <option value="files">Files</option>
+                    </select>
+                </div>
             </div>
             <button class="btn btn-primary" @click="onAuditFilterClicked">Search</button>
         </div>

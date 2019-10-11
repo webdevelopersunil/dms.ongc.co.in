@@ -46,15 +46,15 @@
                             <label for="date_in" >Date In</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="date" id="date_in" name="date_in" class="form-control form-control-sm @error('date_in') is-invalid @enderror">
+                            <input type="date" id="date_in" name="date_in" value={{ $today }} class="form-control form-control-sm @error('date_in') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('date_in') {{ $errors->first('date_in') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
-                            <label for="file_no" >Letter/File No.</label>
+                            <label for="letter_no" >Letter/File No.</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="text" id="file_no" name="file_no" class="form-control form-control-sm @error('file_no') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('file_no') {{ $errors->first('file_no') }} @enderror </div>
+                            <input type="text" id="letter_no" name="letter_no" class="form-control form-control-sm @error('letter_no') is-invalid @enderror">
+                            <div class="invalid-feedback"> @error('letter_no') {{ $errors->first('letter_no') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
                             <label for="file_date">Letter/File Date</label>
@@ -84,6 +84,7 @@
                         <div class="col-6 form-group">
                             <label for="dealing_officer">Dealing Officer</label>
                             <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
+                                <option value="" hidden>-</option>
                                 @foreach ( \App\User::all() as $user)
                                     <option value="{{ $user->id }}"> {{ $user->name }} </option>
                                 @endforeach
@@ -119,12 +120,12 @@
                         <div class="col-4 form-group">
                             <input type="text" id="marked_by" name="marked_by" class="form-control form-control-sm">
                         </div>
-                        <div class="offset-6 col-2 form-group text-right">
+                        {{-- <div class="offset-6 col-2 form-group text-right">
                             <label for="file_url">Scanned File</h5>
                         </div>
                         <div class="col-4 form-group">
                             <input type="file" name="file_url" id="file_url" class="form-control form-control-sm">
-                        </div>
+                        </div> --}}
                         <div class="col-12 form-group">
                             <label for="remarks">Remarks</label>
                             <textarea name="remarks" id="remarks" rows="3" class="form-control"></textarea>

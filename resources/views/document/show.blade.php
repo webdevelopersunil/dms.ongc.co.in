@@ -28,7 +28,7 @@
                 {{-- END OF HEADING --}}
                 
                 <div class="mt-2">
-                    <app-accordion :documents="{{ $references }} "></app-accordion>
+                    <app-accordion :documents="{{ $references }}"></app-accordion>
                 </div>
 
                 {{-- REFERENCE LIST --}}
@@ -117,8 +117,8 @@
                             <label for="file_no" >Letter/File No.</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="text" id="file_no" name="file_no" value="{{ $document->file_no }}" class="form-control form-control-sm @error('file_no') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('file_no') {{ $errors->first('file_no') }} @enderror </div>
+                            <input type="text" id="letter_no" name="letter_no" value="{{ $document->letter_no }}" class="form-control form-control-sm @error('letter_no') is-invalid @enderror">
+                            <div class="invalid-feedback"> @error('letter_no') {{ $errors->first('letter_no') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
                             <label for="file_date">Letter/File Date</label>
@@ -148,6 +148,7 @@
                         <div class="col-6 form-group">
                             <label for="dealing_officer">Dealing Officer</label>
                             <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
+                                <option value="" hidden>-</option>
                                 @foreach ( \App\User::all() as $user)
                                     <option value="{{ $user->id }}" @if( $user->id == $document->dealing_officer ) selected="selected" @endif > {{ $user->name }} </option>
                                 @endforeach
@@ -175,22 +176,32 @@
                             <label for="" >Date Out</label>
                         </div>
                         <div class="col-4 form-group ">
-                            <input type="date" id="date_out" name="date_out" value="{{ date('Y-m-d', strtotime($document->date_out )) }}" class="form-control form-control-sm">
+                            <input type="date" id="date_out" name="date_out" value="{{ $document->date_out ? date('Y-m-d', strtotime($document->date_out )) : null }}" class="form-control form-control-sm">
                         </div>
                         <div class="col-2 form-group text-right">
                             <label for="file_date">Marked By</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="text" id="marked_by" name="marked_by" value="{{ $document->marked_by }}" class="form-control form-control-sm">
+                            {{-- <input type="text" id="marked_by" name="marked_by" value="{{ $document->marked_by }}" class="form-control form-control-sm"> --}}
+                            <select name="marked_by" id="marked_by" class="form-control form-control-sm">
+                                <option @if($document->marked_by == 'CMD') selected @endif>CMD</option>
+                                <option @if($document->marked_by == 'EO') selected @endif>EO</option>
+                                <option @if($document->marked_by == 'AKB') selected @endif>AKB</option>
+                                <option @if($document->marked_by == 'RK') selected @endif>RK</option>
+                                <option @if($document->marked_by == 'PKM') selected @endif>PKM</option>
+                                <option @if($document->marked_by == 'DKA') selected @endif>DKA</option>
+                                <option @if($document->marked_by == 'AKK') selected @endif>AKK</option>
+                            </select>
                         </div>
                         <div class="offset-6 col-2 form-group text-right">
-                            <label for="file_url">Scanned File</h5>
+                            <label for="file_no">Scanned File</label>
                         </div>
                         <div class="col-4 form-group">
-                            @if($document->fileurl)
-                                <a href="/storage/{{ $document->file_no }}">View File</a>
+                            @if($document->file_url)
+                                <a href="/storage/{{ $document->file_url }}">View File</a>
                             @else 
-                                <input type="file" name="file_url" id="file_url" class="form-control form-control-sm">
+                                <input type="text" name="file_no" id="file_no" placeholder="Enter scanned file name here" class="form-control form-control-sm">
+                                {{-- <input type="file" name="file_url" id="file_url" class="form-control form-control-sm"> --}}
                             @endif
                         </div>
                         <div class="col-12 form-group">

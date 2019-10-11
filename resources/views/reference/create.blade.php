@@ -2,11 +2,11 @@
 
 @section('content')
 
-@if($errors->isNotEmpty())
+{{-- @if($errors->isNotEmpty())
     @foreach ($errors->all() as $error)
     <div>{{ $error }}</div>
     @endforeach
-@endif
+@endif --}}
 
     <div class="container mt-fit px-0 shadow" >
 
@@ -62,7 +62,7 @@
                             <label for="date_in" >Date In</label>
                         </div>
                         <div class="col-4 form-group">
-                            <input type="date" id="date_in" name="date_in" class="form-control form-control-sm @error('date_in') is-invalid @enderror">
+                            <input type="date" id="date_in" value="{{ \Carbon\Carbon::now()->toDateString() }}" name="date_in" class="form-control form-control-sm @error('date_in') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('date_in') {{ $errors->first('date_in') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
@@ -127,12 +127,12 @@
                         <div class="col-4 form-group">
                             <input type="text" id="marked_by" name="marked_by" class="form-control form-control-sm">
                         </div>
-                        <div class="offset-6 col-2 form-group text-right">
+                        {{-- <div class="offset-6 col-2 form-group text-right">
                             <label for="file_url">Scanned File</h5>
                         </div>
                         <div class="col-4 form-group">
                             <input type="file" name="file_url" id="file_url" class="form-control form-control-sm">
-                        </div>
+                        </div> --}}
                         <div class="col-12 form-group">
                             <label for="remarks">Remarks</label>
                             <textarea name="remarks" id="remarks" rows="3" class="form-control"></textarea>

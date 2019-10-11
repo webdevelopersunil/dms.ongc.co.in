@@ -13,21 +13,21 @@
             <div class="row pt-3">
 
                 <div class="col-2 text-right px-0">
-                    <label for="category">Category</label>
+                    <label for="category" class="text-bold text-danger">Category</label>
                 </div>
                 <div class="col-4 form-group ">
                     {{-- <input type="text" id="category" name="category" class="form-control form-control-sm"> --}}
                     <select name="category" id="category" class="form-control form-control-sm">
-                        <option value=""> All </option>
-                        <option value="govt_letters"> Govt. Letters</option>
-                        <option value="cmd_office_correspondence"> CMD's Office Correspondence</option>
-                        <option value="general"> General | DDN Letters</option>
-                        <option value="files"> Files</option>
+                        <option value="">All</option>
+                        <option value="govt_letter" @if($selected == 'govt_letter') selected @endif>Govt. Letters</option>
+                        <option value="cmd_office_correspondence" @if($selected == 'cmd_office_correspondence') selected @endif> CMD's Office Correspondence</option>
+                        <option value="general" @if($selected == 'general') selected @endif>General | DDN Letters</option>
+                        <option value="files" @if($selected == 'files') selected @endif>Files</option>
                     </select>
                 </div>
 
                 <div class="col-2 text-right px-0">
-                    <label for="subcategory">Sub Category</label>
+                    <label for="subcategory" class="text-bold text-danger" >Sub Category</label>
                 </div>
                 <div class="col-4 form-group ">
                     {{-- <input type="text" id="subcategory" name="subcategory" class="form-control form-control-sm"> --}}
@@ -118,6 +118,27 @@
                 <div class="col-4 form-group ">
                     <input type="date" id="date_out_to" name="date_out_to" class="form-control form-control-sm">
                 </div>
+
+                <div class="col-2 text-right px-0">
+                    <label for="marked_by">Marked By</label>
+                </div>
+                <div class="col-4 form-group ">
+                    <input type="text" id="marked_by" name="marked_by" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-2 text-right px-0">
+                    <label for="marked_to">Marked To</label>
+                </div>
+                <div class="col-4 form-group ">
+                    <input type="text" id="marked_to" name="marked_to" class="form-control form-control-sm">
+                </div>
+
+                <div class="col-2 text-right px-0">
+                    <label for="remarks">Remarks</label>
+                </div>
+                <div class="col-4 form-group ">
+                    <input type="text" id="remarks" name="remarks" class="form-control form-control-sm">
+                </div>
                 
 
                 <div class="offset-2 col-10 my-2">
@@ -138,9 +159,9 @@
                     <h5> Total Documents: {{ $documents->count() }} </h5>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body" style="overflow-x: scroll; overflow-y: scroll; height: 60vh">
                     
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="width:200vw">
 
                         <thead>
                             <tr>
@@ -151,15 +172,21 @@
                                 <th> Letter No </th>
                                 <th> Date In </th>
                                 <th> Date Out </th>
+                                <th> Received From </th>
+                                <th> Subject </th>
+                                <th> Marked To </th>
+                                <th> Copy To </th>
+                                <th> Marked By </th>
+                                <th> Remarks </th>
                             </tr>    
                         </thead>
 
                         <tbody>
                             @foreach ($documents as $document )
                                 <tr class="{{ $document->date_out ? '' : 'highlighted' }}" >
-                                    <td> <a href="/document/view/{{ $document->id }}"> View </a> </td>
+                                    <td> @if($document->file_url) <a href="/storage/{{ $document->file_url }}"> View </a> @endif </td>
                                     <td> <a href="/document/view/{{ $document->id }}"> Edit </a> </td>
-                                    <td> <a href="#">Print </a> </td>
+                                    <td> <a href="/document/print/{{ $document->id }}">Print </a> </td>
                                     <td> 
                                         <span> {{ $document->diary_no }} </span>
                                         @if( $document->reference_of == -1 )
@@ -168,18 +195,23 @@
                                             <span class="badge badge-info"> Ref. </span>
                                         @endif
                                     </td>
-                                    <td> <p class="my-0"> {{ $document->file_no }} </p>
+                                    <td> <p class="my-0"> {{ $document->letter_no }} </p>
                                         <span class="badge badge-primary"> {{ $document->category }} </span>
                                         <span class="badge badge-danger"> {{ $document->subcategory }} </span>
                                     </td>
                                     <td> {{ $document->date_in }}</td>
                                     <td> {{ $document->date_out }}</td>
+                                    <td> {{ $document->received_from }}</td>
+                                    <td> {{ $document->subject }}</td>
+                                    <td> {{ $document->marked_to }}</td>
+                                    <td> {{ $document->copy_to }}</td>
+                                    <td> {{ $document->marked_by }}</td>
+                                    <td> {{ $document->remarks }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
 
                     </table>
-                    
 
                 </div>
 

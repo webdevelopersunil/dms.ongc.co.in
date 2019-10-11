@@ -42,8 +42,11 @@ Route::get('/document/create/{category}/{subcategory}', 'DocumentController@crea
 Route::get('/document/view/{id}', 'DocumentController@show' );
 Route::post('/document/view/{id}', 'DocumentController@update' );
 
-Route::view('/document/search', 'document.search');
+// Route::view('/document/search', 'document.search');
+Route::get('/document/search', 'DocumentController@searchForm');
 Route::post('/document/search', 'DocumentController@search');
+
+Route::get('/document/print/{id}', 'DocumentController@print');
 
 //Reference
 Route::get('/reference/create', 'ReferenceController@index' );
@@ -68,3 +71,4 @@ Route::get('/reports/audit/date/{start}/{end}', 'ReportsController@auditFilterby
 
 //Users
 Route::get('/users/online', 'UserController@online' );
+Route::resource('/user', 'UserController' );
