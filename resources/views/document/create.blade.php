@@ -35,20 +35,22 @@
 
                 <div class="card p-2 pt-4 my-2 bg-aliceblue">
                     <div class="row">
-                        <div class="col-2 form-group text-right">
-                            <label for="diary_no">Diary No</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="text" id="diary_no" name="diary_no" value="{{ $diary }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('diary_no') {{ $errors->first('diary_no') }} @enderror </div>
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="date_in" >Date In</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="date" id="date_in" name="date_in" value={{ $today }} class="form-control form-control-sm @error('date_in') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('date_in') {{ $errors->first('date_in') }} @enderror </div>
-                        </div>
+                        @if($category != 'cmd_office_correspondence')
+                            <div class="col-2 form-group text-right">
+                                <label for="diary_no">Diary No</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="text" id="diary_no" name="diary_no" value="{{ $category == 'cmd_office_correspondence' ? 0 : $diary }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
+                                <div class="invalid-feedback"> @error('diary_no') {{ $errors->first('diary_no') }} @enderror </div>
+                            </div>
+                            <div class="col-2 form-group text-right">
+                                <label for="date_in" >Date In</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="date" id="date_in" name="date_in" value={{ $category == 'cmd_office_correspondence' ? null : $today }} class="form-control form-control-sm @error('date_in') is-invalid @enderror">
+                                <div class="invalid-feedback"> @error('date_in') {{ $errors->first('date_in') }} @enderror </div>
+                            </div>
+                        @endif
                         <div class="col-2 form-group text-right">
                             <label for="letter_no" >Letter/File No.</label>
                         </div>
@@ -64,14 +66,14 @@
                             <div class="invalid-feedback"> @error('file_date') {{ $errors->first('file_date') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
-                            <label for="received_from">Received From</label>
+                            <label for="received_from">{{ $category == 'cmd_office_correspondence' ? 'Letter Addressed To' : 'Received From' }} </label>
                         </div>
                         <div class="col-4 form-group">
                             <input type="text" id="received_from" name="received_from" class="form-control form-control-sm @error('received_from') is-invalid @enderror">
                             <div class="invalid-feedback"> @error('received_from') {{ $errors->first('received_from') }} @enderror </div>
                         </div>
                         <div class="col-2 form-group text-right">
-                            <label for="sender_diary_no">Sender's Dy No</label>
+                            <label for="sender_diary_no">{{ $category == 'cmd_office_correspondence' ? 'Letter Signed By' : 'Sender Dy No' }} </label>
                         </div>
                         <div class="col-4 form-group">
                             <input type="text" id="sender_diary_no" name="sender_diary_no" class="form-control form-control-sm">

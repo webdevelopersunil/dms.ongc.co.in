@@ -6,6 +6,14 @@
 
     @include('templates.alert')
 
+    @if(Auth::user()->email == 'sreenathsdas@gmail.com' )
+        @if(isset( $conditions ))
+            <div class="alert alert-info">
+                {{ json_encode($conditions) }}
+            </div>
+        @endif
+    @endif
+
     <div class="p-2 mb-4 bg-lightblue">
 
         <form action="/document/search" method="post">
@@ -74,7 +82,7 @@
                     <label for="letter_no">Letter No</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="file_no" name="file_no" class="form-control form-control-sm">
+                    <input type="text" id="letter_no" name="letter_no" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
@@ -139,7 +147,6 @@
                 <div class="col-4 form-group ">
                     <input type="text" id="remarks" name="remarks" class="form-control form-control-sm">
                 </div>
-                
 
                 <div class="offset-2 col-10 my-2">
                     <button class="btn dms-btn-primary mx-1 px-4">Search</button>
@@ -170,8 +177,9 @@
                                 <th> Print </th>
                                 <th> Diary No </th>
                                 <th> Letter No </th>
-                                <th> Date In </th>
-                                <th> Date Out </th>
+                                <th style="width:5%"> Date In </th>
+                                <th style="width:5%"> Date Out </th>
+                                <th style="width:5%"> File Date </th>
                                 <th> Received From </th>
                                 <th> Subject </th>
                                 <th> Marked To </th>
@@ -201,6 +209,7 @@
                                     </td>
                                     <td> {{ $document->date_in }}</td>
                                     <td> {{ $document->date_out }}</td>
+                                    <td> {{ $document->file_date }}</td>
                                     <td> {{ $document->received_from }}</td>
                                     <td> {{ $document->subject }}</td>
                                     <td> {{ $document->marked_to }}</td>

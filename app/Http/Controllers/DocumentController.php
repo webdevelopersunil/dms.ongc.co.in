@@ -47,7 +47,7 @@ class DocumentController extends Controller
             'category' => 'required',
             'subcategory' => 'nullable',
             'diary_no' => 'required',
-            'date_in' => 'required',
+            'date_in' => 'nullable',
             'file_no' => 'required',
             'file_date' => 'required',
             'received_from' => 'required',
@@ -211,6 +211,12 @@ class DocumentController extends Controller
             switch ($key) {
                 case '_token':
                     break;
+                case 'category':
+                    $condition = [ 'category' , '=', $filtered[$key] ];
+                    break;
+                case 'subcategory':
+                    $condition = [ 'subcategory' , '=', $filtered[$key] ];
+                    break;
                 case 'date_from':
                     $condition = [ 'file_date' , '>=', $filtered[$key] ];
                     break;
@@ -253,18 +259,20 @@ class DocumentController extends Controller
                 ->where(
                     $conditions
                 )
+                ->limit(1000)
                 ->orderBy('date_in', 'desc' )
                 ->get();
 
 
-        if($documents->count() > 1000){
-            return redirect('/document/search')->with('error', 'Too many results! Please narrow down your search');
-        }
+        // if($documents->count() > 1000){
+        //     return redirect('/document/search')->with('error', 'Too many results! Please narrow down your search');
+        // }
         // $documents = Document::where('diary_no', $request->diary_no)->get();
 
         return view('document.search')->with([
             'documents' => $documents,
-            'selected' => ''
+            'selected' => '',
+            'conditions' => $conditions
         ]);
     }
 
