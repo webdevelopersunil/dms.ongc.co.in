@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -13,22 +14,31 @@ class CounterSeed extends Seeder
      */
     public function run()
     {
-        DB::table('auto_increment')->insert([
-            [ 'category' => 'files', 'counter' => 0 ],
-            [ 'category' => 'general', 'counter' => 0 ],
-            [ 'category' => 'govt_letters', 'counter' => 0 ],
-            [ 'category' => 'cmd_office_correspondence', 'counter' => 0 ],
-            [ 'category' => 'disha_file', 'counter' => 0 ],
-        ]);
+
+        // DB::table('auto_increment')->insert([
+        //     ['category' => Category::create(["cm_code" => "001", "cm_name" => "govt"]), 'counter' => 0],
+        //     ['category' => Category::create(["cm_code" => "002", "cm_name" => "cmd"]), 'counter' => 0],
+        //     ['category' => Category::create(["cm_code" => "003", "cm_name" => "general"]), 'counter' => 0],
+        //     ['category' => Category::create(["cm_code" => "004", "cm_name" => "file"]), 'counter' => 0],
+        //     ['category' => Category::create(["cm_code" => "005", "cm_name" => "misc"]), 'counter' => 0],
+        // ]);
+
+        Category::create(["cm_code" => "001", "cm_name" => "govt", "counter" => 1]);
+        Category::create(["cm_code" => "002", "cm_name" => "cmd", "counter" => 1]);
+        Category::create(["cm_code" => "003", "cm_name" => "general", "counter" => 1]);
+        Category::create(["cm_code" => "004", "cm_name" => "files", "counter" => 1]);
+        Category::create(["cm_code" => "005", "cm_name" => "misc", "counter" => 1]);
 
         User::create([
             "name" => "Sreenath S Das",
+            "username" => "sree",
             "email" => "sreenathsdas@gmail.com",
             "password" => Hash::make("sree5633")
         ]);
 
         User::create([
             "name" => "Himanshu Martoliya",
+            "username" => "himanshu",
             "email" => "h_martoliya@ongc.co.in",
             "password" => Hash::make("sree5633")
         ]);

@@ -20,9 +20,8 @@ class ReferenceController extends Controller
      */
     public function create(Document $document)
     {
-        
-        return view('reference.create', compact('document'));
 
+        return view('reference.create', compact('document'));
     }
 
     /**
@@ -35,21 +34,35 @@ class ReferenceController extends Controller
     {
         $validatedData = $request->validate([
             'category' => 'required',
-            // 'subcategory' => 'required',
             'document_id' => 'required',
-            'diary_no' => 'required',
-            'date_in' => 'required',
             'file_no' => 'required',
             'file_date' => 'required',
-            'received_from' => 'required',
             'subject' => 'required'
         ]);
-        
-        $reference = collect($validatedData)->put('reference_of', $request->document_id )->toArray();
 
-        $document = Document::create($reference);
+        $document = Document::create([
+            'category_id' => $request->category_id,
+            'subcategory_id' => $request->subcategory_id,
+            'D_diaryNo' => $request->D_diaryNo,
+            'D_DateIN' => $request->D_DateIN,
+            'D_LetterNo' => $request->D_LetterNo,
+            'D_DATE' => $request->D_DATE,
+            'D_SendersName' => $request->D_SendersName,
+            'D_SenderDYNo' => $request->D_SenderDYNo,
+            'D_Subject' => $request->D_Subject,
+            // 'dealing_officer' => $request->dealing_officer,
+            'D_MarkedTo' => $request->D_MarkedTo,
+            'D_CopyTO' => $request->D_CopyTO,
+            'D_DateOut' => $request->D_DateOut,
+            'D_MarkedBy' => $request->D_MarkedBy,
+            'D_fileno' => $request->D_fileno,
+            'D_Remarks' => $request->D_Remarks,
+            'D_LetteraddressedTo' => $request->D_LetteraddressedTo,
+            'D_LetterSignedBy' => $request->D_LetterSignedBy,
+            'document_id' => $request->document_id
+        ]);
 
-        return redirect("/document/view/$document->id")->with('success', 'Reference has been created succesfully' );
+        return redirect("/document/view/$document->id")->with('success', 'Reference has been created succesfully');
     }
 
     /**

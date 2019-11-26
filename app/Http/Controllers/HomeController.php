@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Document;
+use App\Subcategory;
 use App\Events\UserEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,16 +28,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $user->is_online = true;
-        $user->save();
-
-        event(new UserEvent( $user, 'Idle' ));
-
         return view('home');
     }
 
-    public function test() {
-        return Document::with('dealingOfficer')->get();
+    public function test()
+    {
+        return Document::with('category')->where('category_id', 2)->limit(100)->get();
     }
 }

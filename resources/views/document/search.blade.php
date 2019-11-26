@@ -6,13 +6,13 @@
 
     @include('templates.alert')
 
-    @if(Auth::user()->email == 'sreenathsdas@gmail.com' )
+    {{-- @if(Auth::user()->email == 'sreenathsdas@gmail.com' )
         @if(isset( $conditions ))
             <div class="alert alert-info">
                 {{ json_encode($conditions) }}
             </div>
         @endif
-    @endif
+    @endif --}}
 
     <div class="p-2 mb-4 bg-lightblue">
 
@@ -24,13 +24,15 @@
                     <label for="category" class="text-bold text-danger">Category</label>
                 </div>
                 <div class="col-4 form-group ">
-                    {{-- <input type="text" id="category" name="category" class="form-control form-control-sm"> --}}
                     <select name="category" id="category" class="form-control form-control-sm">
-                        <option value="">All</option>
-                        <option value="govt_letter" @if($selected == 'govt_letter') selected @endif>Govt. Letters</option>
+                        <option value="All">All</option>
+                        @foreach (\App\Category::all() as $item)
+                            <option value="{{ $item->id }}" @if($item->id == $category) selected @endif > {{ $item->cm_name }} </option>
+                        @endforeach
+                        {{-- <option value="govt_letter" @if($selected == 'govt_letter') selected @endif>Govt. Letters</option>
                         <option value="cmd_office_correspondence" @if($selected == 'cmd_office_correspondence') selected @endif> CMD's Office Correspondence</option>
                         <option value="general" @if($selected == 'general') selected @endif>General | DDN Letters</option>
-                        <option value="files" @if($selected == 'files') selected @endif>Files</option>
+                        <option value="files" @if($selected == 'files') selected @endif>Files</option> --}}
                     </select>
                 </div>
 
@@ -40,13 +42,16 @@
                 <div class="col-4 form-group ">
                     {{-- <input type="text" id="subcategory" name="subcategory" class="form-control form-control-sm"> --}}
                     <select name="subcategory" id="subcategory" class="form-control form-control-sm">
-                        <option value="">NA</option>
-                        <option value="secret_letter">CMD|01 Secret Letters</option>
+                        <option value="NA">NA</option>
+                        @foreach (\App\Subcategory::all() as $item)
+                            <option @if($item->id == $subcategory) selected @endif value="{{ $item->id }}"> {{ $item->scm_head }} </option>
+                        @endforeach
+                        {{-- <option value="secret_letter">CMD|01 Secret Letters</option>
                         <option value="special_reply"> CMD|02 Special Reply of Misc</option>
                         <option value="ministry_correspondence"> CMD|03 Ministry's Correspondence</option>
                         <option value="internal_correspondence"> CMD|05 Internal Correspondence</option>
                         <option value="acknowledgement"> CMD|09 Acknowledgement</option>
-                        <option value="invitations_for_seminar"> CMD|10 Invitations for Seminar</option>
+                        <option value="invitations_for_seminar"> CMD|10 Invitations for Seminar</option> --}}
                     </select>
                 </div>
 
@@ -58,10 +63,10 @@
                 </div>
 
                 <div class="col-2 text-right px-0">
-                    <label for="letter_from_govt">Letter From Govt.</label>
+                    <label for="D_LetterFromGovt">Letter From Govt.</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="letter_from_govt" class="form-control form-control-sm">
+                    <input type="text" id="D_LetterFromGovt" name="D_LetterFromGovt" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
@@ -79,17 +84,17 @@
                 </div>
 
                 <div class="col-2 text-right px-0">
-                    <label for="letter_no">Letter No</label>
+                    <label for="D_LetterNo">Letter No</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="letter_no" name="letter_no" class="form-control form-control-sm">
+                    <input type="text" id="D_LetterNo" name="D_LetterNo" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
-                    <label for="received_from">Received From</label>
+                    <label for="D_SendersName">Received From</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="received_from" name="received_from" class="form-control form-control-sm">
+                    <input type="text" id="D_SendersName" name="D_SendersName" class="form-control form-control-sm">
                 </div>
     
                 <div class="col-2 text-right px-0">
@@ -128,24 +133,24 @@
                 </div>
 
                 <div class="col-2 text-right px-0">
-                    <label for="marked_by">Marked By</label>
+                    <label for="D_MarkedBy">Marked By</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="marked_by" name="marked_by" class="form-control form-control-sm">
+                    <input type="text" id="D_MarkedBy" name="D_MarkedBy" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
-                    <label for="marked_to">Marked To</label>
+                    <label for="D_MarkedTo">Marked To</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="marked_to" name="marked_to" class="form-control form-control-sm">
+                    <input type="text" id="D_MarkedTo" name="D_MarkedTo" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
-                    <label for="remarks">Remarks</label>
+                    <label for="D_Remarks">Remarks</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="remarks" name="remarks" class="form-control form-control-sm">
+                    <input type="text" id="D_Remarks" name="D_Remarks" class="form-control form-control-sm">
                 </div>
 
                 <div class="offset-2 col-10 my-2">
@@ -163,7 +168,11 @@
                 
                 <div class="card-header">
                     <h4>Search Results</h4>
-                    <h5> Total Documents: {{ $documents->count() }} </h5>
+                    <h5> Total Documents: {{ $documents->count() }}. 
+                        @if($limitSearch)
+                            <span class="text-danger float-right"> Too many results. Search limited to 1000 results </span>
+                        @endif
+                    </h5>
                 </div>
 
                 <div class="card-body" style="overflow-x: scroll; overflow-y: scroll; height: 60vh">
@@ -191,31 +200,33 @@
 
                         <tbody>
                             @foreach ($documents as $document )
-                                <tr class="{{ $document->date_out ? '' : 'highlighted' }}" >
-                                    <td> @if($document->file_url) <a href="/storage/{{ $document->file_url }}"> View </a> @endif </td>
+                                <tr class="{{ $document->D_DateOut ? '' : 'highlighted' }}" >
+                                    <td> 
+                                        @if($document->D_fileno) <a href="/document/file/{{ $document->id }}"> View </a> @endif 
+                                    </td>
                                     <td> <a href="/document/view/{{ $document->id }}"> Edit </a> </td>
                                     <td> <a href="/document/print/{{ $document->id }}">Print </a> </td>
                                     <td> 
-                                        <span> {{ $document->diary_no }} </span>
-                                        @if( $document->reference_of == -1 )
+                                        <span> {{ $document->D_diaryNo }} </span>
+                                        {{-- @if( $document->reference_of == -1 )
                                             <span class="badge badge-success"> Main </span>
                                         @else 
                                             <span class="badge badge-info"> Ref. </span>
-                                        @endif
+                                        @endif --}}
                                     </td>
-                                    <td> <p class="my-0"> {{ $document->letter_no }} </p>
-                                        <span class="badge badge-primary"> {{ $document->category }} </span>
-                                        <span class="badge badge-danger"> {{ $document->subcategory }} </span>
+                                    <td> <p class="my-0"> {{ $document->D_LetterNo }} </p>
+                                        <span class="badge badge-primary"> {{ $document->category->cm_name }} </span>
+                                        <span class="badge badge-danger"> {{ $document->subcategory ? $document->subcategory->scm_head : '' }} </span>
                                     </td>
-                                    <td> {{ $document->date_in }}</td>
-                                    <td> {{ $document->date_out }}</td>
-                                    <td> {{ $document->file_date }}</td>
-                                    <td> {{ $document->received_from }}</td>
-                                    <td> {{ $document->subject }}</td>
-                                    <td> {{ $document->marked_to }}</td>
-                                    <td> {{ $document->copy_to }}</td>
-                                    <td> {{ $document->marked_by }}</td>
-                                    <td> {{ $document->remarks }}</td>
+                                    <td> {{ $document->D_DateIN }}</td>
+                                    <td> {{ $document->D_DateOut }}</td>
+                                    <td> {{ $document->D_DATE }}</td>
+                                    <td> {{ $document->D_SendersName }}</td>
+                                    <td> {{ $document->D_Subject }}</td>
+                                    <td> {{ $document->D_MarkedTo }}</td>
+                                    <td> {{ $document->D_CopyTO }}</td>
+                                    <td> {{ $document->D_MarkedBy }}</td>
+                                    <td> {{ $document->D_Remarks }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

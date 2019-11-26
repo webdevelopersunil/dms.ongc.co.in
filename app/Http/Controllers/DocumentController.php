@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Category;
 use App\Document;
 use Carbon\Carbon;
+use App\Subcategory;
 use App\Events\UserEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,50 +16,73 @@ class DocumentController extends Controller
 {
 
     public function index()
-    {
-        
-    }
+    { }
 
-    public function empty( )
+    public function empty()
     {
         return 'no category provided!';
     }
 
-    public function create( $category, $subcategory = null )
+    public function create(Request $request)
     {
-        if($category == 'undefined') {
+
+        $category = $request->input('category');
+        $subcategory = $request->input('subcategory');
+
+        if (!$category) {
             return redirect('/home')->with('error', 'Select a category to continue');
         }
 
-        if( User::where('category', $category )->where('working_on', 'Create')->count() > 0 ) {
-            return redirect('/home')->with('error', 'Someone else is creating a document with the same category');
+        if ($category == 2 && $subcategory == null) {
+            return redirect('/home')->with('error', 'Select a subcategory to continue');
         }
 
-        event(new UserEvent( Auth::user() , 'Create', $category ));
+        $category = Category::find($category);
+        $subcategory = Subcategory::find($subcategory);
+
+        // if (User::where('category', $category)->where('working_on', 'Create')->count() > 0) {
+        //     return redirect('/home')->with('error', 'Someone else is creating a document with the same category');
+        // }
+
+        // event(new UserEvent(Auth::user(), 'Create', $category));
 
         $today = Carbon::now()->toDateString();
-        $diary = DB::table('auto_increment')->where('category', $category)->first()->counter + 1;
+        // $diary = DB::table('auto_increment')->where('category', $category->id)->first()->counter;
+        $diary = $category->counter;
 
-        return view('document.create', compact('category', 'subcategory', 'diary', 'today') );
+        return view('document.create', compact('category', 'subcategory', 'diary', 'today'));
     }
 
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
-            'category' => 'required',
-            'subcategory' => 'nullable',
-            'diary_no' => 'required',
-            'date_in' => 'nullable',
-            'file_no' => 'required',
-            'file_date' => 'required',
-            'received_from' => 'required',
-            'subject' => 'required',
-            'dealing_officer' => 'nullable',
-            'sender_diary_no' => 'nullable',
+            'category_id' => 'required',
+            'D_LetterNo' => 'required',
+            'D_DATE' => 'required',
+            'D_Subject' => 'required',
         ]);
 
-        // $document = Document::create($request->all());
-        $document = Document::create($validatedData);
+        $document = Document::create([
+            'category_id' => $request->category_id,
+            'subcategory_id' => $request->subcategory_id,
+            'D_diaryNo' => $request->D_diaryNo,
+            'D_DateIN' => $request->D_DateIN,
+            'D_LetterNo' => $request->D_LetterNo,
+            'D_DATE' => $request->D_DATE,
+            'D_SendersName' => $request->D_SendersName,
+            'D_SenderDYNo' => $request->D_SenderDYNo,
+            'D_Subject' => $request->D_Subject,
+            // 'dealing_officer' => $request->dealing_officer,
+            'D_MarkedTo' => $request->D_MarkedTo,
+            'D_CopyTO' => $request->D_CopyTO,
+            'D_DateOut' => $request->D_DateOut,
+            'D_MarkedBy' => $request->D_MarkedBy,
+            'D_fileno' => $request->D_fileno,
+            'D_Remarks' => $request->D_Remarks,
+            'D_LetteraddressedTo' => $request->D_LetteraddressedTo,
+            'D_LetterSignedBy' => $request->D_LetterSignedBy,
+        ]);
 
         // TO INCORPORATE FILE SCAN DURING CREATE TIME
         // BY DEFAULT FILE SCAN HAPPENS DURING EDITING
@@ -87,40 +112,41 @@ class DocumentController extends Controller
         //     $document->save();
         // }
 
-        DB::table('auto_increment')->where('category', $request->category )->update([ 'counter' => $document->diary_no ]);
+        // DB::table('auto_increment')->where('category', $request->category)->update(['counter' => $document->diary_no + 1]);
+        $category = Category::find($request->category_id);
+        $category->counter = $document->D_diaryNo + 1;
+        $category->save();
 
-        return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully' );
-    }  
+        return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully');
+    }
 
 
     public function show($id)
     {
         $document = Document::findOrFail($id);
 
-        event(new UserEvent( Auth::user() , 'View' ));
+        // event(new UserEvent(Auth::user(), 'View'));
 
-        $references = Document::where( 'diary_no', $document->diary_no )
-                              ->where('reference_of', $document->id )
-                              ->orderBy('reference_of')
-                              ->get();
+        // $references = Document::where('diary_no', $document->diary_no)
+        //     ->where('reference_of', $document->id)
+        //     ->orderBy('reference_of')
+        //     ->get();
 
         // if selected document is a reference document
         // should return all other references plus the main document
-        if( $document->reference_of != -1 ) {
-            
-            $references = Document::where([
-                [ 'reference_of', $document->reference_of ],
-                [ 'id', '!=', $document->id ]
-            ])->get();
+        // if ($document->reference_of != -1) {
 
-            $main = Document::find($document->reference_of);
+        //     $references = Document::where([
+        //         ['reference_of', $document->reference_of],
+        //         ['id', '!=', $document->id]
+        //     ])->get();
 
-            $references = $references->push($main);
-        }
+        //     $main = Document::find($document->reference_of);
 
-        
+        //     $references = $references->push($main);
+        // }
 
-        return view('document.show', compact( 'document', 'references' ) );
+        return view('document.show', compact('document'));
     }
 
 
@@ -132,40 +158,41 @@ class DocumentController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'category' => 'required',
-            'subcategory' => 'nullable',
-            'diary_no' => 'required',
-            'date_in' => 'required',
-            'date_out' => 'required',
-            'letter_no' => 'nullable',
-            'file_no' => 'nullable',
-            'file_date' => 'required',
-            'received_from' => 'required',
-            'subject' => 'required',
+            'category_id' => 'required',
+            'D_DateOut' => 'required',
+            'D_DATE' => 'required',
+            'D_Subject' => 'required',
         ]);
 
         $document = Document::find($id);
-        $document->marked_to = $request->marked_to;
-        $document->copy_to = $request->copy_to;
-        $document->date_out = $request->date_out;
-        $document->marked_by = $request->marked_by;
-        $document->remarks = $request->remarks;
-        $document->dealing_officer = $request->dealing_officer;
-        $document->letter_no = $request->letter_no;
+        $document->D_LetterNo = $request->D_LetterNo;
+        $document->D_DATE = $request->D_DATE;
+        $document->D_SendersName = $request->D_SendersName;
+        $document->D_Subject = $request->D_Subject;
+        $document->D_diaryNo = $request->D_diaryNo;
+        $document->D_LetterFromGovt = $request->D_LetterFromGovt;
+        $document->D_fileno = $request->D_fileno;
+        $document->D_MarkedTo = $request->D_MarkedTo;
+        $document->D_CopyTO = $request->D_CopyTO;
+        $document->D_DateIN = $request->D_DateIN;
+        $document->D_DateOut = $request->D_DateOut;
+        $document->D_MarkedBy = $request->D_MarkedBy;
+        $document->D_Remarks = $request->D_Remarks;
+        $document->D_LetteraddressedTo = $request->D_LetteraddressedTo;
+        $document->D_LetterSignedBy = $request->D_LetterSignedBy;
+        $document->D_SenderDYNo = $request->D_SenderDYNo;
 
-        $document->file_no = $request->file_no;
-        
-        $date = Carbon::now();
-        if( $document->category == 'cmd_office_correspondence' ){
-            $subfolder = $document->subcategory == '' ? 'misc' : $document->subcategory;
-            $url = "uploads/" . $document->category . "/$subfolder/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
-            $document->file_url = $url;
-        } else {
-            if( $document->category != '' ) {
-                $url = "uploads/" . $document->category . "/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
-                $document->file_url = $url;
-            }
-        }
+        // $date = Carbon::now();
+        // if ($document->category == 'cmd_office_correspondence') {
+        //     $subfolder = $document->subcategory == '' ? 'misc' : $document->subcategory;
+        //     $url = "uploads/" . $document->category . "/$subfolder/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+        //     $document->file_url = $url;
+        // } else {
+        //     if ($document->category != '') {
+        //         $url = "uploads/" . $document->category . "/$date->year/$date->englishMonth/" . $document->file_no . ".pdf";
+        //         $document->file_url = $url;
+        //     }
+        // }
 
         $document->save();
 
@@ -177,8 +204,7 @@ class DocumentController extends Controller
         //     $document->save();
         // }
 
-        return redirect()->back()->with('success', 'Document updated succesfully' );
-
+        return redirect()->back()->with('success', 'Document updated succesfully');
     }
 
 
@@ -187,82 +213,90 @@ class DocumentController extends Controller
         //
     }
 
-    public function searchForm(Request $request) {
+    public function searchForm(Request $request)
+    {
 
-        $selected = $request->input('category') ?? 'govt_letters';
-        return view('document.search', compact('selected') );
+        // return Document::with(['category', 'subcategory'])->find(201238);
 
+        $category = $request->input('category') ?? '';
+        $subcategory = $request->input('subcategory') ?? '';
+        $limitSearch = false;
+        return view('document.search', compact('category', 'subcategory', 'limitSearch'));
     }
 
-    public function search(Request $request) {
-
-        event(new UserEvent( Auth::user() , 'Search' ));
+    public function search(Request $request)
+    {
 
         $collection = collect($request);
 
-        $filtered = $collection->filter(function($value, $key){
+        $filtered = $collection->filter(function ($value, $key) {
             return $value != null;
         });
 
         $conditions = [];
 
-        foreach( $filtered->keys() as $key ){
+        foreach ($filtered->keys() as $key) {
 
             switch ($key) {
                 case '_token':
                     break;
                 case 'category':
-                    $condition = [ 'category' , '=', $filtered[$key] ];
+                    if ($filtered[$key] != 'All')
+                        $condition = ['category_id', '=', $filtered[$key]];
                     break;
                 case 'subcategory':
-                    $condition = [ 'subcategory' , '=', $filtered[$key] ];
+                    if ($filtered[$key] != 'NA')
+                        $condition = ['subcategory_id', '=', $filtered[$key]];
                     break;
                 case 'date_from':
-                    $condition = [ 'file_date' , '>=', $filtered[$key] ];
+                    $condition = ['D_DATE', '>=', $filtered[$key]];
                     break;
                 case 'date_to':
-                    $condition = [ 'file_date' , '<=', $filtered[$key] ];
+                    $condition = ['D_DATE', '<=', $filtered[$key]];
                     break;
                 case 'date_in_from':
-                    $condition = [ 'date_in' , '>=', $filtered[$key] ];
+                    $condition = ['D_DateIN', '>=', $filtered[$key]];
                     break;
                 case 'date_in_to':
-                    $condition = [ 'date_in' , '<=', $filtered[$key] ];
+                    $condition = ['D_DateIN', '<=', $filtered[$key]];
                     break;
                 case 'date_out_from':
-                    $condition = [ 'date_out' , '>=', $filtered[$key] ];
+                    $condition = ['D_DateOut', '>=', $filtered[$key]];
                     break;
                 case 'date_out_to':
-                    $condition = [ 'date_out' , '<=', $filtered[$key] ];
-                    break; 
+                    $condition = ['D_DateOut', '<=', $filtered[$key]];
+                    break;
                 case 'diary_no':
-                    $condition = [ 'diary_no' , '=', $filtered[$key] ];
-                    break; 
+                    $condition = ['D_diaryNo', '=', $filtered[$key]];
+                    break;
+                case 'subject':
+                    $condition = ['D_Subject', 'like', '%' . $filtered[$key] . '%'];
+                    break;
                 default:
-                    if( $filtered[$key] != null ) {
-                        $condition = [ $key , 'like', '%' . $filtered[$key] . '%'  ];
+                    if ($filtered[$key] != null) {
+                        $condition = [$key, 'like', '%' . $filtered[$key] . '%'];
                     }
                     break;
             }
 
-            if( isset($condition) ){
-                array_push( $conditions, $condition );
+            if (isset($condition)) {
+                array_push($conditions, $condition);
             }
-            
         }
 
-        if( empty($conditions)) {
+        if (empty($conditions)) {
             return redirect('/document/search')->with('error', 'Selected fields cant be blank');
         }
 
-        $documents = DB::table('documents')
-                ->where(
-                    $conditions
-                )
-                ->limit(1000)
-                ->orderBy('date_in', 'desc' )
-                ->get();
+        // $documents = DB::table('documents')
+        //     ->where(
+        //         $conditions
+        //     )
+        //     ->limit(100)
+        //     ->orderBy('D_DateIN', 'desc')
+        //     ->get();
 
+        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateOUT', 'asc')->limit(1000)->get();
 
         // if($documents->count() > 1000){
         //     return redirect('/document/search')->with('error', 'Too many results! Please narrow down your search');
@@ -272,13 +306,33 @@ class DocumentController extends Controller
         return view('document.search')->with([
             'documents' => $documents,
             'selected' => '',
-            'conditions' => $conditions
+            'conditions' => $conditions,
+            'category' => $request->category,
+            'subcategory' => $request->subcategory,
+            'limitSearch' => ($documents->count() == 1000)
         ]);
     }
 
-    public function print($id) {
+    public function print($id)
+    {
         $document = Document::find($id);
-        return view('document.print', compact('document') );
+        return view('document.print', compact('document'));
     }
 
+    public function showFile($id)
+    {
+        $document = Document::find($id);
+        $date = Carbon::create($document->D_DATE);
+
+        if ($document->category_id == 2) {
+            $subfolder = $document->subcategory ? $document->subcategory->scm_foldername : '';
+            $url = "uploads/" . $document->category->cm_folder . "/$subfolder/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+        } else {
+            if ($document->category != '') {
+                $url = "uploads/" . $document->category->cm_folder . "/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+            }
+        }
+
+        return redirect("http://dms.ongc.co.in/storage/$url");
+    }
 }

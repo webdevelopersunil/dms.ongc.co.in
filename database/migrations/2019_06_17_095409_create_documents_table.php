@@ -16,28 +16,34 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('category');
-            $table->string('subcategory')->nullable();
+            // $table->string('category');
+            // $table->string('subcategory')->nullable();
 
-            $table->string('source')->default('portal'); // portal / archive / disha
+            $table->bigInteger('category_id');
+            $table->bigInteger('subcategory_id')->nullable();
 
-            $table->bigInteger('diary_no')->nullable();
-            $table->date('date_in')->nullable();
-            $table->date('file_date')->nullable();
-            $table->string('file_no')->nullable();
-            $table->string('letter_no')->nullable();
-            $table->string('received_from', 1000)->nullable();
-            $table->string('sender_diary_no')->nullable();
-            $table->text('subject')->nullable();
-            
+            // $table->string('source')->default('portal'); // portal / archive / disha
+
+            $table->string('D_LetterNo')->nullable();
+            $table->date('D_DATE')->nullable();
+            $table->string('D_SendersName')->nullable();
+            $table->text('D_Subject')->nullable();
+            $table->bigInteger('D_diaryNo')->nullable();
+            $table->string('D_LetterFromGovt')->nullable();
+            $table->string('D_fileno')->nullable();
+            $table->date('D_DateIN')->nullable();
+            $table->string('D_SenderDYNo', 1000)->nullable();
+
             $table->bigInteger('dealing_officer')->nullable();
 
-            $table->string('marked_to')->nullable();
-            $table->string('copy_to')->nullable();
-            $table->date('date_out')->nullable();
-            $table->string('marked_by')->nullable();
-            $table->text('remarks')->nullable();
-            $table->string('file_url')->nullable();
+            $table->string('D_MarkedTo')->nullable();
+            $table->string('D_CopyTO')->nullable();
+            $table->date('D_DateOut')->nullable();
+            $table->string('D_MarkedBy')->nullable();
+            $table->text('D_Remarks')->nullable();
+            $table->string('D_LetteraddressedTo')->nullable();
+            $table->string('D_LetterSignedBy')->nullable();
+            // $table->string('file_url')->nullable();
 
             $table->bigInteger('reference_of')->default(-1);
 

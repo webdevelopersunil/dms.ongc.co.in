@@ -41,18 +41,25 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function loginForm($token)
+    public function username()
     {
-        $mac = Mac::where('token', $token)->first();
-        
-        if($mac){
-            $mac->token = '';
-            $mac->save();
-            return view('auth.login');
-        } else {
-            $error = "Token Expired! Please login from the DMS Application";
-            return view('templates.error', compact('error'));
-        }
+        return 'username';
     }
 
-}  
+    public function loginForm($token)
+    {
+
+        return view('auth.login');
+
+        // $mac = Mac::where('token', $token)->first();
+
+        // if ($mac) {
+        //     $mac->token = '';
+        //     $mac->save();
+        //     return view('auth.login');
+        // } else {
+        //     $error = "Token Expired! Please login from the DMS Application";
+        //     return view('templates.error', compact('error'));
+        // }
+    }
+}

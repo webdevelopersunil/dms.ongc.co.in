@@ -1,61 +1,96 @@
-require('./bootstrap');
+require("./bootstrap");
 // require('./audit');
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
-Vue.component('app-accordion', require('./components/AccordionComponent.vue').default);
-Vue.component('app-online', require('./components/OnlineCircle.vue').default);
+Vue.component(
+    "app-accordion",
+    require("./components/AccordionComponent.vue").default
+);
+Vue.component("app-online", require("./components/OnlineCircle.vue").default);
 
 const app = new Vue({
-    el: '#app',
+    el: "#app",
     data: {
         selectedCategory: {
             options: []
         },
         selectedSubcategory: {
-            name: '',
-            value: ''
+            name: "",
+            value: ""
         },
         categories: [
             {
-                "value": "govt_letters",
-                "name": "Govt. Letters",
-                "subcategories": null
+                value: 1,
+                name: "Govt. Letters",
+                subcategories: null
             },
             {
-                "value": "cmd_office_correspondence",
-                "name": "CMD's Office Correspondence",
-                "subcategories": [ 
-                    { "name": "CMD|01 Secret Letters", "value": "secret_letter" }, 
-                    { "name": "CMD|02 Special Reply of Misc", "value": "special_reply" },
-                    { "name": "CMD|03 Ministry's Correspondence", "value": "ministry_correspondence" },
-                    { "name": "CMD|05 Internal Correspondence", "value": "internal_correspondence" },
-                    { "name": "CMD|09 Acknowledgement", "value": "acknowledgement" },
-                    { "name": "CMD|10 Invitations for Seminar", "value": "invitations_for_seminar" },
+                value: 2,
+                name: "CMD's Office Correspondence",
+                subcategories: [
+                    { name: "CMD|01 Secret Letters", value: 28 },
+                    {
+                        name:
+                            "CMD|02 Special / Reply of Misc Invitation Letters",
+                        value: 29
+                    },
+                    {
+                        name:
+                            "CMD|03 Ministry's Correspondence / Govt. Correspondence",
+                        value: 30
+                    },
+                    {
+                        name: "CMD|05 Internal Correspondence",
+                        value: 2391
+                    },
+                    {
+                        name:
+                            "CMD|09 Acknowledgement / Appointments / Regret / Meetings / Misc. / General",
+                        value: 2395
+                    },
+                    {
+                        name:
+                            "CMD|10 Invitations for Semianr / Conferences / Meetings / Sponsorships etc.",
+                        value: 2396
+                    },
+                    {
+                        name: "Transfer",
+                        value: 2397
+                    },
+                    {
+                        name: "Promotion",
+                        value: 2398
+                    }
                 ]
             },
             {
-                "value": "general",
-                "name": "General | DDN Letters",
-                "subcategories": null
+                value: 3,
+                name: "General | DDN letters",
+                subcategories: null
             },
             {
-                "value": "files",
-                "name": "Files",
-                "subcategories": null
+                value: 4,
+                name: "Files",
+                subcategories: null
             },
+            {
+                value: 5,
+                name: "Misc",
+                subcategories: null
+            }
         ],
-        documentsInCategory: [],
+        documentsInCategory: []
     },
     methods: {
         onCategorySelection() {
-            window.location.href = `/document/create/${this.selectedCategory.value}/${this.selectedSubcategory.value}`;
+            window.location.href = `/document/create/?category=${this.selectedCategory.value}&subcategory=${this.selectedSubcategory.value}`;
         },
 
         onCategoryViewed(category) {
             console.log(category);
 
-            this.documentsInCategory = ['a','b','c'];
+            this.documentsInCategory = ["a", "b", "c"];
         },
 
         onAuditFilterClicked() {
@@ -63,10 +98,10 @@ const app = new Vue({
             var endDate = this.$refs.auditDateEnd.value;
             var diaryNo = this.$refs.auditDiary.value;
 
-            if( startDate && endDate ) {
+            if (startDate && endDate) {
                 window.location.href = `/reports/audit/date/${startDate}/${endDate}`;
             }
-            if( diaryNo ) {
+            if (diaryNo) {
                 window.location.href = `/reports/audit/diary/${diaryNo}`;
             }
 
@@ -75,5 +110,4 @@ const app = new Vue({
     }
 
     // VUE JS
-
 });

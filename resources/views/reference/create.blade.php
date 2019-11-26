@@ -14,7 +14,7 @@
 
         <div class="p-2 mb-4 bg-lightblue">
 
-            <h3 class="m-3"> Add Reference </h3>
+            <h3 class="m-3"> Create Reference </h3>
 
             <form action="/reference/create" method="post" enctype="multipart/form-data">
                 @csrf
@@ -25,7 +25,10 @@
                             <label><b>Category</b></label>
                         </div>
                         <div class="col-4">
-                            <input readonly class="form-control" name="category" value="{{$document->category}}">
+                            {{-- <input readonly class="form-control" name="category" value="{{$document->category}}"> --}}
+                            <select readonly class="form-control" name="category_id" >
+                                <option value="{{ $document->category->id }}"> {{ $document->category->cm_name }} </option>
+                            </select>
                             {{-- <select name="category" id="category" class="form-control">
                                 <option value="govt_letters" {{ $document->category == 'govt_letters' ? 'selected' : '' }} >Govt. Letters</option>
                                 <option value="cmd_office_correspondence" {{ $document->category == 'cmd_office_correspondence' ? 'selected' : '' }} >CMD's Office Correspondence</option>
@@ -37,7 +40,10 @@
                             <label><b>Sub Category</b></label>
                         </div>
                         <div class="col-4">
-                            <input readonly class="form-control" name="subcategory" value="{{$document->subcategory}}">
+                            {{-- <input readonly class="form-control" name="subcategory" value="{{$document->subcategory}}"> --}}
+                            <select readonly class="form-control" name="subcategory_id" >
+                                <option value="{{ $document->subcategory->id }}"> {{ $document->subcategory->scm_head }} </option>
+                            </select>
                             {{-- <select name="subcategory" id="subcategory" class="form-control">
                                 <option value=""> Nil </option>
                                 <option value="secret_letter" {{ $document->subcategory == 'secret_letter' ? 'selected' : '' }} >CMD|01 Secret Letters</option>
@@ -51,98 +57,157 @@
 
                 <div class="card p-2 pt-4 my-2 bg-aliceblue">
                     <div class="row">
-                        <div class="col-2 form-group text-right">
-                            <label for="diary_no">Diary No</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input readonly type="text" id="diary_no" name="diary_no" value="{{ $document->diary_no }}" class="form-control form-control-sm @error('diary_no') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('diary_no') {{ $errors->first('diary_no') }} @enderror </div>
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="date_in" >Date In</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="date" id="date_in" value="{{ \Carbon\Carbon::now()->toDateString() }}" name="date_in" class="form-control form-control-sm @error('date_in') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('date_in') {{ $errors->first('date_in') }} @enderror </div>
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="file_no" >Letter/File No.</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="text" id="file_no" name="file_no" class="form-control form-control-sm @error('file_no') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('file_no') {{ $errors->first('file_no') }} @enderror </div>
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="file_date">Letter/File Date</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="date" id="file_date" name="file_date" class="form-control form-control-sm @error('file_date') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('file_date') {{ $errors->first('file_date') }} @enderror </div>
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="received_from">Received From</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="text" id="received_from" name="received_from" class="form-control form-control-sm @error('received_from') is-invalid @enderror">
-                            <div class="invalid-feedback"> @error('received_from') {{ $errors->first('received_from') }} @enderror </div>
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="sender_diary_no">Sender's Dy No</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="text" id="sender_diary_no" name="sender_diary_no" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-12 form-group">
-                            <label for="subject">Subject</label>
-                            <textarea name="subject" id="subject" value="{{ $document->subject }}" rows="3" class="form-control @error('subject') is-invalid @enderror">{{ $document->subject }}</textarea>
-                            <div class="invalid-feedback"> @error('subject') {{ $errors->first('subject') }} @enderror </div>
-                        </div>
-                    </div>
-                </div>
-                {{-- END OF DOCUMENT IN CARD --}}
+                        
+                        @if($document->category->id != 2)
+                            
+                            <div class="col-2 form-group text-right">
+                                <label for="D_diaryNo">Diary No</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="text" id="D_diaryNo" name="D_diaryNo" value="{{ $diary }}" class="form-control form-control-sm @error('D_diaryNo') is-invalid @enderror">
+                                <div class="invalid-feedback"> @error('D_diaryNo') {{ $errors->first('D_diaryNo') }} @enderror </div>
+                            </div>
 
-                <div class="card p-2 pt-4 mt-2 bg-aliceblue" >
-                    <div class="row">
+                            <div class="col-2 form-group text-right">
+                                <label for="D_DateIN" >Date In</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="date" id="D_DateIN" name="D_DateIN" value={{ $today }} class="form-control form-control-sm @error('date_in') is-invalid @enderror">
+                                <div class="invalid-feedback"> @error('D_DateIN') {{ $errors->first('D_DateIN') }} @enderror </div>
+                            </div>
+                        
+                        @endif
+
                         <div class="col-2 form-group text-right">
-                            <label for="marked_to">Marked To</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="text" id="marked_to" name="marked_to" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="copy_to" >Copy To</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="text" id="copy_to" name="copy_to" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="" >Date Out</label>
-                        </div>
-                        <div class="col-4 form-group ">
-                            <input type="date" id="date_out" name="date_out" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-2 form-group text-right">
-                            <label for="file_date">Marked By</label>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="text" id="marked_by" name="marked_by" class="form-control form-control-sm">
-                        </div>
-                        {{-- <div class="offset-6 col-2 form-group text-right">
-                            <label for="file_url">Scanned File</h5>
-                        </div>
-                        <div class="col-4 form-group">
-                            <input type="file" name="file_url" id="file_url" class="form-control form-control-sm">
-                        </div> --}}
-                        <div class="col-12 form-group">
-                            <label for="remarks">Remarks</label>
-                            <textarea name="remarks" id="remarks" rows="3" class="form-control"></textarea>
+                                <label for="D_LetterNo" >Letter/File No.</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="text" id="D_LetterNo" name="D_LetterNo" class="form-control form-control-sm @error('D_LetterNo') is-invalid @enderror">
+                                <div class="invalid-feedback"> @error('D_LetterNo') {{ $errors->first('D_LetterNo') }} @enderror </div>
+                            </div>
+    
+    
+                            <div class="col-2 form-group text-right">
+                                <label for="D_DATE">Letter/File Date</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="date" id="D_DATE" name="D_DATE" value="{{ $category->id == 2 ? $today : null }}" class="form-control form-control-sm @error('D_DATE') is-invalid @enderror">
+                                <div class="invalid-feedback"> @error('D_DATE') {{ $errors->first('D_DATE') }} @enderror </div>
+                            </div>
+    
+    
+                            @if($document->category->id != 2)
+    
+                                <div class="col-2 form-group text-right">
+                                    <label for="D_SendersName">Received From</label>
+                                </div>
+                                <div class="col-4 form-group">
+                                    <input type="text" id="D_SendersName" name="D_SendersName" class="form-control form-control-sm @error('D_SendersName') is-invalid @enderror">
+                                    <div class="invalid-feedback"> @error('D_SendersName') {{ $errors->first('D_SendersName') }} @enderror </div>
+                                </div>
+    
+    
+                                <div class="col-2 form-group text-right">
+                                    <label for="D_SenderDYNo">Sender Dy No</label>
+                                </div>
+                                <div class="col-4 form-group">
+                                    <input type="text" id="D_SenderDYNo" name="D_SenderDYNo" class="form-control form-control-sm">
+                                </div>
+    
+                            @else 
+    
+                                <div class="col-2 form-group text-right">
+                                    <label for="D_LetteraddressedTo">Letter Addressed To</label>
+                                </div>
+                                <div class="col-4 form-group">
+                                    <input type="text" id="D_LetteraddressedTo" name="D_LetteraddressedTo" class="form-control form-control-sm">
+                                </div>
+    
+    
+                                <div class="col-2 form-group text-right">
+                                    <label for="D_LetterSignedBy">Letter Signed By</label>
+                                </div>
+                                <div class="col-4 form-group">
+                                    <input type="text" id="D_LetterSignedBy" name="D_LetterSignedBy" class="form-control form-control-sm">
+                                </div>
+    
+                            @endif
+    
+    
+                            <div class="col-12 form-group">
+                                <label for="D_Subject">Subject</label>
+                                <textarea name="D_Subject" id="D_Subject" rows="3" class="form-control @error('D_Subject') is-invalid @enderror"></textarea>
+                                <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
+                            </div>
+    
+                            
+                            <div class="col-6 form-group">
+                                <label for="dealing_officer">Dealing Officer</label>
+                                <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
+                                    <option value="" hidden>-</option>
+                                    @foreach ( \App\User::all() as $user)
+                                        <option value="{{ $user->id }}"> {{ $user->name }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {{-- END OF DOCUMENT OUR CARD --}}
+                    {{-- END OF DOCUMENT IN CARD --}}
+    
+                    <div class="card p-2 pt-4 mt-2 bg-aliceblue" >
+                        <div class="row">
+    
+                            <div class="col-2 form-group text-right">
+                                <label for="D_MarkedTo">Marked To</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="text" id="D_MarkedTo" name="D_MarkedTo" class="form-control form-control-sm">
+                            </div>
+    
+    
+                            <div class="col-2 form-group text-right">
+                                <label for="D_CopyTO" >Copy To</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="text" id="D_CopyTO" name="D_CopyTO" class="form-control form-control-sm">
+                            </div>
+    
+    
+                            <div class="col-2 form-group text-right">
+                                <label for="D_DateOut" >Date Out</label>
+                            </div>
+                            <div class="col-4 form-group ">
+                                <input type="date" id="D_DateOut" name="D_DateOut" class="form-control form-control-sm">
+                            </div>
+    
+    
+                            <div class="col-2 form-group text-right">
+                                <label for="D_MarkedBy">Marked By</label>
+                            </div>
+                            <div class="col-4 form-group">
+                                <input type="text" id="D_MarkedBy" name="D_MarkedBy" class="form-control form-control-sm">
+                            </div>
+    
+    
+                            <div class="offset-6 col-2 form-group text-right">
+                                <label for="D_fileno">Scanned File</h5>
+                            </div>
+                            <div class="col-4 form-group">
+                                {{-- <input type="file" name="file_url" id="file_url" class="form-control form-control-sm"> --}}
+                                <input type="text" name="D_fileno" id="D_fileno" class="form-control form-control-sm">
+                            </div>
+    
+    
+                            <div class="col-12 form-group">
+                                <label for="remarks">Remarks</label>
+                                <textarea name="D_Remarks" id="D_Remarks" rows="3" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                {{-- END OF DOCUMENT OUT CARD --}}
         
                 <div class="px-4 py-3">
-                    <a href="/document/search" class="btn dms-btn-primary mx-1 px-4">Search</a>
+                    <a href="/document/search?category={{ $document->category->id }}" class="btn dms-btn-primary mx-1 px-4">Search</a>
                     <button type="submit" formaction="/reference/create" class="btn dms-btn-primary mx-1 px-4">Save</button>
                     <a href="/"  class="btn dms-btn-primary mx-1 px-4">Cancel</a>
                     <a href="/"  class="btn dms-btn-primary mx-1 px-4">Exit</a>

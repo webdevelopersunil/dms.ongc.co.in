@@ -27,20 +27,22 @@ Route::get('/home', 'HomeController@index')->name('home');
 // })->name('login');
 
 // DISABLE IN PRODUCTION
-Route::get('/login','Auth\LoginController@showLoginForm')->name('login');
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
 
-Route::get('/login/{token}','Auth\LoginController@loginForm');
-Route::post('/login','Auth\LoginController@login');
-Route::post('/logout','Auth\LoginController@logout')->name('logout');
+Route::get('/login/{token}', 'Auth\LoginController@loginForm');
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 //Document
-Route::get('/document/create', 'DocumentController@empty');
+Route::get('/document/create', 'DocumentController@create');
 Route::post('/document/create', 'DocumentController@store');
-Route::get('/document/create/{category}', 'DocumentController@create' );
-Route::get('/document/create/{category}/{subcategory}', 'DocumentController@create' );
+Route::get('/document/create/{category}', 'DocumentController@create');
+Route::get('/document/create/{category}/{subcategory}', 'DocumentController@create');
 
-Route::get('/document/view/{id}', 'DocumentController@show' );
-Route::post('/document/view/{id}', 'DocumentController@update' );
+Route::get('/document/file/{id}', 'DocumentController@showFile');
+
+Route::get('/document/view/{id}', 'DocumentController@show');
+Route::post('/document/view/{id}', 'DocumentController@update');
 
 // Route::view('/document/search', 'document.search');
 Route::get('/document/search', 'DocumentController@searchForm');
@@ -49,26 +51,26 @@ Route::post('/document/search', 'DocumentController@search');
 Route::get('/document/print/{id}', 'DocumentController@print');
 
 //Reference
-Route::get('/reference/create', 'ReferenceController@index' );
-Route::get('/reference/create/{document}', 'ReferenceController@create' );
-Route::post('/reference/create', 'ReferenceController@store' );
+Route::get('/reference/create', 'ReferenceController@index');
+Route::get('/reference/create/{document}', 'ReferenceController@create');
+Route::post('/reference/create', 'ReferenceController@store');
 
 //Disha
-Route::get('/disha', 'DishaController@index' );
-Route::get('/disha/{document}', 'DishaController@show' );
-Route::post('/disha/{document}', 'DishaController@update' );
+Route::get('/disha', 'DishaController@index');
+Route::get('/disha/{document}', 'DishaController@show');
+Route::post('/disha/{document}', 'DishaController@update');
 
 //Reports
-Route::get('/reports', 'ReportsController@index' );
-Route::get('/reports/total', 'ReportsController@total' );
-Route::post('/reports/total', 'ReportsController@countTotal' );
+Route::get('/reports', 'ReportsController@index');
+Route::get('/reports/total', 'ReportsController@total');
+Route::post('/reports/total', 'ReportsController@countTotal');
 // Route::post('/reports/category', 'ReportsController@showTotal' );
-Route::post('/reports/category/{category}', 'ReportsController@showTotal' );
+Route::post('/reports/category/{category}', 'ReportsController@showTotal');
 
 Route::get('/reports/audit', 'ReportsController@audit');
 Route::get('/reports/audit/diary/{diary}', 'ReportsController@auditFilterbyDiary');
 Route::get('/reports/audit/date/{start}/{end}', 'ReportsController@auditFilterbyDate');
 
 //Users
-Route::get('/users/online', 'UserController@online' );
-Route::resource('/user', 'UserController' );
+Route::get('/users/online', 'UserController@online');
+Route::resource('/user', 'UserController');
