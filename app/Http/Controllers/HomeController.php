@@ -31,8 +31,21 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function test()
-    {
-        return Document::with('category')->where('category_id', 2)->limit(100)->get();
+    public function categories() {
+
+        $categories = Category::all();
+
+        return view('unlock.index', compact('categories'));
+    }
+
+    public function unlock(Request $request) {
+
+        $category = Category::find($request->category);
+
+        $category->cm_IsInUse = false;
+        $category->cm_UsedBy = '';
+        $category->save();
+
+        return redirect()->back()->with('success', 'Category Unlocked!');
     }
 }

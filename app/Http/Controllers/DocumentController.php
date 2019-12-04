@@ -40,6 +40,14 @@ class DocumentController extends Controller
         $category = Category::find($category);
         $subcategory = Subcategory::find($subcategory);
 
+        if($category->cm_IsInUse) {
+            return redirect('/home')->with('error', "Category is being used by $category->cm_UsedBy");
+        }
+
+        $category->cm_IsInUse = true;
+        $category->cm_UsedBy = Auth::user()->name;
+        $category->save();
+
         // if (User::where('category', $category)->where('working_on', 'Create')->count() > 0) {
         //     return redirect('/home')->with('error', 'Someone else is creating a document with the same category');
         // }
@@ -115,6 +123,8 @@ class DocumentController extends Controller
         // DB::table('auto_increment')->where('category', $request->category)->update(['counter' => $document->diary_no + 1]);
         $category = Category::find($request->category_id);
         $category->cm_diaryno = $document->D_diaryNo + 1;
+        $category->cm_IsInUse = false;
+        $category->cm_UsedBy = '';
         $category->save();
 
         return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully');

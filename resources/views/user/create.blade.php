@@ -28,6 +28,12 @@
                         </div>
                         <div class="col-xl-6">
                             <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="username" class="form-control" name="username" id="username">
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
                                 <label for="password">Password</label>
                                 <input type="text" class="form-control" name="password" id="password">
                             </div>

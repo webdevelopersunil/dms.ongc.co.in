@@ -74,3 +74,7 @@ Route::get('/reports/audit/date/{start}/{end}', 'ReportsController@auditFilterby
 //Users
 Route::get('/users/online', 'UserController@online');
 Route::resource('/user', 'UserController');
+
+//Unlock
+Route::get('/category/unlock', 'HomeController@categories');
+Route::post('/category/unlock', 'HomeController@unlock');
