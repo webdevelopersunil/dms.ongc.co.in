@@ -48,7 +48,7 @@ class DocumentController extends Controller
 
         $today = Carbon::now()->toDateString();
         // $diary = DB::table('auto_increment')->where('category', $category->id)->first()->counter;
-        $diary = $category->counter;
+        $diary = $category->cm_diaryno;
 
         return view('document.create', compact('category', 'subcategory', 'diary', 'today'));
     }
@@ -114,7 +114,7 @@ class DocumentController extends Controller
 
         // DB::table('auto_increment')->where('category', $request->category)->update(['counter' => $document->diary_no + 1]);
         $category = Category::find($request->category_id);
-        $category->counter = $document->D_diaryNo + 1;
+        $category->cm_diaryno = $document->D_diaryNo + 1;
         $category->save();
 
         return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully');
@@ -217,11 +217,11 @@ class DocumentController extends Controller
     {
 
         // return Document::with(['category', 'subcategory'])->find(201238);
-
+        $remember = new Document;
         $category = $request->input('category') ?? '';
         $subcategory = $request->input('subcategory') ?? '';
         $limitSearch = false;
-        return view('document.search', compact('category', 'subcategory', 'limitSearch'));
+        return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember'));
     }
 
     public function search(Request $request)
@@ -234,6 +234,7 @@ class DocumentController extends Controller
         });
 
         $conditions = [];
+        $remember = new Document;
 
         foreach ($filtered->keys() as $key) {
 
@@ -243,38 +244,49 @@ class DocumentController extends Controller
                 case 'category':
                     if ($filtered[$key] != 'All')
                         $condition = ['category_id', '=', $filtered[$key]];
+                        $remember->category_id = $filtered[$key];
                     break;
                 case 'subcategory':
                     if ($filtered[$key] != 'NA')
                         $condition = ['subcategory_id', '=', $filtered[$key]];
+                        $remember->subcategory_id = $filtered[$key];
                     break;
                 case 'date_from':
                     $condition = ['D_DATE', '>=', $filtered[$key]];
+                    $remember->D_DATE_from = $filtered[$key];
                     break;
                 case 'date_to':
                     $condition = ['D_DATE', '<=', $filtered[$key]];
+                    $remember->D_DATE_to = $filtered[$key];
                     break;
                 case 'date_in_from':
                     $condition = ['D_DateIN', '>=', $filtered[$key]];
+                    $remember->D_DateIN_from = $filtered[$key];
                     break;
                 case 'date_in_to':
                     $condition = ['D_DateIN', '<=', $filtered[$key]];
+                    $remember->D_DateIN_to = $filtered[$key];
                     break;
                 case 'date_out_from':
                     $condition = ['D_DateOut', '>=', $filtered[$key]];
+                    $remember->D_DateOut_from = $filtered[$key];
                     break;
                 case 'date_out_to':
                     $condition = ['D_DateOut', '<=', $filtered[$key]];
+                    $remember->D_DateOut_to = $filtered[$key];
                     break;
                 case 'diary_no':
                     $condition = ['D_diaryNo', '=', $filtered[$key]];
+                    $remember->D_diaryNo = $filtered[$key];
                     break;
                 case 'subject':
                     $condition = ['D_Subject', 'like', '%' . $filtered[$key] . '%'];
+                    $remember->D_Subject = $filtered[$key];
                     break;
                 default:
                     if ($filtered[$key] != null) {
                         $condition = [$key, 'like', '%' . $filtered[$key] . '%'];
+                        $remember->$key = $filtered[$key];
                     }
                     break;
             }
@@ -296,7 +308,7 @@ class DocumentController extends Controller
         //     ->orderBy('D_DateIN', 'desc')
         //     ->get();
 
-        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateOUT', 'asc')->limit(1000)->get();
+        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateOUT', 'asc')->limit(50000)->get();
 
         // if($documents->count() > 1000){
         //     return redirect('/document/search')->with('error', 'Too many results! Please narrow down your search');
@@ -309,7 +321,8 @@ class DocumentController extends Controller
             'conditions' => $conditions,
             'category' => $request->category,
             'subcategory' => $request->subcategory,
-            'limitSearch' => ($documents->count() == 1000)
+            'limitSearch' => ($documents->count() == 50000),
+            'remember' => $remember
         ]);
     }
 

@@ -14,6 +14,7 @@ class ReportsController extends Controller
     }
 
     public function total() {
+        abort(500);
         return view('reports.total.index');
     }
 
@@ -25,11 +26,11 @@ class ReportsController extends Controller
         ]);
 
         
-        $categories = DB::table('documents')->select('category', DB::raw('count(*) as total'))
-                                            ->where('date_in', '>=', $request->date_from)
-                                            ->where('date_out', '<=', $request->date_to)
-                                            ->orWhere('date_out', null)
-                                            ->groupBy('category')->get();
+        // $categories = DB::table('documents')->select('category', DB::raw('count(*) as total'))
+        //                                     ->where('D_DateIN', '>=', $request->date_from)
+        //                                     ->where('D_DateOUT', '<=', $request->date_to)
+        //                                     ->orWhere('D_DateOUT', null)
+        //                                     ->groupBy('category_id')->get();
 
         $count = DB::table('documents')->where('date_in', '>=', $request->date_from)
                                         ->where('date_out', '<=', $request->date_to)

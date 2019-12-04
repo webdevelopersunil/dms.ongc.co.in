@@ -15,9 +15,11 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('cm_code');
             $table->string('cm_name');
-            $table->bigInteger('counter');
+            $table->bigInteger('cm_diaryno');
+            $table->string('cm_folder');
+            $table->boolean('cm_IsInUse')->nullable();
+            $table->bigInteger('cm_UsedBy')->nullable();
             $table->timestamps();
         });
     }

@@ -21,10 +21,10 @@
                 @foreach ($documents as $index => $document)
                     <tr>
                         <td> {{ $index + 1 }} </td>
-                        <td> <a href="/disha/{{ $document->id }}"> {{ $document->file_no }} </a> </td>
-                        <td> {{ $document->subject }}</td>
-                        <td> {{ $document->date_in }}</td>
-                        <td> {{ $document->date_out }}</td>
+                        <td> <a href="/disha/{{ $document->id }}"> {{ $document->D_fileno }} </a> </td>
+                        <td> {{ $document->D_Subject }}</td>
+                        <td> {{ $document->D_DateIN }}</td>
+                        <td> {{ $document->D_DateOut }}</td>
                     </tr>
                 @endforeach
             </tbody>

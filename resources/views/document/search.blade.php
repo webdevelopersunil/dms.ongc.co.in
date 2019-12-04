@@ -59,98 +59,98 @@
                     <label for="diary_no">Diary No</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="diary_no" name="diary_no" class="form-control form-control-sm">
+                    <input type="text" id="diary_no" value="{{ $remember->D_diaryNo }}" name="diary_no" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="D_LetterFromGovt">Letter From Govt.</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="D_LetterFromGovt" name="D_LetterFromGovt" class="form-control form-control-sm">
+                    <input type="text" id="D_LetterFromGovt" value="{{ $remember->D_LetterFromGovt }}" name="D_LetterFromGovt" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="date_from">Date From</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="date" id="date_from" name="date_from" class="form-control form-control-sm">
+                    <input type="date" id="date_from" value="{{ $remember->D_DATE_from }}" name="date_from" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="date_to">Date To</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="date" id="date_to" name="date_to" class="form-control form-control-sm">
+                    <input type="date" id="date_to" value="{{ $remember->D_DATE_to }}" name="date_to" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="D_LetterNo">Letter No</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="D_LetterNo" name="D_LetterNo" class="form-control form-control-sm">
+                    <input type="text" id="D_LetterNo" value="{{ $remember->D_LetterNo }}" name="D_LetterNo" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="D_SendersName">Received From</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="D_SendersName" name="D_SendersName" class="form-control form-control-sm">
+                    <input type="text" id="D_SendersName" value="{{ $remember->D_SendersName }}" name="D_SendersName" class="form-control form-control-sm">
                 </div>
     
                 <div class="col-2 text-right px-0">
                     <label for="subject">Subject</label>
                 </div>
                 <div class="col-10 form-group ">
-                    <input type="text" id="subject" name="subject" class="form-control form-control-sm">
+                    <input type="text" id="subject" value="{{ $remember->D_Subject }}" name="subject" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="date_in_from">Date In (From)</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="date" id="date_in_from" name="date_in_from" class="form-control form-control-sm">
+                    <input type="date" id="date_in_from" value="{{ $remember->D_DateIN_from }}" name="date_in_from" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="date_in_to">Date In (To)</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="date" id="date_in_to" name="date_in_to" class="form-control form-control-sm">
+                    <input type="date" id="date_in_to" value="{{ $remember->D_DateIN_to }}" name="date_in_to" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="date_out_from">Date Out (From)</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="date" id="date_out_from" name="date_out_from" class="form-control form-control-sm">
+                    <input type="date" id="date_out_from" value="{{ $remember->D_DateOut_from }}"  name="date_out_from" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="date_in_to">Date out (To)</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="date" id="date_out_to" name="date_out_to" class="form-control form-control-sm">
+                    <input type="date" id="date_out_to" value="{{ $remember->D_DateOut_to }}"  name="date_out_to" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="D_MarkedBy">Marked By</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="D_MarkedBy" name="D_MarkedBy" class="form-control form-control-sm">
+                    <input type="text" id="D_MarkedBy" value="{{ $remember->D_MarkedBy }}" name="D_MarkedBy" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="D_MarkedTo">Marked To</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="D_MarkedTo" name="D_MarkedTo" class="form-control form-control-sm">
+                    <input type="text" id="D_MarkedTo" value="{{ $remember->D_MarkedTo }}" name="D_MarkedTo" class="form-control form-control-sm">
                 </div>
 
                 <div class="col-2 text-right px-0">
                     <label for="D_Remarks">Remarks</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="D_Remarks" name="D_Remarks" class="form-control form-control-sm">
+                    <input type="text" id="D_Remarks" value="{{ $remember->D_Remarks }}" name="D_Remarks" class="form-control form-control-sm">
                 </div>
 
                 <div class="offset-2 col-10 my-2">

@@ -23,11 +23,11 @@ class CounterSeed extends Seeder
         //     ['category' => Category::create(["cm_code" => "005", "cm_name" => "misc"]), 'counter' => 0],
         // ]);
 
-        Category::create(["cm_code" => "001", "cm_name" => "govt", "counter" => 1]);
-        Category::create(["cm_code" => "002", "cm_name" => "cmd", "counter" => 1]);
-        Category::create(["cm_code" => "003", "cm_name" => "general", "counter" => 1]);
-        Category::create(["cm_code" => "004", "cm_name" => "files", "counter" => 1]);
-        Category::create(["cm_code" => "005", "cm_name" => "misc", "counter" => 1]);
+        // Category::create(["cm_code" => "001", "cm_name" => "govt", "counter" => 1]);
+        // Category::create(["cm_code" => "002", "cm_name" => "cmd", "counter" => 1]);
+        // Category::create(["cm_code" => "003", "cm_name" => "general", "counter" => 1]);
+        // Category::create(["cm_code" => "004", "cm_name" => "files", "counter" => 1]);
+        // Category::create(["cm_code" => "005", "cm_name" => "misc", "counter" => 1]);
 
         User::create([
             "name" => "Sreenath S Das",

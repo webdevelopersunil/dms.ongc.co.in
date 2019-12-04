@@ -31,21 +31,21 @@ class CreateDocumentsTable extends Migration
             $table->bigInteger('D_diaryNo')->nullable();
             $table->string('D_LetterFromGovt')->nullable();
             $table->string('D_fileno')->nullable();
-            $table->date('D_DateIN')->nullable();
-            $table->string('D_SenderDYNo', 1000)->nullable();
-
-            $table->bigInteger('dealing_officer')->nullable();
-
             $table->string('D_MarkedTo')->nullable();
             $table->string('D_CopyTO')->nullable();
+            $table->date('D_DateIN')->nullable();
             $table->date('D_DateOut')->nullable();
             $table->string('D_MarkedBy')->nullable();
             $table->text('D_Remarks')->nullable();
             $table->string('D_LetteraddressedTo')->nullable();
             $table->string('D_LetterSignedBy')->nullable();
+            $table->string('D_SenderDYNo', 1000)->nullable();
+
+            $table->bigInteger('dealing_officer')->nullable();
+
             // $table->string('file_url')->nullable();
 
-            $table->bigInteger('reference_of')->default(-1);
+            // $table->bigInteger('reference_of')->default(-1);
 
             $table->timestamps();
         });
