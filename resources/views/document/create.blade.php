@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-4">
                                 <select readonly class="form-control" name="subcategory_id" >
-                                    <option value="{{ $subcategory->id }}"> {{ $subcategory->scm_head }} </option>
+                                    <option value="{{ $subcategory->id }}"> {{ $subcategory->scm_head }} - {{ $subcategory->scm_desc }} </option>
                                 </select>
                             </div>
                         @endif
@@ -83,6 +83,14 @@
                             <div class="invalid-feedback"> @error('D_DATE') {{ $errors->first('D_DATE') }} @enderror </div>
                         </div>
 
+                        <div class="col-2 form-group text-right">
+                            <label for="D_Subject">Subject</label>
+                        </div>
+                        <div class="col-10 form-group">
+                            <textarea name="D_Subject" id="D_Subject" rows="3" class="form-control @error('D_Subject') is-invalid @enderror"></textarea>
+                            <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
+                        </div>
+
 
                         @if($category->id != 2)
 
@@ -100,6 +108,16 @@
                             </div>
                             <div class="col-4 form-group">
                                 <input type="text" id="D_SenderDYNo" name="D_SenderDYNo" class="form-control form-control-sm">
+                            </div>
+
+                            <div class="col-6 form-group">
+                                <label for="dealing_officer">Dealing Officer</label>
+                                <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
+                                    <option value="" hidden>-</option>
+                                    @foreach ( \App\User::all() as $user)
+                                        <option value="{{ $user->id }}"> {{ $user->name }} </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                         @else 
@@ -121,23 +139,8 @@
 
                         @endif
 
-
-                        <div class="col-12 form-group">
-                            <label for="D_Subject">Subject</label>
-                            <textarea name="D_Subject" id="D_Subject" rows="3" class="form-control @error('D_Subject') is-invalid @enderror"></textarea>
-                            <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
-                        </div>
-
                         
-                        <div class="col-6 form-group">
-                            <label for="dealing_officer">Dealing Officer</label>
-                            <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
-                                <option value="" hidden>-</option>
-                                @foreach ( \App\User::all() as $user)
-                                    <option value="{{ $user->id }}"> {{ $user->name }} </option>
-                                @endforeach
-                            </select>
-                        </div>
+                        
                     </div>
                 </div>
                 {{-- END OF DOCUMENT IN CARD --}}
@@ -197,8 +200,8 @@
                 <div class="px-4 py-3">
                     <a href="/document/search?category={{ $category->id }}" class="btn dms-btn-primary mx-1 px-4">Search</a>
                     <button type="submit" formaction="/document/create" class="btn dms-btn-primary mx-1 px-4">Save</button>
-                    <a href="/"  class="btn dms-btn-primary mx-1 px-4">Cancel</a>
-                    <a href="/"  class="btn dms-btn-primary mx-1 px-4">Exit</a>
+                    <a href="/exit?category={{ $category->id }}"  class="btn dms-btn-primary mx-1 px-4">Cancel</a>
+                    <a href="/exit?category={{ $category->id }}"  class="btn dms-btn-primary mx-1 px-4">Exit</a>
                 </div>
             </form>
         </div>

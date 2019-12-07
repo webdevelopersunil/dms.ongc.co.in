@@ -11,6 +11,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -36,7 +38,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/category/unlock">UNLOCK</a>
+                            <a class="nav-link" href="/category/unlock">Unlock</a>
                         </li>
                     </ul>
 
@@ -54,7 +56,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="/user">USERS</a>
+                                <a class="nav-link" href="/user">Users</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -84,5 +86,7 @@
             @yield('content')
         </main>
     </div>
+
+
 </body>
 </html>

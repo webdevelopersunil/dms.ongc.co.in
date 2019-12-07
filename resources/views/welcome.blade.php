@@ -7,9 +7,10 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">  
+        <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
-        <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
@@ -79,11 +80,42 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div style="overflow-x:scroll">
+                <table class="table table-bordered" id="table" style="width:200vw">
+                    <thead>
+                       <tr>
+                          <th>id</th>
+                          <th>subject</th>
+                          <th>diaryno</th>
+                       </tr>
+                    </thead>
+                 </table>
+            </div>
+
+            {{-- <div class="content">
                 <div class="title m-b-md">
                     DMS<sup>++</sup>
                 </div>
-            </div>
+            </div> --}}
         </div>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <script>
+            $(function() {
+                $('#table').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: '/test',
+                    columns: [
+                            { data: 'id', name: 'id' },
+                            { data: 'D_Subject', name: 'D_Subject' },
+                            { data: 'D_diaryNo', name: 'D_diaryNo' }
+                        ]
+                });
+            });
+        </script>
     </body>
 </html>

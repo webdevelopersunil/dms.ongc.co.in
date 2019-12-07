@@ -13,11 +13,12 @@
 
 Route::get('/', function () {
     return redirect('/home');
+    // return view('welcome');
 });
 
 Auth::routes();
 
-Route::get('/test', 'HomeController@test');
+Route::get('/test', 'DocumentController@test');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -47,6 +48,8 @@ Route::post('/document/view/{id}', 'DocumentController@update');
 // Route::view('/document/search', 'document.search');
 Route::get('/document/search', 'DocumentController@searchForm');
 Route::post('/document/search', 'DocumentController@search');
+Route::get('/document/reset', 'DocumentController@resetForm');
+Route::get('/document/sort', 'DocumentController@sort');
 
 Route::get('/document/print/{id}', 'DocumentController@print');
 
@@ -78,3 +81,6 @@ Route::resource('/user', 'UserController');
 //Unlock
 Route::get('/category/unlock', 'HomeController@categories');
 Route::post('/category/unlock', 'HomeController@unlock');
+
+//Exit
+Route::get('/exit', 'HomeController@exit');

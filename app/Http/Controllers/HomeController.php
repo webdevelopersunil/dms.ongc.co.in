@@ -48,4 +48,15 @@ class HomeController extends Controller
 
         return redirect()->back()->with('success', 'Category Unlocked!');
     }
+
+    public function exit(Request $request) {
+        $input = $request->input('category');
+        $category = Category::find($input);
+
+        $category->cm_IsInUse = false;
+        $category->cm_UsedBy = '';
+        $category->save();
+
+        return redirect('/home');
+    }
 }

@@ -26,10 +26,10 @@
                             <td> {{ $category->cm_name }} </td>
                             <td> {{ $category->cm_IsInUse ? 'LOCKED' : '' }} </td>
                             <td>
-                                <form action="/category/unlock/" method="post">
+                                <form action="/category/unlock" method="post">
                                     @csrf 
                                     <input type="hidden" name="category" value="{{ $category->id }}">
-                                    <button type="submit" class="btn btn-danger">Unlock</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Unlock</button>
                                 </form>
                             </td>
                         </tr>

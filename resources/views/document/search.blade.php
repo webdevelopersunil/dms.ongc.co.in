@@ -44,7 +44,7 @@
                     <select name="subcategory" id="subcategory" class="form-control form-control-sm">
                         <option value="NA">NA</option>
                         @foreach (\App\Subcategory::all() as $item)
-                            <option @if($item->id == $subcategory) selected @endif value="{{ $item->id }}"> {{ $item->scm_head }} </option>
+                            <option @if($item->id == $subcategory) selected @endif value="{{ $item->id }}"> {{ $item->scm_head }} - {{ $item->scm_desc }} </option>
                         @endforeach
                         {{-- <option value="secret_letter">CMD|01 Secret Letters</option>
                         <option value="special_reply"> CMD|02 Special Reply of Misc</option>
@@ -155,7 +155,7 @@
 
                 <div class="offset-2 col-10 my-2">
                     <button class="btn dms-btn-primary mx-1 px-4">Search</button>
-                    <a class="btn dms-btn-primary mx-1 px-4" href="/document/search">Reset</a>
+                    <a class="btn dms-btn-primary mx-1 px-4" href="/document/reset">Reset</a>
                     <a href="/" class="btn dms-btn-primary mx-1 px-4">Exit</a>
                     <button type="button" class="btn dms-btn-primary mx-1 px-4" data-toggle="modal" data-target="#createModal">Create Document</button>
                 </div>
@@ -168,28 +168,53 @@
                 
                 <div class="card-header">
                     <h4>Search Results</h4>
-                    <h5> Total Documents: {{ $documents->count() }}. 
+                    {{-- <h5> Total Documents: {{ $documents->count() }}. 
                         @if($limitSearch)
-                            <span class="text-danger float-right"> Too many results. Search limited to 1000 results </span>
+                            <span class="text-danger float-right"> Too many results. Search limited to 50000 results </span>
                         @endif
-                    </h5>
+                    </h5> --}}
                 </div>
 
                 <div class="card-body" style="overflow-x: scroll; overflow-y: scroll; height: 60vh">
                     
-                    <table class="table table-bordered" style="width:200vw">
+                    <table class="table table-bordered" style="width:300vw">
 
                         <thead>
                             <tr>
                                 <th> View </th>
                                 <th> Edit </th>
                                 <th> Print </th>
-                                <th> Diary No </th>
-                                <th> Letter No </th>
-                                <th style="width:5%"> Date In </th>
-                                <th style="width:5%"> Date Out </th>
-                                <th style="width:5%"> File Date </th>
-                                <th> Received From </th>
+                                <th style="width:4%"> 
+                                    {{-- <a href="/document/sort?column=D_diaryNo"> Diary No </a>  --}}
+                                    Diary No
+                                    <a href="/document/sort?column=D_diaryNo&order=asc" class="text-success"> ASC </a>
+                                    <a href="/document/sort?column=D_diaryNo&order=desc" class="text-danger"> DSC </a>
+                                </th>
+                                <th> 
+                                    {{-- <a href="/document/sort?column=D_LetterNo"> Letter No </a>  --}}
+                                    Letter No
+                                    <a href="/document/sort?column=D_LetterNo&order=asc" class="text-success"> ASC </a>
+                                    <a href="/document/sort?column=D_LetterNo&order=desc" class="text-danger"> DSC </a>
+                                </th>
+                                <th style="width:5%"> 
+                                    {{-- <a href="/document/sort?column=D_DateIN"> Date In </a> --}}
+                                    Date In
+                                    <a href="/document/sort?column=D_DateIN&order=asc" class="text-success"> ASC </a>
+                                    <a href="/document/sort?column=D_DateIN&order=desc" class="text-danger"> DSC </a>
+                                </th>
+                                <th style="width:5%"> 
+                                    {{-- <a href="/document/sort?column=D_DateOut"> Date Out </a>  --}}
+                                    DateOut
+                                    <a href="/document/sort?column=D_DateOut&order=asc" class="text-success"> ASC </a>
+                                    <a href="/document/sort?column=D_DateOut&order=desc" class="text-danger"> DSC </a>
+                                </th>
+                                <th style="width:5%"> 
+                                    {{-- <a href="/document/sort?column=D_DATE"> File Date </a>  --}}
+                                    File Date
+                                    <a href="/document/sort?column=D_DATE&order=asc" class="text-success"> ASC </a>
+                                    <a href="/document/sort?column=D_DATE&order=desc" class="text-danger"> DSC </a>
+                                </th>
+                                <th> {{ $category == 2 ? 'Letter Addressed To' : 'Received From' }} </th>
                                 <th> Subject </th>
                                 <th> Marked To </th>
                                 <th> Copy To </th>
@@ -200,9 +225,11 @@
 
                         <tbody>
                             @foreach ($documents as $document )
-                                <tr class="{{ $document->D_DateOut ? '' : 'highlighted' }}" >
+                                <tr class="{{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}" >
                                     <td> 
-                                        @if($document->D_fileno) <a href="/document/file/{{ $document->id }}"> View </a> @endif 
+                                        @if($document->D_fileno) <a href="/document/file/{{ $document->id }}"> View </a> 
+                                        @else <a href="#">View</a>
+                                        @endif 
                                     </td>
                                     <td> <a href="/document/view/{{ $document->id }}"> Edit </a> </td>
                                     <td> <a href="/document/print/{{ $document->id }}">Print </a> </td>
@@ -215,13 +242,13 @@
                                         @endif --}}
                                     </td>
                                     <td> <p class="my-0"> {{ $document->D_LetterNo }} </p>
-                                        <span class="badge badge-primary"> {{ $document->category->cm_name }} </span>
-                                        <span class="badge badge-danger"> {{ $document->subcategory ? $document->subcategory->scm_head : '' }} </span>
+                                        {{-- <span class="badge badge-primary"> {{ $document->category->cm_name }} </span>
+                                        <span class="badge badge-danger"> {{ $document->subcategory ? $document->subcategory->scm_head : '' }} </span> --}}
                                     </td>
                                     <td> {{ $document->D_DateIN }}</td>
                                     <td> {{ $document->D_DateOut }}</td>
                                     <td> {{ $document->D_DATE }}</td>
-                                    <td> {{ $document->D_SendersName }}</td>
+                                    <td> {{ $document->category_id == 2 ? $document->D_LetteraddressedTo : $document->D_SendersName }}</td>
                                     <td> {{ $document->D_Subject }}</td>
                                     <td> {{ $document->D_MarkedTo }}</td>
                                     <td> {{ $document->D_CopyTO }}</td>
@@ -232,6 +259,8 @@
                         </tbody>
 
                     </table>
+
+                    {{ $documents->links() }}
 
                 </div>
 

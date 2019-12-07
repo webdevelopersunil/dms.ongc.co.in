@@ -11,6 +11,7 @@ use App\Events\UserEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class DocumentController extends Controller
 {
@@ -223,8 +224,69 @@ class DocumentController extends Controller
         //
     }
 
+    public function resetForm(Request $request)
+    {
+        $remember = new Document;
+        
+        session(['conditions' => null]);
+        session(['remember' => $remember]);
+
+        $category = $request->input('category') ?? '';
+        $subcategory = $request->input('subcategory') ?? '';
+        $limitSearch = false;
+        return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember'));
+    }
+
+    public function sort(Request $request) {
+
+        if(session('conditions') && session('remember')) {
+
+            if($request->input('column')) {
+                $column = $request->input('column') ?? 'D_diaryNo';
+                session(['sortBy' => $column ]);
+            } else {
+                $column = session('sortBy');
+            }
+            
+            $order = $request->input('order') ?? 'asc';
+            $conditions = session('conditions');
+            $remember = session('remember');
+
+            $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy($column, $order)->paginate(100);
+
+            return view('document.search')->with([
+                'documents' => $documents,
+                'selected' => '',
+                'conditions' => $conditions,
+                'category' => $request->category,
+                'subcategory' => $request->subcategory,
+                'limitSearch' => ($documents->count() == 50000),
+                'remember' => $remember
+            ]);
+        }
+
+        abort(500, 'Session error while sorting data!');
+    }
+
     public function searchForm(Request $request)
     {
+
+        if(session('conditions') && session('remember')) {
+
+            $conditions = session('conditions');
+            $remember = session('remember');
+            $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateIN', 'desc')->paginate(100);
+
+            return view('document.search')->with([
+                'documents' => $documents,
+                'selected' => '',
+                'conditions' => $conditions,
+                'category' => $request->category,
+                'subcategory' => $request->subcategory,
+                'limitSearch' => ($documents->count() == 50000),
+                'remember' => $remember
+            ]);
+        }
 
         // return Document::with(['category', 'subcategory'])->find(201238);
         $remember = new Document;
@@ -318,12 +380,18 @@ class DocumentController extends Controller
         //     ->orderBy('D_DateIN', 'desc')
         //     ->get();
 
-        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateOUT', 'asc')->limit(50000)->get();
+        // PROD
+        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateIN', 'desc')->paginate(100);
+
+        // $documents = Document::cursor()->where('category_id',1)->where('D_diaryno', '<', 100)->all();
 
         // if($documents->count() > 1000){
         //     return redirect('/document/search')->with('error', 'Too many results! Please narrow down your search');
         // }
         // $documents = Document::where('diary_no', $request->diary_no)->get();
+
+        session(['conditions' => $conditions]);
+        session(['remember' => $remember]);
 
         return view('document.search')->with([
             'documents' => $documents,
@@ -357,5 +425,11 @@ class DocumentController extends Controller
         }
 
         return redirect("http://dms.ongc.co.in/storage/$url");
+    }
+
+    public function test() {
+        // return DataTables::of(Document::where('id', '<', 100))->make(true);
+
+        return Document::paginate(100);
     }
 }
