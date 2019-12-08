@@ -11,15 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect('/home');
-    // return view('welcome');
-});
+// Route::get('/', function () {
+//     return redirect('/home');
+//     // return view('welcome');
+// });
 
 Auth::routes();
 
-Route::get('/test', 'DocumentController@test');
+// Route::get('/test', 'DocumentController@test');
 
+Route::get('/', 'HomeController@index')->name('welcome');
 Route::get('/home', 'HomeController@index')->name('home');
 
 // ENABLE IN PRODUCTION
