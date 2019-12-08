@@ -68,6 +68,7 @@ Route::get('/reports', 'ReportsController@index');
 Route::get('/reports/total', 'ReportsController@total');
 Route::post('/reports/total', 'ReportsController@countTotal');
 // Route::post('/reports/category', 'ReportsController@showTotal' );
+Route::get('/reports/category/{category}', 'ReportsController@showPaginate');
 Route::post('/reports/category/{category}', 'ReportsController@showTotal');
 
 Route::get('/reports/audit', 'ReportsController@audit');

@@ -14,7 +14,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th>User Name</th>
-                        <th>Working On</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>

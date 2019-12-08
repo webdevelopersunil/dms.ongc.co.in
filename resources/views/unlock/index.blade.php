@@ -24,7 +24,7 @@
                         <tr>
                             <td> {{ $category->id }} </td>
                             <td> {{ $category->cm_name }} </td>
-                            <td> {{ $category->cm_IsInUse ? 'LOCKED' : '' }} </td>
+                            <td> {!! $category->cm_IsInUse ? '<i data-feather="lock"></i>' : '' !!} </td>
                             <td>
                                 <form action="/category/unlock" method="post">
                                     @csrf 

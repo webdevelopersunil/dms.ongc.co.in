@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class ReportsController extends Controller
     }
 
     public function total() {
-        abort(500);
+        // abort(500);
         return view('reports.total.index');
     }
 
@@ -26,15 +27,15 @@ class ReportsController extends Controller
         ]);
 
         
-        // $categories = DB::table('documents')->select('category', DB::raw('count(*) as total'))
-        //                                     ->where('D_DateIN', '>=', $request->date_from)
-        //                                     ->where('D_DateOUT', '<=', $request->date_to)
-        //                                     ->orWhere('D_DateOUT', null)
-        //                                     ->groupBy('category_id')->get();
+        $categories = DB::table('documents')->select('category_id', DB::raw('count(*) as total'))
+                                            ->where('D_DateIN', '>=', $request->date_from)
+                                            ->where('D_DateOUT', '<=', $request->date_to)
+                                            // ->orWhere('D_DateOUT', null)
+                                            ->groupBy('category_id')->get();
 
-        $count = DB::table('documents')->where('date_in', '>=', $request->date_from)
-                                        ->where('date_out', '<=', $request->date_to)
-                                        ->orWhere('date_out', null)
+        $count = DB::table('documents')->where('D_DateIN', '>=', $request->date_from)
+                                        ->where('D_DateOut', '<=', $request->date_to)
+                                        // ->orWhere('D_DateIN', null)
                                         ->count();
 
         return view('reports.total.show')->with([
@@ -48,13 +49,45 @@ class ReportsController extends Controller
 
     public function showTotal( Request $request, $category ){
         // $documents =  Document::where('category', $request->selected )->get();
-        $documents =  Document::where('category', $category )->get();
+        
+        $documents =  Document::where([
+            [ 'category_id', $category ],
+            [ 'D_DateIN', '>=', $request->date_from],
+            [ 'D_DateOut', '<=', $request->date_to],
+        ])->orderBy('D_DATE', 'desc')->paginate(100);
+
+        session(['categories' => $request->categories]);
+        session(['count' => $request->count]);
+        session(['date_from' => $request->date_from]);
+        session(['date_to' => $request->date_to]);
 
         return view('reports.total.show')->with([
             'categories' => json_decode($request->categories),
             'count' => $request->count,
             'date_from' => $request->date_from,
             'date_to' => $request->date_to,
+            'documents' => $documents
+        ]);
+    }
+
+    public function showPaginate(Request $request, $category) {
+
+        $documents =  Document::where('category_id', $category )->orderBy('D_DATE', 'desc')->paginate(100);
+
+        $categories = session('categories');
+        $count = session('count');
+        $date_from = session('date_from');
+        $date_to = session('date_to');
+
+        if(!session('categories') || !session('count')) {
+            abort(500, 'Error getting session variables');
+        }
+
+        return view('reports.total.show')->with([
+            'categories' => json_decode($categories),
+            'count' => $count,
+            'date_from' => $date_from,
+            'date_to' => $date_to,
             'documents' => $documents
         ]);
     }

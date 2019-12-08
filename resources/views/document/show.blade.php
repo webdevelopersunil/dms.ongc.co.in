@@ -176,20 +176,24 @@
                         @endif
                         
                         
-                        <div class="col-12 form-group">
+                        <div class="col-2 form-group text-right">
                             <label for="D_Subject">Subject</label>
+                        </div>
+                        <div class="col-10 form-group">
                             <textarea name="D_Subject" id="D_Subject" rows="3" value="{{ $document->D_Subject }}" class="form-control @error('D_Subject') is-invalid @enderror">{{ $document->D_Subject }}</textarea>
                             <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
                         </div>
-                        {{-- <div class="col-6 form-group">
+                        
+                        <div class="col-6 form-group">
                             <label for="dealing_officer">Dealing Officer</label>
                             <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
                                 <option value="" hidden>-</option>
-                                @foreach ( \App\User::all() as $user)
+                                @foreach ( \App\User::where('isDealingOfficer', true)->get() as $user)
                                     <option value="{{ $user->id }}" @if( $user->id == $document->dealing_officer ) selected="selected" @endif > {{ $user->name }} </option>
                                 @endforeach
                             </select>
-                        </div> --}}
+                        </div>
+
                     </div>
                 </div>
                 {{-- END OF DOCUMENT IN CARD --}}

@@ -62,12 +62,14 @@
                     <input type="text" id="diary_no" value="{{ $remember->D_diaryNo }}" name="diary_no" class="form-control form-control-sm">
                 </div>
 
-                <div class="col-2 text-right px-0">
+                <div class="col-6"></div>
+
+                {{-- <div class="col-2 text-right px-0">
                     <label for="D_LetterFromGovt">Letter From Govt.</label>
                 </div>
                 <div class="col-4 form-group ">
                     <input type="text" id="D_LetterFromGovt" value="{{ $remember->D_LetterFromGovt }}" name="D_LetterFromGovt" class="form-control form-control-sm">
-                </div>
+                </div> --}}
 
                 <div class="col-2 text-right px-0">
                     <label for="date_from">Date From</label>
@@ -168,11 +170,11 @@
                 
                 <div class="card-header">
                     <h4>Search Results</h4>
-                    {{-- <h5> Total Documents: {{ $documents->count() }}. 
-                        @if($limitSearch)
+                    <h5> Total Documents: {{ $count }}. 
+                        {{-- @if($limitSearch)
                             <span class="text-danger float-right"> Too many results. Search limited to 50000 results </span>
-                        @endif
-                    </h5> --}}
+                        @endif --}}
+                    </h5>
                 </div>
 
                 <div class="card-body" style="overflow-x: scroll; overflow-y: scroll; height: 60vh">
@@ -187,32 +189,32 @@
                                 <th style="width:4%"> 
                                     {{-- <a href="/document/sort?column=D_diaryNo"> Diary No </a>  --}}
                                     Diary No
-                                    <a href="/document/sort?column=D_diaryNo&order=asc" class="text-success"> ASC </a>
-                                    <a href="/document/sort?column=D_diaryNo&order=desc" class="text-danger"> DSC </a>
+                                    <a href="/document/sort?column=D_diaryNo&order=asc" class="text-success"> <i data-feather="chevrons-up"></i></a>
+                                    <a href="/document/sort?column=D_diaryNo&order=desc" class="text-danger"> <i data-feather="chevrons-down"></i> </a>
                                 </th>
                                 <th> 
                                     {{-- <a href="/document/sort?column=D_LetterNo"> Letter No </a>  --}}
                                     Letter No
-                                    <a href="/document/sort?column=D_LetterNo&order=asc" class="text-success"> ASC </a>
-                                    <a href="/document/sort?column=D_LetterNo&order=desc" class="text-danger"> DSC </a>
+                                    {{-- <a href="/document/sort?column=D_LetterNo&order=asc" class="text-success"> <i data-feather="chevrons-up"></i> </a>
+                                    <a href="/document/sort?column=D_LetterNo&order=desc" class="text-danger"> <i data-feather="chevrons-down"></i> </a> --}}
                                 </th>
                                 <th style="width:5%"> 
                                     {{-- <a href="/document/sort?column=D_DateIN"> Date In </a> --}}
                                     Date In
-                                    <a href="/document/sort?column=D_DateIN&order=asc" class="text-success"> ASC </a>
-                                    <a href="/document/sort?column=D_DateIN&order=desc" class="text-danger"> DSC </a>
+                                    <a href="/document/sort?column=D_DateIN&order=asc" class="text-success"> <i data-feather="chevrons-up"></i> </a>
+                                    <a href="/document/sort?column=D_DateIN&order=desc" class="text-danger"> <i data-feather="chevrons-down"></i> </a>
                                 </th>
                                 <th style="width:5%"> 
                                     {{-- <a href="/document/sort?column=D_DateOut"> Date Out </a>  --}}
                                     DateOut
-                                    <a href="/document/sort?column=D_DateOut&order=asc" class="text-success"> ASC </a>
-                                    <a href="/document/sort?column=D_DateOut&order=desc" class="text-danger"> DSC </a>
+                                    <a href="/document/sort?column=D_DateOut&order=asc" class="text-success"> <i data-feather="chevrons-up"></i> </a>
+                                    <a href="/document/sort?column=D_DateOut&order=desc" class="text-danger"> <i data-feather="chevrons-down"></i> </a>
                                 </th>
                                 <th style="width:5%"> 
                                     {{-- <a href="/document/sort?column=D_DATE"> File Date </a>  --}}
-                                    File Date
-                                    <a href="/document/sort?column=D_DATE&order=asc" class="text-success"> ASC </a>
-                                    <a href="/document/sort?column=D_DATE&order=desc" class="text-danger"> DSC </a>
+                                    Letter Date
+                                    <a href="/document/sort?column=D_DATE&order=asc" class="text-success"> <i data-feather="chevrons-up"></i> </a>
+                                    <a href="/document/sort?column=D_DATE&order=desc" class="text-danger"> <i data-feather="chevrons-down"></i> </a>
                                 </th>
                                 <th> {{ $category == 2 ? 'Letter Addressed To' : 'Received From' }} </th>
                                 <th> Subject </th>
@@ -227,7 +229,7 @@
                             @foreach ($documents as $document )
                                 <tr class="{{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}" >
                                     <td> 
-                                        @if($document->D_fileno) <a href="/document/file/{{ $document->id }}"> View </a> 
+                                        @if($document->D_fileno) <a target="_blank" href="/document/file/{{ $document->id }}"> View </a> 
                                         @else <a href="#">View</a>
                                         @endif 
                                     </td>
@@ -245,9 +247,9 @@
                                         {{-- <span class="badge badge-primary"> {{ $document->category->cm_name }} </span>
                                         <span class="badge badge-danger"> {{ $document->subcategory ? $document->subcategory->scm_head : '' }} </span> --}}
                                     </td>
-                                    <td> {{ $document->D_DateIN }}</td>
-                                    <td> {{ $document->D_DateOut }}</td>
-                                    <td> {{ $document->D_DATE }}</td>
+                                    <td> {{ $document->D_DateIN ? date('d-m-Y', strtotime($document->D_DateIN)) : '' }}</td>
+                                    <td> {{ $document->D_DateOut ? date('d-m-Y', strtotime($document->D_DateOut)) : '' }}</td>
+                                    <td> {{ $document->D_DATE ? date('d-m-Y', strtotime($document->D_DATE)) : '' }}</td>
                                     <td> {{ $document->category_id == 2 ? $document->D_LetteraddressedTo : $document->D_SendersName }}</td>
                                     <td> {{ $document->D_Subject }}</td>
                                     <td> {{ $document->D_MarkedTo }}</td>

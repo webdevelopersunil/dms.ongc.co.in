@@ -82,7 +82,7 @@ class DocumentController extends Controller
             'D_SendersName' => $request->D_SendersName,
             'D_SenderDYNo' => $request->D_SenderDYNo,
             'D_Subject' => $request->D_Subject,
-            // 'dealing_officer' => $request->dealing_officer,
+            'dealing_officer' => $request->dealing_officer,
             'D_MarkedTo' => $request->D_MarkedTo,
             'D_CopyTO' => $request->D_CopyTO,
             'D_DateOut' => $request->D_DateOut,
@@ -192,6 +192,7 @@ class DocumentController extends Controller
         $document->D_LetteraddressedTo = $request->D_LetteraddressedTo;
         $document->D_LetterSignedBy = $request->D_LetterSignedBy;
         $document->D_SenderDYNo = $request->D_SenderDYNo;
+        $document->dealing_officer = $request->dealing_officer;
 
         // $date = Carbon::now();
         // if ($document->category == 'cmd_office_correspondence') {
@@ -252,7 +253,8 @@ class DocumentController extends Controller
             $conditions = session('conditions');
             $remember = session('remember');
 
-            $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy($column, $order)->paginate(100);
+            $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy($column, $order)->paginate(200);
+            $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
 
             return view('document.search')->with([
                 'documents' => $documents,
@@ -261,7 +263,8 @@ class DocumentController extends Controller
                 'category' => $request->category,
                 'subcategory' => $request->subcategory,
                 'limitSearch' => ($documents->count() == 50000),
-                'remember' => $remember
+                'remember' => $remember,
+                'count' => $count
             ]);
         }
 
@@ -275,7 +278,8 @@ class DocumentController extends Controller
 
             $conditions = session('conditions');
             $remember = session('remember');
-            $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateIN', 'desc')->paginate(100);
+            $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateIN', 'desc')->paginate(200);
+            $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
 
             return view('document.search')->with([
                 'documents' => $documents,
@@ -284,7 +288,8 @@ class DocumentController extends Controller
                 'category' => $request->category,
                 'subcategory' => $request->subcategory,
                 'limitSearch' => ($documents->count() == 50000),
-                'remember' => $remember
+                'remember' => $remember,
+                'count' => $count
             ]);
         }
 
@@ -381,7 +386,8 @@ class DocumentController extends Controller
         //     ->get();
 
         // PROD
-        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateIN', 'desc')->paginate(100);
+        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_DateIN', 'desc')->paginate(200);
+        $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
 
         // $documents = Document::cursor()->where('category_id',1)->where('D_diaryno', '<', 100)->all();
 
@@ -400,7 +406,8 @@ class DocumentController extends Controller
             'category' => $request->category,
             'subcategory' => $request->subcategory,
             'limitSearch' => ($documents->count() == 50000),
-            'remember' => $remember
+            'remember' => $remember,
+            'count' => $count
         ]);
     }
 

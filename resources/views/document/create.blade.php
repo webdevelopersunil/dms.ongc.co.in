@@ -110,16 +110,18 @@
                                 <input type="text" id="D_SenderDYNo" name="D_SenderDYNo" class="form-control form-control-sm">
                             </div>
 
-                            <div class="col-6 form-group">
+                            <div class="col-2 form-group text-right">
                                 <label for="dealing_officer">Dealing Officer</label>
+                            </div>
+                            <div class="col-4 form-group">
                                 <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
                                     <option value="" hidden>-</option>
-                                    @foreach ( \App\User::all() as $user)
+                                    @foreach ( \App\User::where('isDealingOfficer', true)->get() as $user)
                                         <option value="{{ $user->id }}"> {{ $user->name }} </option>
                                     @endforeach
                                 </select>
                             </div>
-
+                                
                         @else 
 
                             <div class="col-2 form-group text-right">

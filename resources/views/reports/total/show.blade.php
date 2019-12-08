@@ -57,9 +57,9 @@
                     <tbody>
                         @foreach ($categories as $index => $category)
                             <tr>
-                                {{-- <td> <input type="checkbox" name="selected" id="selected" value="{{ $category->category }}">  </td> --}}
-                                <td> <button formaction="/reports/category/{{ $category->category }}" type="submit" class="btn btn-link py-0">View</button></td>
-                                <td> {{ $category->category }} </td>
+                                
+                                <td> <button formaction="/reports/category/{{ $category->category_id }}" type="submit" class="btn btn-link py-0">View</button></td>
+                                <td> {{ $category->category_id != 0 ? \App\Category::find($category->category_id)->cm_name : '' }} </td>
                                 <td></td>
                                 <td></td>
                                 <td> {{ $category->total }}</td>
@@ -80,44 +80,44 @@
 
             <div class="p-2 mb-4 bg-lightblue">
                 <div style="overflow-x:auto;">
-                <table class="table bg-light">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Diary No</th>
-                            <th>Date In</th>
-                            <th>Letter No</th>
-                            <th>Sender's Diary No</th>
-                            <th>Letter Date</th>
-                            <th>Received From</th>
-                            <th>Subject</th>
-                            <th>Marked To</th>
-                            <th>Copy To</th>
-                            <th>Date Out</th>
-                            <th>Marked By</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($documents as $document )
+                    <table class="table bg-light" style="width:300vw">
+                        <thead class="thead-light">
                             <tr>
-                                <td> <input type="checkbox" name="doc" id="doc"> </td>
-                                <td> {{ $document->diary_no }} </td>
-                                <td> {{ $document->date_in }} </td>
-                                <td> {{ $document->file_no }} </td>
-                                <td> {{ $document->sender_diary_no }}</td>
-                                <td> {{ $document->file_date }}</td>
-                                <td> {{ $document->received_from }}</td>
-                                <td> {{ $document->subject }}</td>
-                                <td> {{ $document->marked_to }}</td>
-                                <td> {{ $document->copy_to }}</td>
-                                <td> {{ $document->date_out }}</td>
-                                <td> {{ $document->marked_by }}</td>
+                                <th>#</th>
+                                <th>Diary No</th>
+                                <th>Date In</th>
+                                <th>Letter No</th>
+                                <th>Sender's Diary No</th>
+                                <th>Letter Date</th>
+                                <th>Subject</th>
+                                <th>Marked To</th>
+                                <th>Copy To</th>
+                                <th>Date Out</th>
+                                <th>Marked By</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($documents as $document )
+                                <tr>
+                                    <td> <input type="checkbox" name="doc" id="doc"> </td>
+                                    <td> {{ $document->D_diaryNo }} </td>
+                                    <td> {{ $document->D_DateIN }} </td>
+                                    <td> {{ $document->D_fileno }} </td>
+                                    <td> {{ $document->D_SenderDYNo }}</td>
+                                    <td> {{ $document->D_DATE }}</td>
+                                    <td> {{ $document->D_Subject }}</td>
+                                    <td> {{ $document->D_MarkedTo }}</td>
+                                    <td> {{ $document->D_CopyTO }}</td>
+                                    <td> {{ $document->D_DateOut }}</td>
+                                    <td> {{ $document->D_MarkedBy }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    {{ $documents->links() }}
                 </div>
-                <button class="btn btn-primary">Print</button>
+                <button class="btn btn-primary" onclick="window.print()">Print</button>
             </div>
 
         @endif
