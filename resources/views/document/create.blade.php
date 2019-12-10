@@ -83,14 +83,6 @@
                             <div class="invalid-feedback"> @error('D_DATE') {{ $errors->first('D_DATE') }} @enderror </div>
                         </div>
 
-                        <div class="col-2 form-group text-right">
-                            <label for="D_Subject">Subject</label>
-                        </div>
-                        <div class="col-10 form-group">
-                            <textarea name="D_Subject" id="D_Subject" rows="3" class="form-control @error('D_Subject') is-invalid @enderror"></textarea>
-                            <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
-                        </div>
-
 
                         @if($category->id != 2)
 
@@ -111,6 +103,14 @@
                             </div>
 
                             <div class="col-2 form-group text-right">
+                                <label for="D_Subject">Subject</label>
+                            </div>
+                            <div class="col-10 form-group">
+                                <textarea spellcheck="true" name="D_Subject" id="D_Subject" rows="2" class="form-control @error('D_Subject') is-invalid @enderror"></textarea>
+                                <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
+                            </div>
+
+                            <div class="col-2 form-group text-right">
                                 <label for="dealing_officer">Dealing Officer</label>
                             </div>
                             <div class="col-4 form-group">
@@ -123,6 +123,14 @@
                             </div>
                                 
                         @else 
+
+                            <div class="col-2 form-group text-right">
+                                <label for="D_Subject">Subject</label>
+                            </div>
+                            <div class="col-10 form-group">
+                                <textarea name="D_Subject" id="D_Subject" rows="3" class="form-control @error('D_Subject') is-invalid @enderror"></textarea>
+                                <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
+                            </div>
 
                             <div class="col-2 form-group text-right">
                                 <label for="D_LetteraddressedTo">Letter Addressed To</label>
@@ -191,9 +199,11 @@
                         </div>
 
 
-                        <div class="col-12 form-group">
+                        <div class="col-2 form-group text-right">
                             <label for="remarks">Remarks</label>
-                            <textarea name="D_Remarks" id="D_Remarks" rows="3" class="form-control"></textarea>
+                        </div>
+                        <div class="col-10 form-group">
+                            <textarea spellcheck="true" name="D_Remarks" id="D_Remarks" rows="2" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>

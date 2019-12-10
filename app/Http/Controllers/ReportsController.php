@@ -6,6 +6,7 @@ use App\Category;
 use App\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class ReportsController extends Controller
 {
@@ -57,6 +58,7 @@ class ReportsController extends Controller
         ])->orderBy('D_DATE', 'desc')->paginate(100);
 
         session(['categories' => $request->categories]);
+        session(['selected' => $category]);
         session(['count' => $request->count]);
         session(['date_from' => $request->date_from]);
         session(['date_to' => $request->date_to]);
@@ -68,6 +70,50 @@ class ReportsController extends Controller
             'date_to' => $request->date_to,
             'documents' => $documents
         ]);
+    }
+
+    public function export() {
+
+        if(session('selected') && session('date_from') && session('date_to')) {
+            $headers = array(
+                "Content-type" => "text/csv",
+                "Content-Disposition" => "attachment; filename=documents.csv",
+                "Pragma" => "no-cache",
+                "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+                "Expires" => "0"
+            );
+            $documents = Document::where([
+                [ 'category_id', session('selected') ],
+                [ 'D_DateIN', '>=', session('date_from') ],
+                [ 'D_DateOut', '<=', session('date_to') ]
+            ])->get();
+
+            $columns = array('DiaryNo', 'LetterNo', 'DATE', 'DateIN', 'DateOut', 'Subject', 'FileNo', 'MarkedBy', 'MarkedTo', 'CopyTo', 'Remarks');
+            $callback = function () use ($documents, $columns) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, $columns);
+                foreach ($documents as $document) {
+                    $line = array( 
+                        $document->D_diaryNo, 
+                        $document->D_LetterNo, 
+                        $document->D_DATE, 
+                        $document->D_DateIN, 
+                        $document->D_DateOut, 
+                        $document->D_Subject, 
+                        $document->D_fileno, 
+                        $document->D_MarkedBy, 
+                        $document->D_MarkedTo, 
+                        $document->D_CopyTO, 
+                        $document->D_Remarks, 
+                    );
+                    fputcsv($file, $line);
+                }
+                fclose($file);
+            };
+            return Response::stream($callback, 200, $headers);
+        }
+
+        abort(500, 'Something went wrong!');
     }
 
     public function showPaginate(Request $request, $category) {

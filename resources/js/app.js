@@ -2,8 +2,16 @@ require("./bootstrap");
 require("./autocomplete");
 // require('./audit');
 
-const feather = require("feather-icons");
+$(function() {
+    // DEPRECATED: Older implementation of scroll tables
+    // $(".main-table")
+    //     .clone(true)
+    //     .appendTo("#table-scroll")
+    //     .addClass("clone");
 
+    $('[data-toggle="tooltip"]').tooltip();
+});
+const feather = require("feather-icons");
 feather.replace();
 
 window.Vue = require("vue");

@@ -184,8 +184,10 @@
                             <div class="invalid-feedback"> @error('D_Subject') {{ $errors->first('D_Subject') }} @enderror </div>
                         </div>
                         
-                        <div class="col-6 form-group">
+                        <div class="col-2 form-group text-right">
                             <label for="dealing_officer">Dealing Officer</label>
+                        </div>
+                        <div class="col-4 form-group">
                             <select type="text" name="dealing_officer" id="dealing_officer" class="form-control form-control-sm" >
                                 <option value="" hidden>-</option>
                                 @foreach ( \App\User::where('isDealingOfficer', true)->get() as $user)
@@ -244,8 +246,10 @@
                                 {{-- <input type="file" name="file_url" id="file_url" class="form-control form-control-sm"> --}}
                             {{-- @endif --}}
                         </div>
-                        <div class="col-12 form-group">
+                        <div class="col-2 form-group text-right">
                             <label for="D_Remarks">Remarks</label>
+                        </div>
+                        <div class="col-10 form-group">
                             <textarea name="D_Remarks" id="D_Remarks" value="{{ $document->D_Remarks }}" rows="3" class="form-control">{{ $document->D_Remarks }}</textarea>
                         </div>
                     </div>

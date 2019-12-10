@@ -12,55 +12,54 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
+           .dms-table {
+                border: none;
+                border-right: solid 1px #DDEFEF;
+                border-collapse: separate;
+                border-spacing: 0;
+                font: normal 13px Arial, sans-serif;
             }
-
-            .full-height {
-                height: 100vh;
+            .dms-table thead th {
+                background-color: #DDEFEF;
+                border: none;
+                color: #336B6B;
+                padding: 10px;
+                text-align: left;
+                text-shadow: 1px 1px 1px #fff;
+                white-space: nowrap;
             }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
+            .dms-table tbody td {
+                border-bottom: solid 1px #DDEFEF;
+                color: #333;
+                padding: 10px;
+                text-shadow: 1px 1px 1px #fff;
+                white-space: nowrap;
             }
-
-            .position-ref {
+            .dms-wrapper {
                 position: relative;
             }
-
-            .top-right {
+            .dms-scroller {
+                margin-left: 240px;
+                overflow-x: scroll;
+                overflow-y: visible;
+                padding-bottom: 5px;
+                width: 300px;
+            }
+            .dms-table .dms-sticky-col {
+                border-left: solid 1px #DDEFEF;
+                border-right: solid 1px #DDEFEF;
+                left: 0;
                 position: absolute;
-                right: 10px;
-                top: 18px;
+                top: auto;
+                width: 120px;
             }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
+            .dms-table .dms-sticky-col-1 {
+                border-left: solid 1px #DDEFEF;
+                border-right: solid 1px #DDEFEF;
+                left: 120px;
+                position: absolute;
+                top: auto;
+                width: 120px;
             }
         </style>
     </head>
@@ -80,17 +79,37 @@
                 </div>
             @endif
 
-            <div style="overflow-x:scroll">
-                <table class="table table-bordered" id="table" style="width:200vw">
-                    <thead>
-                       <tr>
-                          <th>id</th>
-                          <th>subject</th>
-                          <th>diaryno</th>
-                       </tr>
-                    </thead>
-                 </table>
-            </div>
+            <div class="dms-wrapper">
+                    <div class="dms-scroller">
+                        <table class="dms-table">
+                            <thead>
+                                <tr>
+                                    <th class="dms-sticky-col">Name</th>
+                                    <th class="dms-sticky-col-1">Number</th>
+                                    <th>Position</th>
+                                    <th>Height</th>
+                                    <th>Born</th>
+                                    <th>Salary</th>
+                                    <th>Prior to NBA/Country</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for ($i = 0; $i < 100; $i++)
+                                    <tr>
+                                        <td class="dms-sticky-col"> Name {{ $i }}</td>
+                                        <td class="dms-sticky-col-1">{{ $i }}</td>
+                                        <td>PF</td>
+                                        <td>6'11"</td>
+                                        <td>06-21-1986</td>
+                                        <td>$3,001,000</td>
+                                        <td>Rider/USA</td>
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
 
             {{-- <div class="content">
                 <div class="title m-b-md">
@@ -103,19 +122,5 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-        <script>
-            $(function() {
-                $('#table').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: '/test',
-                    columns: [
-                            { data: 'id', name: 'id' },
-                            { data: 'D_Subject', name: 'D_Subject' },
-                            { data: 'D_diaryNo', name: 'D_diaryNo' }
-                        ]
-                });
-            });
-        </script>
     </body>
 </html>

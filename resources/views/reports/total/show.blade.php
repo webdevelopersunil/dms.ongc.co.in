@@ -83,7 +83,7 @@
                     <table class="table bg-light" style="width:300vw">
                         <thead class="thead-light">
                             <tr>
-                                <th>#</th>
+                                {{-- <th>#</th> --}}
                                 <th>Diary No</th>
                                 <th>Date In</th>
                                 <th>Letter No</th>
@@ -99,7 +99,7 @@
                         <tbody>
                             @foreach ($documents as $document )
                                 <tr>
-                                    <td> <input type="checkbox" name="doc" id="doc"> </td>
+                                    {{-- <td> <input type="checkbox" name="doc" id="doc"> </td> --}}
                                     <td> {{ $document->D_diaryNo }} </td>
                                     <td> {{ $document->D_DateIN }} </td>
                                     <td> {{ $document->D_fileno }} </td>
@@ -117,7 +117,7 @@
 
                     {{ $documents->links() }}
                 </div>
-                <button class="btn btn-primary" onclick="window.print()">Print</button>
+                <a class="btn btn-primary" href="/reports/total/export">Export to Excel</a>
             </div>
 
         @endif

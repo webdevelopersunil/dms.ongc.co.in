@@ -128,7 +128,9 @@ class DocumentController extends Controller
         $category->cm_UsedBy = '';
         $category->save();
 
-        return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully');
+        $redirectUrl = "/document/create?category=$category->id&subcategory=$request->subcategory_id";
+        return redirect($redirectUrl)->with('success', 'Document has been created successfully');
+        // return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully');
     }
 
 
@@ -170,9 +172,9 @@ class DocumentController extends Controller
     {
         $validatedData = $request->validate([
             'category_id' => 'required',
-            'D_DateOut' => 'required',
-            'D_DATE' => 'required',
-            'D_Subject' => 'required',
+            // 'D_DateOut' => 'required',
+            // 'D_DATE' => 'required',
+            // 'D_Subject' => 'required',
         ]);
 
         $document = Document::find($id);
@@ -216,7 +218,14 @@ class DocumentController extends Controller
         //     $document->save();
         // }
 
-        return redirect()->back()->with('success', 'Document updated succesfully');
+        $category = Category::find($document->category_id);
+        $category->cm_IsInUse = false;
+        $category->cm_UsedBy = '';
+        $category->save();
+
+        $redirectUrl = "/document/create?category=$document->category_id&subcategory=$document->subcategory_id";
+        return redirect($redirectUrl)->with('success', 'Document has been created successfully');
+        // return redirect()->back()->with('success', 'Document updated succesfully');
     }
 
 

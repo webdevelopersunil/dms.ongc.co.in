@@ -1,0 +1,50 @@
+.dms-table thead th {
+    text-align: left;
+    white-space: nowrap;
+}
+.dms-table tbody td {
+    text-shadow: 1px 1px 1px #fff;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 180px;
+}
+.dms-wrapper {
+    position: relative;
+}
+.dms-scroller {
+    margin-left: 500px;
+    overflow-x: scroll;
+    overflow-y: visible;
+    width: calc(100% - 500px);
+}
+.dms-table .dms-sticky-col-1 {
+    left: 0;
+    position: absolute;
+    top: auto;
+    width: 60px;
+}
+.dms-table .dms-sticky-col-2 {
+    left: 60px;
+    position: absolute;
+    top: auto;
+    width: 60px;
+}
+.dms-table .dms-sticky-col-3 {
+    left: 120px;
+    position: absolute;
+    top: auto;
+    width: 60px;
+}
+.dms-table .dms-sticky-col-4 {
+    left: 180px;
+    position: absolute;
+    top: auto;
+    width: 140px;
+}
+.dms-table .dms-sticky-col-5 {
+    left: 320px;
+    position: absolute;
+    top: auto;
+    width: 180px;
+}

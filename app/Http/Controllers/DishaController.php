@@ -9,7 +9,7 @@ class DishaController extends Controller
 {
     public function index() {
 
-        $documents = Document::where('id', 206764)->get();
+        $documents = Document::where('id', 1)->get();
 
         return view('disha.index', compact('documents'));
     }

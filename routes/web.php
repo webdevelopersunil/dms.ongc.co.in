@@ -12,8 +12,7 @@
 */
 
 // Route::get('/', function () {
-//     return redirect('/home');
-//     // return view('welcome');
+//     return view('welcome');
 // });
 
 Auth::routes();
@@ -66,6 +65,7 @@ Route::post('/disha/{document}', 'DishaController@update');
 
 //Reports
 Route::get('/reports', 'ReportsController@index');
+Route::get('/reports/total/export', 'ReportsController@export');
 Route::get('/reports/total', 'ReportsController@total');
 Route::post('/reports/total', 'ReportsController@countTotal');
 // Route::post('/reports/category', 'ReportsController@showTotal' );

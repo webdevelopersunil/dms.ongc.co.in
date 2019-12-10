@@ -14,10 +14,21 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <style>
+        .form-group {
+            margin-bottom: 0.4rem;
+        }
+
+        table tbody td {
+            font-weight: bold;
+        }
+    </style>
+
 </head>
 <body>
     <div id="app">
