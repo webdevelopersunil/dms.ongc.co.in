@@ -159,7 +159,18 @@ class DocumentController extends Controller
         //     $references = $references->push($main);
         // }
 
-        return view('document.show', compact('document'));
+        $date = Carbon::create($document->D_DATE);
+
+        if ($document->category_id == 2) {
+            $subfolder = $document->subcategory ? $document->subcategory->scm_foldername : '';
+            $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$subfolder/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+        } else {
+            if ($document->category != '') {
+                $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+            }
+        }
+
+        return view('document.show', compact('document', 'url'));
     }
 
 
@@ -223,9 +234,11 @@ class DocumentController extends Controller
         $category->cm_UsedBy = '';
         $category->save();
 
-        $redirectUrl = "/document/create?category=$document->category_id&subcategory=$document->subcategory_id";
-        return redirect($redirectUrl)->with('success', 'Document has been created successfully');
-        // return redirect()->back()->with('success', 'Document updated succesfully');
+        // $redirectUrl = "/document/create?category=$document->category_id&subcategory=$document->subcategory_id";
+        // return redirect($redirectUrl)->with('success', 'Document has been created successfully');
+
+        $redirectUrl = "/document/view/$document->id?hyperlink";
+        return redirect($redirectUrl)->with('success', 'Document updated succesfully');
     }
 
 

@@ -2,6 +2,11 @@ require("./bootstrap");
 require("./autocomplete");
 // require('./audit');
 
+var urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has("hyperlink")) {
+    document.getElementById("scan").click();
+}
+
 $(function() {
     // DEPRECATED: Older implementation of scroll tables
     // $(".main-table")

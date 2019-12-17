@@ -254,6 +254,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="#" id="scan" onclick="window.open('{{ $url }}','_blank','width=720,height=1280')"></a>
                 {{-- END OF DOCUMENT OUR CARD --}}
         
                 <div class="px-4 py-4">
@@ -261,7 +262,7 @@
                     <button type="submit" formaction="/document/view/{{ $document->id }}" class="btn dms-btn-primary mx-1 px-4">Save</button>
                     <a href="/" class="btn dms-btn-primary mx-1 px-4">Cancel</a>
                     <a href="/" class="btn dms-btn-primary mx-1 px-4">Exit</a>
-                    <a href="/reference/create/{{ $document->id }}" class="btn dms-btn-primary px-4 float-right">Add Reference</a>
+                    {{-- <a href="/reference/create/{{ $document->id }}" class="btn dms-btn-primary px-4 float-right">Add Reference</a> --}}
                 </div>
             </form>
         </div>

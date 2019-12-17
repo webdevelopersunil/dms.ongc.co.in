@@ -16,7 +16,7 @@
                     <label for="category" class="text-bold text-danger">Category</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <select name="category" id="category" class="form-control form-control-sm">
+                    <select name="category" id="category" class="form-control form-control-sm font-weight-bold">
                         <option value="All">All</option>
                         @foreach (\App\Category::all() as $item)
                             <option value="{{ $item->id }}" @if($item->id == $category) selected @endif > {{ $item->cm_name }} </option>
@@ -28,7 +28,7 @@
                     <label for="subcategory" class="text-bold text-danger" >Sub Category</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <select name="subcategory" id="subcategory" class="form-control form-control-sm">
+                    <select name="subcategory" id="subcategory" class="form-control form-control-sm font-weight-bold">
                         <option value="NA">NA</option>
                         @foreach (\App\Subcategory::all() as $item)
                             <option @if($item->id == $subcategory) selected @endif value="{{ $item->id }}"> {{ $item->scm_head }} - {{ $item->scm_desc }} </option>
@@ -130,7 +130,7 @@
                     <input type="text" id="D_Remarks" value="{{ $remember->D_Remarks }}" name="D_Remarks" class="form-control form-control-sm font-weight-bold">
                 </div>
 
-                <div class="offset-2 col-10 my-2">
+                <div class="offset-2 col-10 my-0">
                     <button class="btn dms-btn-primary mx-1 px-4">Search</button>
                     <a class="btn dms-btn-primary mx-1 px-4" href="/document/reset">Reset</a>
                     <a href="/" class="btn dms-btn-primary mx-1 px-4">Exit</a>
@@ -141,16 +141,16 @@
         
         </form>
         @if( !empty($documents) )
-            <div class="card">
+            <div class="card mt-2">
                 
-                <div class="card-header">
-                    <h4>Search Results <span style="font-size: 1rem"> Total Documents: {{ $count }}.  </span> </h4>
+                <div class="card-header pt-2 pb-1">
+                    <h4 style="color: darkred">Search Results <span style="font-size: 1.2rem"> Total Documents: {{ $count }}.  </span> </h4>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body p-0" style="height:250px; overflow:scroll">
                     <div class="dms-wrapper">
                         <div class="dms-scroller">
-                            <table class="table table-bordered dms-table">
+                            <table class="table table-bordered dms-table" style="border:none">
                                 <thead>
                                     <tr>
                                         <th class="dms-sticky-col-1" > View </th>
@@ -189,17 +189,17 @@
                                 <tbody>
                                     @foreach ($documents as $document )
                                         <tr class="{{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}" >
-                                            <td class="dms-sticky-col-1"> 
-                                                @if($document->D_fileno) <a target="_blank" href="/document/file/{{ $document->id }}"> View </a> 
+                                            <td class="dms-sticky-col-1 {{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}"> 
+                                                @if($document->D_fileno) <a target="_blank" href="/document/file/{{ $document->id }}" class="view"> View </a> 
                                                 @else <a href="#">View</a>
                                                 @endif 
                                             </td>
-                                            <td class="dms-sticky-col-2"> <a href="/document/view/{{ $document->id }}"> Edit </a> </td>
-                                            <td class="dms-sticky-col-3"> <a href="/document/print/{{ $document->id }}">Print </a> </td>
-                                            <td class="dms-sticky-col-4" > 
+                                            <td class="dms-sticky-col-2 {{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}"> <a href="/document/view/{{ $document->id }}"> Edit </a> </td>
+                                            <td class="dms-sticky-col-3 {{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}"> <a href="/document/print/{{ $document->id }}">Print </a> </td>
+                                            <td class="dms-sticky-col-4 {{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}" > 
                                                 <span> {{ $document->D_diaryNo }} </span>
                                             </td>
-                                            <td class="dms-sticky-col-5"> {{ $document->D_LetterNo }} </td>
+                                            <td class="dms-sticky-col-5 {{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}"> {{ $document->D_LetterNo }} </td>
                                             <td> {{ $document->D_DateIN ? date('d-m-Y', strtotime($document->D_DateIN)) : '' }}</td>
                                             <td> {{ $document->D_DateOut ? date('d-m-Y', strtotime($document->D_DateOut)) : '' }}</td>
                                             <td> {{ $document->D_DATE ? date('d-m-Y', strtotime($document->D_DATE)) : '' }}</td>
