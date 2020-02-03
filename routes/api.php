@@ -2,6 +2,7 @@
 
 use App\Document;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,36 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/disha/sent', function(Request $request){
+    Log::info($request);
+    return 0;
+});
+
+Route::post('/disha/received', function(Request $request){
+    // Log::info($request->subject);
+    $documents = json_decode($request->subject);
+    Log::info('received');
+    foreach ($documents as $key => $document) {
+        $d = new Document;
+        $d->D_Subject = $document->subject;
+        $d->D_fileno = $document->fileNumber;
+        $d->D_SendersName = $document->receivedFrom;
+        Log::info($d);
+    }
+
+    $documents = json_decode($request->remarks);
+    Log::info('sent');
+    foreach ($documents as $key => $document) {
+        $d = new Document;
+        $d->D_Subject = $document->subject;
+        $d->D_fileno = $document->fileNumber;
+        $d->D_SendersName = $document->receivedFrom;
+        Log::info($d);
+    }
+
+    return 0;
+});
 
 /* Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

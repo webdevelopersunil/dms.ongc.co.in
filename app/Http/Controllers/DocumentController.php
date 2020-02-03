@@ -298,9 +298,18 @@ class DocumentController extends Controller
 
         if(session('conditions') && session('remember')) {
 
+            // $category = Category::find($request->category);
+            // $category->cm_IsInUse = false;
+            // $category->cm_UsedBy = '';
+            // $category->save();
+
             $conditions = session('conditions');
             $remember = session('remember');
-            $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_diaryNo', 'asc')->paginate(200);
+            $documents = Document::with(['category', 'subcategory'])
+                        ->where($conditions)
+                        ->orderBy('D_DateIN', 'desc')
+                        ->orderBy('D_diaryNo', 'desc')
+                        ->paginate(200);
             $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
 
             return view('document.search')->with([
@@ -408,7 +417,11 @@ class DocumentController extends Controller
         //     ->get();
 
         // PROD
-        $documents = Document::with(['category', 'subcategory'])->where($conditions)->orderBy('D_diaryNo', 'desc')->paginate(200);
+        $documents = Document::with(['category', 'subcategory'])
+                    ->where($conditions)
+                    ->orderBy('D_DateIN', 'desc')
+                    ->orderBy('D_diaryNo', 'desc')
+                    ->paginate(200);
         $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
 
         // $documents = Document::cursor()->where('category_id',1)->where('D_diaryno', '<', 100)->all();

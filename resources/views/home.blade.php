@@ -45,7 +45,7 @@
                         <label for="category" class="col-sm-3"> Select Category</label>
                         <div class="col-sm-9">
                             <select v-model="selectedCategory" class="form-control form-control-sm">
-                                <option v-for="category in categories" v-bind:value="category"> @{{ category.name }}</option>
+                                <option class="font-weight-bold" v-for="category in categories" v-bind:value="category"> @{{ category.name }}</option>
                             </select>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         <label for="category" class="col-sm-3"> Select SubCategory</label>
                         <div class="col-sm-9">
                             <select v-model="selectedSubcategory" class="form-control form-control-sm">
-                                <option v-for="option in selectedCategory.subcategories" v-bind:value="option" >@{{ option.name }}</option>
+                                <option class="font-weight-bold" v-for="option in selectedCategory.subcategories" v-bind:value="option" >@{{ option.name }}</option>
                             </select>
                         </div>
                     </div>

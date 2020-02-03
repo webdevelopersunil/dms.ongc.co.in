@@ -19,6 +19,13 @@
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
+    <style>
+        input, textarea {
+          font-weight: bold !important;
+          font-size: 1rem !important; 
+        }
+    </style>
+
 </head>
 <body>
     <div id="app">

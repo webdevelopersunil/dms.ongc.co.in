@@ -19,7 +19,7 @@
                     <select name="category" id="category" class="form-control form-control-sm font-weight-bold">
                         <option value="All">All</option>
                         @foreach (\App\Category::all() as $item)
-                            <option value="{{ $item->id }}" @if($item->id == $category) selected @endif > {{ $item->cm_name }} </option>
+                            <option class="font-weight-bold" value="{{ $item->id }}" @if($item->id == $category) selected @endif > {{ $item->cm_name }} </option>
                         @endforeach
                     </select>
                 </div>
@@ -31,7 +31,7 @@
                     <select name="subcategory" id="subcategory" class="form-control form-control-sm font-weight-bold">
                         <option value="NA">NA</option>
                         @foreach (\App\Subcategory::all() as $item)
-                            <option @if($item->id == $subcategory) selected @endif value="{{ $item->id }}"> {{ $item->scm_head }} - {{ $item->scm_desc }} </option>
+                            <option class="font-weight-bold" @if($item->id == $subcategory) selected @endif value="{{ $item->id }}"> {{ $item->scm_head }} - {{ $item->scm_desc }} </option>
                         @endforeach
                     </select>
                 </div>
@@ -40,7 +40,7 @@
                     <label for="diary_no">Diary No</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input type="text" id="diary_no" value="{{ $remember->D_diaryNo }}" name="diary_no" class="form-control form-control-sm font-weight-bold">
+                    <input autofocus="true" type="text" id="diary_no" value="{{ $remember->D_diaryNo }}" name="diary_no" class="form-control form-control-sm font-weight-bold">
                 </div>
 
                 {{-- Keep col-6 space after Diary No.  --}}
@@ -215,12 +215,12 @@
                             </table>
                         </div>
                     </div>
-
-                    {{ $documents->links() }}
-
                 </div>
-
             </div>
+            <div id="customScrollbar" class="bg-lightblue mb-2" style="height:30px; max-width:100%; overflow-x:scroll;">
+                <div style="width:2000px; height: 30px;"></div>
+            </div>
+            {{ $documents->links() }}
         @endif
     </div>
 

@@ -224,8 +224,8 @@
                             <label for="D_MarkedBy">Marked By</label>
                         </div>
                         <div class="col-4 form-group">
-                            {{-- <input type="text" id="marked_by" name="marked_by" value="{{ $document->marked_by }}" class="form-control form-control-sm"> --}}
-                            <select name="D_MarkedBy" id="D_MarkedBy" class="form-control form-control-sm">
+                            <input type="text" id="D_MarkedBy" name="D_MarkedBy" value="{{ $document->D_MarkedBy }}" class="form-control form-control-sm">
+                            {{-- <select name="D_MarkedBy" id="D_MarkedBy" class="form-control form-control-sm">
                                 <option @if($document->D_MarkedBy == 'CMD') selected @endif>CMD</option>
                                 <option @if($document->D_MarkedBy == 'EO') selected @endif>EO</option>
                                 <option @if($document->D_MarkedBy == 'AKB') selected @endif>AKB</option>
@@ -233,7 +233,7 @@
                                 <option @if($document->D_MarkedBy == 'PKM') selected @endif>PKM</option>
                                 <option @if($document->D_MarkedBy == 'DKA') selected @endif>DKA</option>
                                 <option @if($document->D_MarkedBy == 'AKK') selected @endif>AKK</option>
-                            </select>
+                            </select> --}}
                         </div>
                         <div class="offset-6 col-2 form-group text-right">
                             <label for="D_fileno">Scanned File</label>

@@ -14,6 +14,10 @@ $(function() {
     //     .appendTo("#table-scroll")
     //     .addClass("clone");
 
+    $("#customScrollbar").on("scroll", function() {
+        $(".dms-scroller").scrollLeft($(this).scrollLeft());
+    });
+
     $('[data-toggle="tooltip"]').tooltip();
 });
 const feather = require("feather-icons");
