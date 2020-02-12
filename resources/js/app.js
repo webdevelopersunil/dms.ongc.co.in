@@ -7,7 +7,38 @@ if (urlParams.has("hyperlink")) {
     document.getElementById("scan").click();
 }
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 $(function() {
+    $("#remindBtn").click(function() {
+        if ($("#remindCheckbox").is(":checked")) {
+            var d = new Date();
+            d.setTime(d.getTime() + 100 * 24 * 60 * 60 * 1000); //100 days
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = "changeLog=1.0;" + expires + ";path=/";
+            console.log(document.cookie);
+        }
+        $("#changelogModal").modal("hide");
+    });
+
+    if (getCookie("changeLog") != "1.0") {
+        $("#changelogModal").modal();
+    }
+
     // DEPRECATED: Older implementation of scroll tables
     // $(".main-table")
     //     .clone(true)

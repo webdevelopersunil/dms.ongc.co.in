@@ -198,6 +198,8 @@
                             <input type="text" name="D_fileno" id="D_fileno" class="form-control form-control-sm">
                         </div>
 
+                        <a href="#" id="scan" onclick="window.open('{{ $url }}','_blank','width=720,height=1280')"></a>
+
 
                         <div class="col-2 form-group text-right">
                             <label for="remarks">Remarks</label>

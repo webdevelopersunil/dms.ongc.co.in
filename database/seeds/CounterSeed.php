@@ -29,6 +29,14 @@ class CounterSeed extends Seeder
         // Category::create(["cm_code" => "004", "cm_name" => "files", "counter" => 1]);
         // Category::create(["cm_code" => "005", "cm_name" => "misc", "counter" => 1]);
 
+        Category::create([
+            'cm_name' => 'govt',
+            'cm_diaryno' => 1,
+            'cm_folder' => 'Govtletters',
+            'cm_IsInUse' => false,
+            'cm_UsedBy' => null
+        ]);
+
         User::create([
             "name" => "Sreenath S Das",
             "username" => "sree",

@@ -41,7 +41,7 @@ class DocumentController extends Controller
         $category = Category::find($category);
         $subcategory = Subcategory::find($subcategory);
 
-        if($category->cm_IsInUse) {
+        if ($category->cm_IsInUse) {
             return redirect('/home')->with('error', "Category is being used by $category->cm_UsedBy");
         }
 
@@ -49,17 +49,26 @@ class DocumentController extends Controller
         $category->cm_UsedBy = Auth::user()->name;
         $category->save();
 
-        // if (User::where('category', $category)->where('working_on', 'Create')->count() > 0) {
-        //     return redirect('/home')->with('error', 'Someone else is creating a document with the same category');
-        // }
-
-        // event(new UserEvent(Auth::user(), 'Create', $category));
-
         $today = Carbon::now()->toDateString();
         // $diary = DB::table('auto_increment')->where('category', $category->id)->first()->counter;
         $diary = $category->cm_diaryno;
 
-        return view('document.create', compact('category', 'subcategory', 'diary', 'today'));
+        $prevDiary = $diary - 1;
+        $document = Document::find($prevDiary);
+        $url = "#";
+        if ($document) {
+            $date = Carbon::create($document->D_DATE);
+            if ($document->category_id == 2) {
+                $subfolder = $document->subcategory ? $document->subcategory->scm_foldername : '';
+                $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$subfolder/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+            } else {
+                if ($document->category != '') {
+                    $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+                }
+            }
+        }
+
+        return view('document.create', compact('category', 'subcategory', 'diary', 'today', 'url'));
     }
 
     public function store(Request $request)
@@ -128,11 +137,15 @@ class DocumentController extends Controller
         $category->cm_UsedBy = '';
         $category->save();
 
-        $redirectUrl = "/document/create?category=$category->id&subcategory=$request->subcategory_id";
+        if ($request->D_fileno) {
+            $redirectUrl = "/document/create?hyperlink&category=$category->id&subcategory=$request->subcategory_id";
+        } else {
+            $redirectUrl = "/document/create?category=$category->id&subcategory=$request->subcategory_id";
+        }
+
         return redirect($redirectUrl)->with('success', 'Document has been created successfully');
         // return redirect("/document/view/$document->id")->with('success', 'Document has been created successfully');
     }
-
 
     public function show($id)
     {
@@ -163,14 +176,18 @@ class DocumentController extends Controller
 
         if ($document->category_id == 2) {
             $subfolder = $document->subcategory ? $document->subcategory->scm_foldername : '';
-            $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$subfolder/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+            $baseUrl = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$subfolder/$date->year/$date->englishMonth/";
+            $url =  $baseUrl . $document->D_fileno . ".pdf";
+            $replyUrl = $baseUrl . $document->D_fileno . "_reply.pdf";
         } else {
             if ($document->category != '') {
-                $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+                $baseUrl = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$date->year/$date->englishMonth/";
+                $url = $baseUrl . $document->D_fileno . ".pdf";
+                $replyUrl = $baseUrl . $document->D_fileno . "_reply.pdf";
             }
         }
 
-        return view('document.show', compact('document', 'url'));
+        return view('document.show', compact('document', 'url', 'replyUrl'));
     }
 
 
@@ -206,6 +223,7 @@ class DocumentController extends Controller
         $document->D_LetterSignedBy = $request->D_LetterSignedBy;
         $document->D_SenderDYNo = $request->D_SenderDYNo;
         $document->dealing_officer = $request->dealing_officer;
+        $document->reply_path = $request->reply_path;
 
         // $date = Carbon::now();
         // if ($document->category == 'cmd_office_correspondence') {
@@ -250,7 +268,7 @@ class DocumentController extends Controller
     public function resetForm(Request $request)
     {
         $remember = new Document;
-        
+
         session(['conditions' => null]);
         session(['remember' => $remember]);
 
@@ -260,17 +278,18 @@ class DocumentController extends Controller
         return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember'));
     }
 
-    public function sort(Request $request) {
+    public function sort(Request $request)
+    {
 
-        if(session('conditions') && session('remember')) {
+        if (session('conditions') && session('remember')) {
 
-            if($request->input('column')) {
+            if ($request->input('column')) {
                 $column = $request->input('column') ?? 'D_diaryNo';
-                session(['sortBy' => $column ]);
+                session(['sortBy' => $column]);
             } else {
                 $column = session('sortBy');
             }
-            
+
             $order = $request->input('order') ?? 'asc';
             $conditions = session('conditions');
             $remember = session('remember');
@@ -296,7 +315,7 @@ class DocumentController extends Controller
     public function searchForm(Request $request)
     {
 
-        if(session('conditions') && session('remember')) {
+        if (session('conditions') && session('remember')) {
 
             // $category = Category::find($request->category);
             // $category->cm_IsInUse = false;
@@ -306,11 +325,16 @@ class DocumentController extends Controller
             $conditions = session('conditions');
             $remember = session('remember');
             $documents = Document::with(['category', 'subcategory'])
-                        ->where($conditions)
-                        ->orderBy('D_DateIN', 'desc')
-                        ->orderBy('D_diaryNo', 'desc')
-                        ->paginate(200);
+                ->where($conditions)
+                ->orderBy('D_DateIN', 'desc')
+                ->orderBy('D_diaryNo', 'desc')
+                ->paginate(200);
             $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
+
+            $categoryToUnlock = Category::find($request->category);
+            $categoryToUnlock->cm_IsInUse = false;
+            $categoryToUnlock->cm_UsedBy = '';
+            $categoryToUnlock->save();
 
             return view('document.search')->with([
                 'documents' => $documents,
@@ -329,6 +353,12 @@ class DocumentController extends Controller
         $category = $request->input('category') ?? '';
         $subcategory = $request->input('subcategory') ?? '';
         $limitSearch = false;
+
+        $categoryToUnlock = Category::find($category);
+        $categoryToUnlock->cm_IsInUse = false;
+        $categoryToUnlock->cm_UsedBy = '';
+        $categoryToUnlock->save();
+
         return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember'));
     }
 
@@ -352,12 +382,12 @@ class DocumentController extends Controller
                 case 'category':
                     if ($filtered[$key] != 'All')
                         $condition = ['category_id', '=', $filtered[$key]];
-                        $remember->category_id = $filtered[$key];
+                    $remember->category_id = $filtered[$key];
                     break;
                 case 'subcategory':
                     if ($filtered[$key] != 'NA')
                         $condition = ['subcategory_id', '=', $filtered[$key]];
-                        $remember->subcategory_id = $filtered[$key];
+                    $remember->subcategory_id = $filtered[$key];
                     break;
                 case 'date_from':
                     $condition = ['D_DATE', '>=', $filtered[$key]];
@@ -418,10 +448,10 @@ class DocumentController extends Controller
 
         // PROD
         $documents = Document::with(['category', 'subcategory'])
-                    ->where($conditions)
-                    ->orderBy('D_DateIN', 'desc')
-                    ->orderBy('D_diaryNo', 'desc')
-                    ->paginate(200);
+            ->where($conditions)
+            ->orderBy('D_DateIN', 'desc')
+            ->orderBy('D_diaryNo', 'desc')
+            ->paginate(200);
         $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
 
         // $documents = Document::cursor()->where('category_id',1)->where('D_diaryno', '<', 100)->all();
@@ -469,7 +499,8 @@ class DocumentController extends Controller
         return redirect("http://dms.ongc.co.in/storage/$url");
     }
 
-    public function test() {
+    public function test()
+    {
         // return DataTables::of(Document::where('id', '<', 100))->make(true);
 
         return Document::paginate(100);

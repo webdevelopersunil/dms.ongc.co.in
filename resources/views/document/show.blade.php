@@ -235,16 +235,17 @@
                                 <option @if($document->D_MarkedBy == 'AKK') selected @endif>AKK</option>
                             </select> --}}
                         </div>
-                        <div class="offset-6 col-2 form-group text-right">
-                            <label for="D_fileno">Scanned File</label>
+                        <div class="col-2 form-group text-right">
+                            <label for="reply"><a href="{{ $replyUrl }}" target="_blank">Reply File</a></label>
                         </div>
                         <div class="col-4 form-group">
-                            {{-- @if($document->file_url)
-                                <a href="/storage/{{ $document->file_url }}">View File</a>
-                            @else  --}}
-                                <input type="text" value="{{ $document->D_fileno }}" name="D_fileno" id="D_fileno" placeholder="Enter scanned file name here" class="form-control form-control-sm">
-                                {{-- <input type="file" name="file_url" id="file_url" class="form-control form-control-sm"> --}}
-                            {{-- @endif --}}
+                            <input type="text" value="{{ $document->reply_path }}" name="reply" id="reply" placeholder="Enter reply file name here" class="form-control form-control-sm">
+                        </div>
+                        <div class="col-2 form-group text-right">
+                            <label for="D_fileno"><a href="{{ $url }}" target="_blank">Scanned File</a></label>
+                        </div>
+                        <div class="col-4 form-group">
+                            <input type="text" value="{{ $document->D_fileno }}" name="D_fileno" id="D_fileno" placeholder="Enter scanned file name here" class="form-control form-control-sm">
                         </div>
                         <div class="col-2 form-group text-right">
                             <label for="D_Remarks">Remarks</label>

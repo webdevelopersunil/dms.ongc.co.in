@@ -70,4 +70,33 @@
         </div>
     </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="changelogModal">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">New Changes</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul>
+              <li>Scroll in search page has been fixed</li>
+              <li>Scanned file auto-opens after creating document</li>
+              <li>Provision to enter Reply Document PDF</li>
+              <li>Font weight has been made bold for all input fields</li>
+              <li>Sorting of documents in search page is done on Date IN and Diary No</li>
+          </ul>
+          <hr>
+          <div class="form-check" style="padding-left:40px">
+            <input type="checkbox" class="form-check-input" id="remindCheckbox">
+            <label class="form-check-label" for="remindCheckbox">Don't show me again</label>
+          </div>
+          <button id="remindBtn" class="btn btn-primary ml-3 mt-2">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 @endsection
