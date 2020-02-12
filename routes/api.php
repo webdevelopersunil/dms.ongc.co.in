@@ -23,23 +23,31 @@ Route::post('/disha/sent', function(Request $request){
 Route::post('/disha/received', function(Request $request){
     // Log::info($request->subject);
     $documents = json_decode($request->subject);
-    Log::info('received');
+    Log::info('Tasks Received');
     foreach ($documents as $key => $document) {
         $d = new Document;
+        $d->D_diaryNo = $document->instanceId;
         $d->D_Subject = $document->subject;
-        $d->D_fileno = $document->fileNumber;
+        $d->D_LetterNo = $document->fileNumber;
         $d->D_SendersName = $document->receivedFrom;
+        $d->D_DateIN = $document->receivedOn;
+        $d->category_id = 6;
         Log::info($d);
+        $d->save();
     }
 
     $documents = json_decode($request->remarks);
-    Log::info('sent');
-    foreach ($documents as $key => $document) {
-        $d = new Document;
-        $d->D_Subject = $document->subject;
-        $d->D_fileno = $document->fileNumber;
-        $d->D_SendersName = $document->receivedFrom;
-        Log::info($d);
+    Log::info('Tasks Sent');
+    Log::info($request->remarks);
+    if(collect($documents)->isNotEmpty()) {
+        foreach ($documents as $key => $document) {
+            $d = Document::where('D_diaryNo', $document->instanceId)->get()->last();
+            if(!$d->D_DateOut) {
+                $d->D_DateOut = $document->sendOn;
+                $d->D_MarkedTo = $document->sendTo;
+                $d->save();
+            }
+        }
     }
 
     return 0;
