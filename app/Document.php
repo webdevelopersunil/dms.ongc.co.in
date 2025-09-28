@@ -13,7 +13,7 @@ class Document extends Model implements Auditable
 
     public function dealingOfficer()
     {
-        return $this->belongsTo('App\User', 'dealing_officer');
+        return $this->belongsTo(\App\User::class, 'dealing_officer');
     }
 
     public function category()
