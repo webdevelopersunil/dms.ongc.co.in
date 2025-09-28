@@ -75,25 +75,25 @@ class ReportsController extends Controller
     public function export() {
 
         if(session('selected') && session('date_from') && session('date_to')) {
-            $headers = array(
+            $headers = [
                 "Content-type" => "text/csv",
                 "Content-Disposition" => "attachment; filename=documents.csv",
                 "Pragma" => "no-cache",
                 "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
                 "Expires" => "0"
-            );
+            ];
             $documents = Document::where([
                 [ 'category_id', session('selected') ],
                 [ 'D_DateIN', '>=', session('date_from') ],
                 [ 'D_DateOut', '<=', session('date_to') ]
             ])->get();
 
-            $columns = array('DiaryNo', 'LetterNo', 'DATE', 'DateIN', 'DateOut', 'Subject', 'FileNo', 'MarkedBy', 'MarkedTo', 'CopyTo', 'Remarks', 'Received From');
+            $columns = ['DiaryNo', 'LetterNo', 'DATE', 'DateIN', 'DateOut', 'Subject', 'FileNo', 'MarkedBy', 'MarkedTo', 'CopyTo', 'Remarks', 'Received From'];
             $callback = function () use ($documents, $columns) {
                 $file = fopen('php://output', 'w');
                 fputcsv($file, $columns);
                 foreach ($documents as $document) {
-                    $line = array( 
+                    $line = [ 
                         $document->D_diaryNo, 
                         $document->D_LetterNo, 
                         $document->D_DATE, 
@@ -106,7 +106,7 @@ class ReportsController extends Controller
                         $document->D_CopyTO, 
                         $document->D_Remarks, 
 						$document->D_SendersName 
-                    );
+                    ];
                     fputcsv($file, $line);
                 }
                 fclose($file);
