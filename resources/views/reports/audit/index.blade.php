@@ -69,7 +69,7 @@
                                 @endforeach
                             </ul>
                         </td>
-                        <td> {{ $log->user->name }} </td>
+                        <td> {{ $log->user ? $log->user->name : '' }} </td>
                         <td> {{ $log->ip_address }} </td>
                     </tr>
                     @endforeach

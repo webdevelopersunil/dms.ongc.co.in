@@ -41,14 +41,14 @@ class CounterSeed extends Seeder
             "name" => "Sreenath S Das",
             "username" => "sree",
             "email" => "sreenathsdas@gmail.com",
-            "password" => Hash::make("sree5633")
+            "password" => Hash::make("ongc@123")
         ]);
 
         User::create([
             "name" => "Himanshu Martoliya",
             "username" => "himanshu",
             "email" => "h_martoliya@ongc.co.in",
-            "password" => Hash::make("sree5633")
+            "password" => Hash::make("ongc@123")
         ]);
     }
 }

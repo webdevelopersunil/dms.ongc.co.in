@@ -15,7 +15,7 @@ use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Debug\Exception\OutOfMemoryException;
 use Symfony\Component\HttpKernel\Debug\FileLinkFormatter;
 
-@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', ExceptionHandler::class, \Symfony\Component\ErrorHandler\ErrorHandler::class), E_USER_DEPRECATED);
+@trigger_error(sprintf('The "%s" class is deprecated since Symfony 4.4, use "%s" instead.', ExceptionHandler::class, \Symfony\Component\ErrorHandler\ErrorHandler::class), \E_USER_DEPRECATED);
 
 /**
  * ExceptionHandler converts an exception to a Response object.
@@ -55,7 +55,7 @@ class ExceptionHandler
     public function __construct(bool $debug = true, string $charset = null, $fileLinkFormat = null)
     {
         $this->debug = $debug;
-        $this->charset = $charset ?: ini_get('default_charset') ?: 'UTF-8';
+        $this->charset = $charset ?: \ini_get('default_charset') ?: 'UTF-8';
         $this->fileLinkFormat = $fileLinkFormat;
     }
 
@@ -256,7 +256,11 @@ EOF
                 foreach ($e['trace'] as $trace) {
                     $content .= '<tr><td>';
                     if ($trace['function']) {
-                        $content .= sprintf('at <span class="trace-class">%s</span><span class="trace-type">%s</span><span class="trace-method">%s</span>(<span class="trace-arguments">%s</span>)', $this->formatClass($trace['class']), $trace['type'], $trace['function'], $this->formatArgs($trace['args']));
+                        $content .= sprintf('at <span class="trace-class">%s</span><span class="trace-type">%s</span><span class="trace-method">%s</span>', $this->formatClass($trace['class']), $trace['type'], $trace['function']);
+
+                        if (isset($trace['args'])) {
+                            $content .= sprintf('(<span class="trace-arguments">%s</span>)', $this->formatArgs($trace['args']));
+                        }
                     }
                     if (isset($trace['file']) && isset($trace['line'])) {
                         $content .= $this->formatPath($trace['file'], $trace['line']);
@@ -386,7 +390,7 @@ EOF;
     private function formatPath(string $path, int $line): string
     {
         $file = $this->escapeHtml(preg_match('#[^/\\\\]*+$#', $path, $file) ? $file[0] : $path);
-        $fmt = $this->fileLinkFormat ?: ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
+        $fmt = $this->fileLinkFormat ?: \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
 
         if (!$fmt) {
             return sprintf('<span class="block trace-file-path">in <span title="%s%3$s"><strong>%s</strong>%s</span></span>', $this->escapeHtml($path), $file, 0 < $line ? ' line '.$line : '');
@@ -394,7 +398,7 @@ EOF;
 
         if (\is_string($fmt)) {
             $i = strpos($f = $fmt, '&', max(strrpos($f, '%f'), strrpos($f, '%l'))) ?: \strlen($f);
-            $fmt = [substr($f, 0, $i)] + preg_split('/&([^>]++)>/', substr($f, $i), -1, PREG_SPLIT_DELIM_CAPTURE);
+            $fmt = [substr($f, 0, $i)] + preg_split('/&([^>]++)>/', substr($f, $i), -1, \PREG_SPLIT_DELIM_CAPTURE);
 
             for ($i = 1; isset($fmt[$i]); ++$i) {
                 if (0 === strpos($path, $k = $fmt[$i++])) {
@@ -447,7 +451,7 @@ EOF;
      */
     private function escapeHtml(string $str): string
     {
-        return htmlspecialchars($str, ENT_COMPAT | ENT_SUBSTITUTE, $this->charset);
+        return htmlspecialchars($str, \ENT_COMPAT | \ENT_SUBSTITUTE, $this->charset);
     }
 
     private function getSymfonyGhostAsSvg(): string

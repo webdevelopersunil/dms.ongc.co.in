@@ -88,7 +88,7 @@ class ReportsController extends Controller
                 [ 'D_DateOut', '<=', session('date_to') ]
             ])->get();
 
-            $columns = array('DiaryNo', 'LetterNo', 'DATE', 'DateIN', 'DateOut', 'Subject', 'FileNo', 'MarkedBy', 'MarkedTo', 'CopyTo', 'Remarks');
+            $columns = array('DiaryNo', 'LetterNo', 'DATE', 'DateIN', 'DateOut', 'Subject', 'FileNo', 'MarkedBy', 'MarkedTo', 'CopyTo', 'Remarks', 'Received From');
             $callback = function () use ($documents, $columns) {
                 $file = fopen('php://output', 'w');
                 fputcsv($file, $columns);
@@ -105,6 +105,7 @@ class ReportsController extends Controller
                         $document->D_MarkedTo, 
                         $document->D_CopyTO, 
                         $document->D_Remarks, 
+						$document->D_SendersName 
                     );
                     fputcsv($file, $line);
                 }
@@ -163,8 +164,10 @@ class ReportsController extends Controller
 
         $params = "Showing results for diary no. $diary";
 
+        $document = Document::where('D_diaryNo', $diary)->get()->last();
+
         $audits = \OwenIt\Auditing\Models\Audit::with('user')
-                    ->where('auditable_id', $diary)->get();
+                    ->where('auditable_id', $document->id)->get();
 
         return view('reports.audit.index', compact('audits', 'params'));
     }

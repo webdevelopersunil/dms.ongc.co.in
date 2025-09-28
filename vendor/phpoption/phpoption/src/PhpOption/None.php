@@ -20,11 +20,18 @@ namespace PhpOption;
 
 use EmptyIterator;
 
+/**
+ * @extends Option<mixed>
+ */
 final class None extends Option
 {
+    /** @var None|null */
     private static $instance;
 
-    public static function create()
+    /**
+     * @return None
+     */
+    public static function create(): self
     {
         if (null === self::$instance) {
             self::$instance = new self();
@@ -53,12 +60,12 @@ final class None extends Option
         throw $ex;
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return true;
     }
 
-    public function isDefined()
+    public function isDefined(): bool
     {
         return false;
     }
@@ -68,9 +75,6 @@ final class None extends Option
         return $else;
     }
 
-    /**
-     * @deprecated Use forAll() instead.
-     */
     public function ifDefined($callable)
     {
         // Just do nothing in that case.
@@ -111,7 +115,7 @@ final class None extends Option
         return $this;
     }
 
-    public function getIterator()
+    public function getIterator(): EmptyIterator
     {
         return new EmptyIterator();
     }

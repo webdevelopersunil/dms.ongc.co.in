@@ -40,7 +40,7 @@
                     <label for="diary_no">Diary No</label>
                 </div>
                 <div class="col-4 form-group ">
-                    <input autofocus="true" type="text" id="diary_no" value="{{ $remember->D_diaryNo }}" name="diary_no" class="form-control form-control-sm font-weight-bold">
+                    <input autofocus type="text" id="diary_no" value="{{ $remember->D_diaryNo }}" name="diary_no" class="form-control form-control-sm font-weight-bold">
                 </div>
 
                 {{-- Keep col-6 space after Diary No.  --}}
@@ -190,7 +190,7 @@
                                     @foreach ($documents as $document )
                                         <tr class="{{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}" >
                                             <td class="dms-sticky-col-1 {{ $document->D_DateOut || $document->D_fileno ? '' : 'highlighted' }}"> 
-                                                @if($document->D_fileno) <a target="_blank" href="/document/file/{{ $document->id }}" class="view"> View </a> 
+                                                @if($document->D_fileno) <a target="_blank" href="/document/file/{{ $document->id }}?r={{ $hrefBust }}" class="view"> View </a> 
                                                 @else <a href="#">View</a>
                                                 @endif 
                                             </td>
@@ -205,9 +205,9 @@
                                             <td> {{ $document->D_DATE ? date('d-m-Y', strtotime($document->D_DATE)) : '' }}</td>
                                             <td data-toggle="tooltip" data-placement="top" title="{{ $document->D_SendersName }}"> {{ $document->category_id == 2 ? $document->D_LetteraddressedTo : $document->D_SendersName }}</td>
                                             <td data-toggle="tooltip" data-placement="top" title="{{ $document->D_Subject }}"> {{ $document->D_Subject }}</td>
-                                            <td> {{ $document->D_MarkedTo }}</td>
-                                            <td> {{ $document->D_CopyTO }}</td>
-                                            <td> {{ $document->D_MarkedBy }}</td>
+                                            <td data-toggle="tooltip" data-placement="top" title="{{ $document->D_MarkedTo }}"> {{ $document->D_MarkedTo }}</td>
+                                            <td data-toggle="tooltip" data-placement="top" title="{{ $document->D_CopyTO }}"> {{ $document->D_CopyTO }}</td>
+                                            <td data-toggle="tooltip" data-placement="top" title="{{ $document->D_MarkedBy }}"> {{ $document->D_MarkedBy }}</td>
                                             <td data-toggle="tooltip" data-placement="top" title="{{ $document->D_Remarks }}"> {{ $document->D_Remarks }}</td>
                                         </tr>
                                     @endforeach

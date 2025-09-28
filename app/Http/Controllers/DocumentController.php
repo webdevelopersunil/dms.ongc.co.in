@@ -53,20 +53,22 @@ class DocumentController extends Controller
         // $diary = DB::table('auto_increment')->where('category', $category->id)->first()->counter;
         $diary = $category->cm_diaryno;
 
-        $prevDiary = $diary - 1;
-        $document = Document::find($prevDiary);
         $url = "#";
-        if ($document) {
-            $date = Carbon::create($document->D_DATE);
-            if ($document->category_id == 2) {
-                $subfolder = $document->subcategory ? $document->subcategory->scm_foldername : '';
-                $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$subfolder/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
-            } else {
-                if ($document->category != '') {
-                    $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+        if($request->input('docId')) {
+            $document = Document::find($request->input('docId'));
+            if ($document) {
+                $date = Carbon::create($document->D_DATE);
+                if ($document->category_id == 2) {
+                    $subfolder = $document->subcategory ? $document->subcategory->scm_foldername : '';
+                    $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$subfolder/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+                } else {
+                    if ($document->category != '') {
+                        $url = "http://dms.ongc.co.in/storage/uploads/" . $document->category->cm_folder . "/$date->year/$date->englishMonth/" . $document->D_fileno . ".pdf";
+                    }
                 }
             }
         }
+        
 
         return view('document.create', compact('category', 'subcategory', 'diary', 'today', 'url'));
     }
@@ -138,9 +140,9 @@ class DocumentController extends Controller
         $category->save();
 
         if ($request->D_fileno) {
-            $redirectUrl = "/document/create?hyperlink&category=$category->id&subcategory=$request->subcategory_id";
+            $redirectUrl = "/document/create?hyperlink&category=$category->id&subcategory=$request->subcategory_id&docId=$document->id";
         } else {
-            $redirectUrl = "/document/create?category=$category->id&subcategory=$request->subcategory_id";
+            $redirectUrl = "/document/create?category=$category->id&subcategory=$request->subcategory_id&docId=$document->id";
         }
 
         return redirect($redirectUrl)->with('success', 'Document has been created successfully');
@@ -223,7 +225,7 @@ class DocumentController extends Controller
         $document->D_LetterSignedBy = $request->D_LetterSignedBy;
         $document->D_SenderDYNo = $request->D_SenderDYNo;
         $document->dealing_officer = $request->dealing_officer;
-        $document->reply_path = $request->reply_path;
+        $document->reply_path = $request->reply;
 
         // $date = Carbon::now();
         // if ($document->category == 'cmd_office_correspondence') {
@@ -275,7 +277,8 @@ class DocumentController extends Controller
         $category = $request->input('category') ?? '';
         $subcategory = $request->input('subcategory') ?? '';
         $limitSearch = false;
-        return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember'));
+        $hrefBust = rand();
+        return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember', 'hrefBust'));
     }
 
     public function sort(Request $request)
@@ -305,7 +308,8 @@ class DocumentController extends Controller
                 'subcategory' => $request->subcategory,
                 'limitSearch' => ($documents->count() == 50000),
                 'remember' => $remember,
-                'count' => $count
+                'count' => $count,
+                'hrefBust' => rand()
             ]);
         }
 
@@ -323,7 +327,8 @@ class DocumentController extends Controller
             // $category->save();
 
             $conditions = session('conditions');
-            $remember = session('remember');
+            // $remember = session('remember');
+            $remember = new Document;
             $documents = Document::with(['category', 'subcategory'])
                 ->where($conditions)
                 ->orderBy('D_DateIN', 'desc')
@@ -332,9 +337,11 @@ class DocumentController extends Controller
             $count = Document::with(['category', 'subcategory'])->where($conditions)->count();
 
             $categoryToUnlock = Category::find($request->category);
-            $categoryToUnlock->cm_IsInUse = false;
-            $categoryToUnlock->cm_UsedBy = '';
-            $categoryToUnlock->save();
+            if($categoryToUnlock) {
+                $categoryToUnlock->cm_IsInUse = false;
+                $categoryToUnlock->cm_UsedBy = '';
+                $categoryToUnlock->save();
+            }
 
             return view('document.search')->with([
                 'documents' => $documents,
@@ -344,9 +351,10 @@ class DocumentController extends Controller
                 'subcategory' => $request->subcategory,
                 'limitSearch' => ($documents->count() == 50000),
                 'remember' => $remember,
-                'count' => $count
+                'count' => $count,
+                'hrefBust' => rand()
             ]);
-        }
+        } 
 
         // return Document::with(['category', 'subcategory'])->find(201238);
         $remember = new Document;
@@ -355,11 +363,15 @@ class DocumentController extends Controller
         $limitSearch = false;
 
         $categoryToUnlock = Category::find($category);
-        $categoryToUnlock->cm_IsInUse = false;
-        $categoryToUnlock->cm_UsedBy = '';
-        $categoryToUnlock->save();
+        if($categoryToUnlock) {
+            $categoryToUnlock->cm_IsInUse = false;
+            $categoryToUnlock->cm_UsedBy = '';
+            $categoryToUnlock->save();
+        }
 
-        return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember'));
+        $hrefBust = rand();
+
+        return view('document.search', compact('category', 'subcategory', 'limitSearch', 'remember', 'hrefBust'));
     }
 
     public function search(Request $request)
@@ -472,7 +484,8 @@ class DocumentController extends Controller
             'subcategory' => $request->subcategory,
             'limitSearch' => ($documents->count() == 50000),
             'remember' => $remember,
-            'count' => $count
+            'count' => $count,
+            'hrefBust' => rand(),
         ]);
     }
 
