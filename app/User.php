@@ -39,11 +39,11 @@ class User extends Authenticatable
 
     public function macs()
     {
-        return $this->hasMany('App\Mac');
+        return $this->hasMany(\App\Mac::class);
     }
 
     public function documents()
     {
-        return $this->hasMany('App\Document', 'dealing_officer');
+        return $this->hasMany(\App\Document::class, 'dealing_officer');
     }
 }
